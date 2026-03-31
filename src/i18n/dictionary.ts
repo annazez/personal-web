@@ -13,6 +13,8 @@ export const dictionary = {
     'hero.status': 'Currently running only the',
     'hero.layer': 'core',
     'hero.layerSuffix': 'layer.',
+    '404.message': 'Page not found',
+    '404.return': 'Home',
   },
   cs: {
     'role.title': 'Softwarová architektka',
@@ -21,5 +23,7 @@ export const dictionary = {
     'hero.status': 'Zatím běží pouze',
     'hero.layer': 'základní',
     'hero.layerSuffix': 'vrstva webu.',
+    '404.message': 'Stránka nenalezena',
+    '404.return': 'Domů',
   },
 } as const;
