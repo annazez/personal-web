@@ -4,5 +4,6 @@
   "locale": "cs",
   "import": ["./node_modules/@cspell/dict-cs-cz/cspell-ext.json"],
   "dictionaries": ["cs-cz"],
-  "ignorePaths": ["dist", "node_modules", ".astro"]
+  "ignorePaths": ["dist", "node_modules", ".astro"],
+  "words": ["fontsource"]
 }

@@ -7,14 +7,14 @@ const returnBtn = dictionary.en['404.return'];
 ---
 
 <Layout title="404 | Not Found">
-  <main class="min-h-screen flex flex-col items-center justify-center text-center px-6">
-    <h1 class="text-7xl font-bold text-zinc-900 tracking-tighter mb-4">404</h1>
-    <p class="text-zinc-500 mb-8 font-mono text-sm tracking-wide">
+  <main class="flex min-h-screen flex-col items-center justify-center px-6 text-center">
+    <h1 class="mb-4 text-7xl font-bold tracking-tighter text-zinc-900">404</h1>
+    <p class="mb-8 font-mono text-sm tracking-wide text-zinc-500">
       {msg}
     </p>
-    <a 
-      href="/" 
-      class="px-6 py-2 border border-zinc-200 text-zinc-600 hover:text-zinc-900 hover:border-zinc-400 transition-colors font-mono text-xs tracking-widest uppercase"
+    <a
+      href="/"
+      class="border border-zinc-200 px-6 py-2 font-mono text-xs tracking-widest text-zinc-600 uppercase transition-colors hover:border-zinc-400 hover:text-zinc-900"
     >
       {returnBtn}
     </a>

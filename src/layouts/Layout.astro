@@ -1,6 +1,7 @@
 ---
 import { SEO } from 'astro-seo';
 import '../styles/global.css';
+import '@fontsource-variable/jetbrains-mono';
 import { languages } from '../i18n/dictionary';
 
 interface Props {
@@ -16,7 +17,6 @@ const langRegex = new RegExp(`^/(${langKeys})`);
 const pathname = Astro.url.pathname;
 const pathWithoutLang = pathname.replace(langRegex, '');
 ---
-
 <!doctype html>
 <html lang={lang}>
   <head>
@@ -30,18 +30,14 @@ const pathWithoutLang = pathname.replace(langRegex, '');
           title: title,
           type: 'website',
           image: '/og-image.jpg',
-        }
+        },
       }}
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {
-      Object.keys(languages).map((l) => (
-        <link
-          rel="alternate"
-          hreflang={l}
-          href={new URL(`/${l}${pathWithoutLang}`, Astro.site)}
-        />
+      Object.keys(languages).map(l => (
+        <link rel="alternate" hreflang={l} href={new URL(`/${l}${pathWithoutLang}`, Astro.site)} />
       ))
     }
     <link rel="alternate" hreflang="x-default" href={Astro.site} />

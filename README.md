@@ -1,6 +1,6 @@
 # Personal Website
 
-A fast, static personal website built with Astro and Tailwind CSS. 
+A fast, static personal website built with Astro and Tailwind CSS.
 
 > ⚠️ **Repository Notice**
 > This repository is actively maintained on [Codeberg](https://codeberg.org/annazez/pages). The GitHub repository is an automated, read-only mirror. Please direct any issues or development matters to the Codeberg repository.
@@ -23,14 +23,14 @@ A fast, static personal website built with Astro and Tailwind CSS.
 
 All commands are run from the root of the project, from a terminal:
 
-| Command | Action |
-| :--- | :--- |
-| `npm run dev` | Starts local dev server at `localhost:4321` |
-| `npm run build` | Builds your production site to `./dist/` |
+| Command          | Action                                               |
+| :--------------- | :--------------------------------------------------- |
+| `npm run dev`    | Starts local dev server at `localhost:4321`          |
+| `npm run build`  | Builds your production site to `./dist/`             |
 | `npm run deploy` | Builds the site and deploys it to the `pages` branch |
-| `npm run lint` | Runs ESLint to check code quality |
-| `npm run format` | Runs Prettier to format the codebase |
-| `npm run clean` | Removes cached files and build outputs |
+| `npm run lint`   | Runs ESLint to check code quality                    |
+| `npm run format` | Runs Prettier to format the codebase                 |
+| `npm run clean`  | Removes cached files and build outputs               |
 
 ## ⚖️ License
 

@@ -31,10 +31,10 @@ export default defineConfig({
   },
 
   integrations: [
-    mdx(), 
+    mdx(),
     sitemap({
-      filter: (page) => page !== 'https://annazez.codeberg.page/'
-    }), 
-    icon()
+      filter: page => page !== 'https://annazez.codeberg.page/',
+    }),
+    icon(),
   ],
 });
