@@ -13,7 +13,7 @@
   "cSpell.enabled": true,
   "cSpell.language": "en,cs",
   "cSpell.locale": "cs",
-  "cSpell.dictionaries": ["cs-cz"],
+  "cSpell.configFile": "./cspell.json",
   "cSpell.enabledFileTypes": {
     "astro": true,
     "javascript": true,
