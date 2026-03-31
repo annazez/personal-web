@@ -9,8 +9,8 @@ import icon from 'astro-icon';
 
 // TODO: Add a repository README with setup, build, and deploy instructions.
 // TODO: Add CI workflow to run Astro checks and production build on push/PR.
-
 // TODO: enhance with https://astro.build/config tags
+
 export default defineConfig({
   site: 'https://annazez.codeberg.page',
 
@@ -26,5 +26,11 @@ export default defineConfig({
     },
   },
 
-  integrations: [mdx(), sitemap(), icon()],
+  integrations: [
+    mdx(), 
+    sitemap({
+      filter: (page) => page !== 'https://annazez.codeberg.page/'
+    }), 
+    icon()
+  ],
 });
