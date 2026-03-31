@@ -14,6 +14,10 @@ import icon from 'astro-icon';
 export default defineConfig({
   site: 'https://annazez.codeberg.page',
 
+  build: {
+    assets: 'assets',
+  },
+
   vite: {
     plugins: [tailwindcss()],
   },
