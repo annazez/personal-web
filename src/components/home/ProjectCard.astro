@@ -1,0 +1,77 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title: string;
+  description: string;
+  tags: string[];
+  github?: string;
+  website?: string;
+  image?: string;
+}
+
+const { title, description, tags, github, website, image } = Astro.props;
+---
+
+<article
+  class="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-zinc-50 p-6 transition-colors hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 dark:hover:shadow-zinc-900/20"
+>
+  {
+    image && (
+      <img
+        src={image}
+        alt={title}
+        class="h-48 w-full rounded-md object-cover"
+      />
+    )
+  }
+
+  <div class="flex flex-1 flex-col gap-3">
+    <div class="flex items-start justify-between">
+      <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100">{title}</h3>
+    </div>
+
+    <p class="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{description}</p>
+
+    <div class="flex flex-wrap gap-2">
+      {
+        tags.map(tag => (
+          <span class="inline-block rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="mt-auto flex gap-2 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+    {
+      website && (
+        <a
+          href={website}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Visit ${title}`}
+          class="flex items-center gap-2 rounded-md bg-blue-50 px-3 py-2 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-400 dark:hover:bg-blue-900"
+        >
+          <Icon name="lucide:external-link" class="h-4 w-4" />
+          Visit
+        </a>
+      )
+    }
+    {
+      github && (
+        <a
+          href={github}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`View ${title} on GitHub`}
+          class="flex items-center gap-2 rounded-md bg-zinc-100 px-3 py-2 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+        >
+          <Icon name="lucide:github" class="h-4 w-4" />
+          GitHub
+        </a>
+      )
+    }
+  </div>
+</article>

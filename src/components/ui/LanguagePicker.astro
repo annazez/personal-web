@@ -1,27 +1,70 @@
 ---
 import { getLangFromUrl } from '../../i18n/utils';
 import { languages } from '../../i18n/dictionary';
+import ThemeToggle from './ThemeToggle.astro';
 
 const currentLang = getLangFromUrl(Astro.url);
 const langEntries = Object.entries(languages);
 ---
 
-<nav class="absolute top-8 right-8 flex gap-4 font-mono text-xs tracking-widest uppercase">
-  {
-    langEntries.map(([code, label], index) => (
-      <>
-        <a
-          href={`/${code}/`}
-          class={
-            currentLang === code
-              ? 'font-medium text-zinc-900'
-              : 'text-zinc-500 transition-colors hover:text-zinc-900'
-          }
-        >
-          {label}
-        </a>
-        {index < langEntries.length - 1 && <span class="text-zinc-400">/</span>}
-      </>
-    ))
-  }
+<nav class="absolute top-8 right-8 flex items-center gap-4">
+  <div class="flex gap-4 font-mono text-xs tracking-widest uppercase">
+    {
+      langEntries.map(([code, label], index) => (
+        <>
+          <a
+            href={`/${code}/`}
+            data-lang-link="true"
+            class={
+              currentLang === code
+                ? 'font-medium text-zinc-900 dark:text-zinc-100'
+                : 'text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100'
+            }
+          >
+            {label}
+          </a>
+          {index < langEntries.length - 1 && <span class="text-zinc-400 dark:text-zinc-600">/</span>}
+        </>
+      ))
+    }
+  </div>
+  <ThemeToggle />
 </nav>
+
+<script>
+  function showLanguageSwitchOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'theme-transition-overlay';
+
+    const nextTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    overlay.dataset.theme = nextTheme;
+
+    document.body.appendChild(overlay);
+    const animation = overlay.animate(
+      [{ opacity: 0 }, { opacity: 1, offset: 0.5 }, { opacity: 0 }],
+      {
+        duration: 120,
+        easing: 'linear',
+        fill: 'forwards',
+      }
+    );
+
+    animation.addEventListener('finish', () => overlay.remove(), { once: true });
+  }
+
+  document.querySelectorAll<HTMLAnchorElement>('a[data-lang-link="true"]').forEach(link => {
+    link.addEventListener('click', event => {
+      const href = link.getAttribute('href');
+
+      if (!href || link.pathname === window.location.pathname) {
+        return;
+      }
+
+      event.preventDefault();
+      showLanguageSwitchOverlay();
+      window.setTimeout(() => {
+        window.location.href = href;
+      }, 80);
+    });
+  });
+</script>

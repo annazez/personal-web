@@ -1,0 +1,69 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import ProjectCard from './ProjectCard.astro';
+
+interface Project {
+  title: string;
+  description: string;
+  tags: string[];
+  github?: string;
+  website?: string;
+  image?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const projects: Project[] = [
+  {
+    title: 'Telperion Web',
+    description: t('projects.telperion.description'),
+    tags: ['Astro', 'React', 'Tailwind', 'TypeScript', 'i18n'],
+    website: 'https://telperion.cz',
+    github: 'https://codeberg.org/annazez/telperion-web',
+  },
+  {
+    title: 'Personal Web',
+    description: t('projects.personalWeb.description'),
+    tags: ['Astro', 'Tailwind', 'SSG', 'Minimal'],
+    github: 'https://codeberg.org/annazez/personal-web',
+  },
+];
+---
+
+<section class="flex flex-col gap-6">
+  <header class="flex flex-col gap-2">
+    <h2 class="text-2xl font-light tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-3xl">
+      {t('projects.title')}
+    </h2>
+    <p class="text-zinc-600 dark:text-zinc-400">
+      {t('projects.subtitle')}
+    </p>
+  </header>
+
+  <div class="projects-grid">
+    {projects.map(project => (
+      <ProjectCard {...project} />
+    ))}
+  </div>
+</section>
+
+<style>
+  .projects-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

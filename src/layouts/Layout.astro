@@ -25,6 +25,17 @@ const siteUrl = Astro.site ?? Astro.url;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+        root.classList.toggle('dark', theme === 'dark');
+        root.style.colorScheme = theme;
+      })();
+    </script>
     <SEO
       title={title}
       description={description}
