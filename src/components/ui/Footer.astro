@@ -78,12 +78,20 @@ const t = useTranslations(lang);
 
         // SWD v4 model: 0.81 kWh/GB * 494 gCO2e/kWh = ~400g CO2e per GB (4.0e-7 g per byte)
         const gramsCo2 = totalSize * 4.0e-7;
+
+        const formatCarbonFootprint = value => {
+          if (value >= 0.01) {
+            return `${value.toFixed(2)} g CO₂e`;
+          }
+
+          return `${value.toFixed(4)} g CO₂e`;
+        };
         
         valueElement.style.opacity = '0';
         valueElement.style.transition = 'opacity 0.3s ease';
         
         setTimeout(() => {
-          valueElement.textContent = `${gramsCo2.toFixed(2)} g CO₂e`;
+          valueElement.textContent = formatCarbonFootprint(gramsCo2);
           valueElement.style.opacity = '1';
         }, 150);
       };
