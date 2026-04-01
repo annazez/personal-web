@@ -1,39 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { defaultLang, dictionary } from '../i18n/dictionary';
-
-const msg = dictionary.en['404.message'];
-const returnBtn = dictionary.en['404.return'];
+import { defaultLang } from '../i18n/dictionary';
+import { Icon } from 'astro-icon/components';
 ---
 
-<Layout title="404 | Not Found" description="The requested page was not found.">
-  <main
-    id="main-content"
-    class="flex min-h-screen flex-col items-center justify-center px-6 text-center"
-  >
-    <h1 class="mb-4 text-7xl font-bold tracking-tighter text-zinc-900">404</h1>
-    <p class="mb-8 font-mono text-sm tracking-wide text-zinc-500">
-      {msg}
+<Layout title="404: Not Found">
+  <main id="main-content" class="mx-auto flex min-h-[80vh] max-w-2xl flex-col items-center justify-center px-6 text-center">
+    <h1 class="text-9xl font-light tracking-tight text-zinc-900 dark:text-zinc-50">404</h1>
+    
+    <p class="mt-4 font-mono text-sm tracking-widest uppercase text-zinc-500 dark:text-zinc-400">
+      System Node Not Found
     </p>
-    <div class="flex flex-col items-center gap-4 sm:flex-row">
-      <a
-        href={`/${defaultLang}/`}
-        class="border border-zinc-200 px-6 py-2 font-mono text-xs tracking-widest text-zinc-600 uppercase transition-colors hover:border-zinc-400 hover:text-zinc-900"
-      >
-        {returnBtn}
-      </a>
-      <a
-        href="/en/"
-        class="text-sm text-zinc-500 underline-offset-4 transition-colors hover:text-zinc-900 hover:underline"
-      >
-        English
-      </a>
-      <a
-        href="/cs/"
-        class="text-sm text-zinc-500 underline-offset-4 transition-colors hover:text-zinc-900 hover:underline"
-      >
-        Čeština
-      </a>
-    </div>
+    
+    <p class="mt-6 text-zinc-600 dark:text-zinc-400">
+      The architecture you are looking for has been moved or doesn't exist in this dimension.
+    </p>
+    
+    <a 
+      href={`/${defaultLang}/`} 
+      class="mt-10 flex items-center gap-2 rounded-md border border-zinc-200 px-6 py-2 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-900"
+    >
+      <Icon name="lucide:arrow-left" class="size-4" />
+      <span>Return</span>
+    </a>
   </main>
 </Layout>

@@ -8,6 +8,6 @@ export function getLangFromUrl(url: URL) {
 
 export function useTranslations(lang: LanguageCode) {
   return function t(key: TranslationKey) {
-    return dictionary[lang][key] || dictionary[defaultLang][key];
+    return dictionary[lang][key] ?? dictionary[defaultLang][key];
   };
 }

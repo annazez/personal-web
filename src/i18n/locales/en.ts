@@ -7,6 +7,8 @@ const en = {
   'hero.layerSuffix': 'layer.',
   'projects.title': 'Projects',
   'projects.subtitle': 'A selection of work that demonstrates my approach to architecture and design.',
+  'projects.visit': 'Visit',
+  'projects.source': 'Source',
   'projects.telperion.description': 'Website for Telperion, a Czech environmental organization dedicated to educating young people about climate and sustainable living. Features bilingual support and interactive components.',
   'projects.personalWeb.description': 'My personal portfolio website. A minimalist, privacy-first design with fast performance, zero tracking, and clean architecture.',
   'footer.carbonFootprint': 'Carbon footprint:',

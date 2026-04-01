@@ -12,6 +12,10 @@
 - No ad-tech integrations.
 - Performance checks run in CI only.
 
+## Decentralized Identity
+
+- External profile links use rel="me" to support two-way verification on the Fediverse and open-source platforms such as Mastodon and Codeberg.
+
 ## Release Checklist
 
 1. Run npm run check.

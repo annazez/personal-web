@@ -1,6 +1,6 @@
 # Personal Website
 
-A fast, static personal website built with Astro and Tailwind CSS.
+A fast, static personal website built with Astro, Tailwind CSS, and self-hosted variable fonts via @fontsource-variable for privacy and performance.
 
 > ⚠️ **Repository Notice**
 > This repository is actively maintained on [Codeberg](https://codeberg.org/annazez/pages). The GitHub repository is an automated, read-only mirror. Please direct any issues or development matters to the Codeberg repository.
@@ -35,8 +35,8 @@ All commands are run from the root of the project, from a terminal:
 | `npm run format`        | Runs Prettier to format the codebase                 |
 | `npm run clean`         | Removes cached files and build outputs               |
 | `npm run test:e2e`      | Runs Playwright end-to-end tests                     |
+| `npm run lighthouse:ci` | Runs Lighthouse CI to enforce 100/100 scores         |
 | `npm run size:check`    | Validates JS/CSS bundle budget                       |
-| `npm run lighthouse:ci` | Runs privacy-friendly Lighthouse assertions          |
 
 ## CI/CD on Codeberg
 

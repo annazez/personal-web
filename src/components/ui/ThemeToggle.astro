@@ -15,22 +15,6 @@ import { Icon } from 'astro-icon/components';
   const themeToggle = document.getElementById('theme-toggle');
   const sunIcon = document.getElementById('sun-icon');
   const moonIcon = document.getElementById('moon-icon');
-  let isThemeTransitionRunning = false;
-
-  function createThemeOverlay(nextTheme: 'light' | 'dark') {
-    const overlay = document.createElement('div');
-    overlay.className = 'theme-transition-overlay';
-    overlay.dataset.theme = nextTheme;
-
-    document.body.appendChild(overlay);
-    return overlay;
-  }
-
-  function waitForAnimation(animation: Animation) {
-    return new Promise<void>(resolve => {
-      animation.addEventListener('finish', () => resolve(), { once: true });
-    });
-  }
 
   // Check for saved theme preference or default to light mode
   const savedTheme = localStorage.getItem('theme');
@@ -53,61 +37,36 @@ import { Icon } from 'astro-icon/components';
     }
   }
 
-  async function transitionTheme(theme: 'light' | 'dark', options: { animate?: boolean } = {}) {
-    if (!options.animate) {
-      applyTheme(theme);
+  function toggleTheme() {
+    const newTheme = (document.documentElement.classList.contains('dark') ? 'light' : 'dark') as
+      | 'light'
+      | 'dark';
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!document.startViewTransition || prefersReducedMotion) {
+      applyTheme(newTheme);
+      localStorage.setItem('theme', newTheme);
       return;
     }
 
-    if (isThemeTransitionRunning) {
-      applyTheme(theme);
-      return;
-    }
-
-    isThemeTransitionRunning = true;
-    const html = document.documentElement;
-    html.classList.add('theme-switching');
-
-    try {
-      // Create overlay at full opacity BEFORE applying theme
-      const overlay = createThemeOverlay(theme);
-      overlay.style.opacity = '1';
-      
-      // Force synchronous layout to ensure overlay is rendered before theme change
-      void overlay.offsetHeight;
-      
-      // Now apply theme while overlay covers the screen
-      applyTheme(theme);
-
-      const fadeOut = overlay.animate([{ opacity: 1 }, { opacity: 0 }], {
-        duration: 150,
-        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        fill: 'forwards',
-      });
-
-      await waitForAnimation(fadeOut);
-      overlay.remove();
-    } finally {
-      html.classList.remove('theme-switching');
-      isThemeTransitionRunning = false;
-    }
+    document.startViewTransition(() => {
+      applyTheme(newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
   }
 
   applyTheme(initialTheme as 'light' | 'dark');
 
   // Handle theme toggle
-  themeToggle?.addEventListener('click', async () => {
-    const html = document.documentElement;
-    const newTheme = (html.classList.contains('dark') ? 'light' : 'dark') as 'light' | 'dark';
-    await transitionTheme(newTheme, { animate: true });
-    localStorage.setItem('theme', newTheme);
+  themeToggle?.addEventListener('click', () => {
+    toggleTheme();
   });
 
   // Listen for system theme changes
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', async e => {
     const newTheme = (e.matches ? 'dark' : 'light') as 'light' | 'dark';
     localStorage.removeItem('theme'); // Clear saved preference to follow system
-    await transitionTheme(newTheme, { animate: true });
+    applyTheme(newTheme);
   });
 
   // Keep theme in sync across tabs/windows and animate there too
@@ -118,6 +77,6 @@ import { Icon } from 'astro-icon/components';
 
     const prefersDarkNow = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const syncedTheme = (e.newValue || (prefersDarkNow ? 'dark' : 'light')) as 'light' | 'dark';
-    await transitionTheme(syncedTheme, { animate: true });
+    applyTheme(syncedTheme);
   });
 </script>

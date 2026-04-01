@@ -9,6 +9,30 @@
 - src/components/ui: reusable UI primitives
 - src/i18n: locale config, dictionary, and translation helpers
 
+## Core Implementations
+
+- Sustainability / Carbon Footprint: the site calculates carbon footprint natively in the browser using the Performance API and TextEncoder, including cached resource fallback handling, and follows the Sustainable Web Design (SWD) v4 model without any external API tracking.
+- Accessibility (a11y): the global skip link targets #main-content, and theme transitions respect prefers-reduced-motion so users with vestibular disorders can disable the overlay animation.
+- Theme Management: dark mode is implemented with a custom toggle that syncs across browser tabs through the storage event and uses an inline blocking script to prevent FOUC during initial render.
+
+### Blueprint Print Mode //TODO: the print doesn't look very good, enhance it
+
+When the page is printed or exported to PDF, a CSS `@media print` query strips away the UI, enforces a monospace font, expands URL links as text, and injects a technical architectural header. The printed output intentionally reads like a strict technical specification document rather than a conventional webpage.
+
+## Special Features & Easter Eggs
+
+### Architectural X-Ray
+
+Appending `#arch` to the URL triggers a global structural wireframe through a Zero-JavaScript implementation that uses modern CSS `:has()` and `:target`. The mode outlines the page into a semantic blueprint, strips away visual polish, and aligns with the project’s strict zero-bloat, high-performance philosophy.
+
+### Accessibility Auditor Mode
+
+Appending `#audit` to the URL triggers a Zero-JavaScript accessibility audit layer that uses CSS `:has()` and `:target` to apply grayscale filtering, visually expose `aria-label` values as tooltips, and highlight missing `alt` attributes or broken links. It acts as an interactive proof of the site’s color-independent hierarchy and strict a11y standards without adding runtime scripting.
+
+### Exploded Layers 3D //TODO: it's broken and use JS that I'm not sure if doesn't load automatically when user opens the web (it shouldn't)
+
+Appending `#layers` to the URL triggers an isometric 3D transformation of the entire DOM. The base effect uses CSS `perspective`, `preserve-3d`, and `translateZ` to visually explode the structural hierarchy of the page, while a lightweight client-side interaction layer maps mouse wheel zoom and click-drag rotation onto CSS variables for a more tactile model.
+
 ## i18n Model
 
 - Locale dictionaries are split into src/i18n/locales
