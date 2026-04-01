@@ -82,7 +82,7 @@ const t = useTranslations(lang);
         valueElement.style.transition = 'opacity 0.3s ease';
         
         setTimeout(() => {
-          valueElement.textContent = `${gramsCo2.toFixed(4)} g CO₂e`;
+          valueElement.textContent = `${gramsCo2.toFixed(6)} g CO₂e`;
           valueElement.style.opacity = '1';
         }, 150);
       };
