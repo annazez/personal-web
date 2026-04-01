@@ -11,21 +11,17 @@ const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<footer class="flex w-full flex-wrap items-center gap-x-6 gap-y-3 border-t border-zinc-200 pt-8 dark:border-zinc-800">
+<footer
+  class="flex w-full flex-wrap items-center gap-x-6 gap-y-3 border-t border-zinc-200 pt-8 dark:border-zinc-800"
+>
   <div class="flex items-center gap-6">
     <a
-      href="https://github.com/annazez"
+      href="https://codeberg.org/annazez/pages"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="GitHub"
+      aria-label="Source code on Codeberg"
       class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
-      ><Icon name="lucide:github" class="h-5 w-5" /></a
-    >
-    <a
-      href="mailto:anna.zezulka@proton.me"
-      aria-label="Email"
-      class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
-      ><Icon name="lucide:mail" class="h-5 w-5" /></a
+      ><Icon name="lucide:code-2" class="h-5 w-5" /></a
     >
     <a
       href="/humans.txt"
@@ -41,9 +37,11 @@ const t = useTranslations(lang);
     >
   </div>
 
-  <p class="w-full text-xs text-zinc-500 dark:text-zinc-400 sm:ml-auto sm:w-auto sm:text-right">
+  <p class="w-full text-xs text-zinc-500 sm:ml-auto sm:w-auto sm:text-right dark:text-zinc-400">
     <span>{t('footer.carbonFootprint')}</span>
-    <span id="carbon-footprint-value" data-loading={t('footer.loading')}> {t('footer.loading')}</span>
+    <span id="carbon-footprint-value" data-loading={t('footer.loading')}>
+      {t('footer.loading')}</span
+    >
   </p>
 
   <script is:inline>
@@ -59,7 +57,7 @@ const t = useTranslations(lang);
         const navigationEntry = navigationEntries.length > 0 ? navigationEntries[0] : null;
         const resources = performance.getEntriesByType('resource');
 
-        const getSize = (entry) => {
+        const getSize = entry => {
           if (!entry) return 0;
           return entry.transferSize || entry.encodedBodySize || entry.decodedBodySize || 0;
         };
@@ -86,10 +84,10 @@ const t = useTranslations(lang);
 
           return `${value.toFixed(4)} g CO₂e`;
         };
-        
+
         valueElement.style.opacity = '0';
         valueElement.style.transition = 'opacity 0.3s ease';
-        
+
         setTimeout(() => {
           valueElement.textContent = formatCarbonFootprint(gramsCo2);
           valueElement.style.opacity = '1';
@@ -99,7 +97,9 @@ const t = useTranslations(lang);
       if (document.readyState === 'complete') {
         setTimeout(updateCarbonFootprint, 500);
       } else {
-        window.addEventListener('load', () => setTimeout(updateCarbonFootprint, 500), { once: true });
+        window.addEventListener('load', () => setTimeout(updateCarbonFootprint, 500), {
+          once: true,
+        });
       }
     })();
   </script>

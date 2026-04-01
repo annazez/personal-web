@@ -5,26 +5,18 @@ interface Props {
   title: string;
   description: string;
   tags: string[];
-  github?: string;
+  repo?: string;
   website?: string;
   image?: string;
 }
 
-const { title, description, tags, github, website, image } = Astro.props;
+const { title, description, tags, repo, website, image } = Astro.props;
 ---
 
 <article
   class="flex flex-col gap-4 rounded-lg border border-zinc-200 bg-zinc-50 p-6 transition-colors hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 dark:hover:shadow-zinc-900/20"
 >
-  {
-    image && (
-      <img
-        src={image}
-        alt={title}
-        class="h-48 w-full rounded-md object-cover"
-      />
-    )
-  }
+  {image && <img src={image} alt={title} class="h-48 w-full rounded-md object-cover" />}
 
   <div class="flex flex-1 flex-col gap-3">
     <div class="flex items-start justify-between">
@@ -60,16 +52,16 @@ const { title, description, tags, github, website, image } = Astro.props;
       )
     }
     {
-      github && (
+      repo && (
         <a
-          href={github}
+          href={repo}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`View ${title} on GitHub`}
+          aria-label={`View source for ${title}`}
           class="flex items-center gap-2 rounded-md bg-zinc-100 px-3 py-2 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
         >
-          <Icon name="lucide:github" class="h-4 w-4" />
-          GitHub
+          <Icon name="lucide:code-2" class="h-4 w-4" />
+          Source
         </a>
       )
     }

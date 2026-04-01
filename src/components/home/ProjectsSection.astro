@@ -6,7 +6,7 @@ interface Project {
   title: string;
   description: string;
   tags: string[];
-  github?: string;
+  repo?: string;
   website?: string;
   image?: string;
 }
@@ -20,20 +20,20 @@ const projects: Project[] = [
     description: t('projects.telperion.description'),
     tags: ['Astro', 'React', 'Tailwind', 'TypeScript', 'i18n'],
     website: 'https://telperion.cz',
-    github: 'https://codeberg.org/annazez/telperion-web',
+    repo: 'https://github.com/annazez/telperion-web',
   },
   {
     title: 'Personal Web',
     description: t('projects.personalWeb.description'),
     tags: ['Astro', 'Tailwind', 'SSG', 'Minimal'],
-    github: 'https://codeberg.org/annazez/personal-web',
+    repo: 'https://codeberg.org/annazez/personal-web',
   },
 ];
 ---
 
 <section class="flex flex-col gap-6">
   <header class="flex flex-col gap-2">
-    <h2 class="text-2xl font-light tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-3xl">
+    <h2 class="text-2xl font-light tracking-tight text-zinc-950 sm:text-3xl dark:text-zinc-50">
       {t('projects.title')}
     </h2>
     <p class="text-zinc-600 dark:text-zinc-400">
@@ -42,9 +42,7 @@ const projects: Project[] = [
   </header>
 
   <div class="projects-grid">
-    {projects.map(project => (
-      <ProjectCard {...project} />
-    ))}
+    {projects.map(project => <ProjectCard {...project} />)}
   </div>
 </section>
 
