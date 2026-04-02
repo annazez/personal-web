@@ -28,10 +28,12 @@ const t = useTranslations(lang);
 
     <p class="home-body-text">{description}</p>
 
-    <div class="mt-auto flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div
+      class="mt-auto flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
       {
         tags.map(tag => (
-          <span class="home-tag-text inline-block whitespace-nowrap rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] dark:bg-zinc-800">
+          <span class="home-tag-text inline-block rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] whitespace-nowrap dark:bg-zinc-800">
             {tag}
           </span>
         ))
