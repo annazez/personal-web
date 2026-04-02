@@ -1,10 +1,47 @@
 ---
 import { getLangFromUrl } from '../../i18n/utils';
-import { languages } from '../../i18n/dictionary';
+import { languages, type LanguageCode } from '../../i18n/dictionary';
 import ThemeToggle from './ThemeToggle.astro';
 
 const currentLang = getLangFromUrl(Astro.url);
-const langEntries = Object.entries(languages);
+const langEntries = Object.entries(languages) as [LanguageCode, string][];
+
+const localizedSlugSets: Array<Record<LanguageCode, string>> = [
+  {
+    en: 'inventory',
+    cs: 'inventar',
+  },
+];
+
+function mapLocalizedSegment(
+  segment: string,
+  fromLang: LanguageCode,
+  toLang: LanguageCode
+): string {
+  for (const slugSet of localizedSlugSets) {
+    if (segment === slugSet[fromLang]) {
+      return slugSet[toLang];
+    }
+  }
+
+  return segment;
+}
+
+function getLocalizedHref(targetLang: LanguageCode): string {
+  const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+  const hasLangPrefix = pathSegments.length > 0 && pathSegments[0] in languages;
+  const routeSegments = hasLangPrefix ? pathSegments.slice(1) : pathSegments;
+
+  if (routeSegments.length === 0) {
+    return `/${targetLang}/`;
+  }
+
+  const localizedSegments = routeSegments.map(segment =>
+    mapLocalizedSegment(segment, currentLang as LanguageCode, targetLang)
+  );
+
+  return `/${targetLang}/${localizedSegments.join('/')}`;
+}
 ---
 
 <nav class="absolute top-8 right-8 flex items-center gap-4">
@@ -13,7 +50,7 @@ const langEntries = Object.entries(languages);
       langEntries.map(([code, label], index) => (
         <>
           <a
-            href={`/${code}/`}
+            href={getLocalizedHref(code)}
             data-lang-link="true"
             class={
               currentLang === code

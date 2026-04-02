@@ -1,0 +1,84 @@
+---
+import { getEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Footer from '../../components/ui/Footer.astro';
+import LanguagePicker from '../../components/ui/LanguagePicker.astro';
+import { defaultLang, getValidLanguageCode } from '../../i18n/dictionary';
+import { useTranslations } from '../../i18n/utils';
+import Layout from '../../layouts/Layout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en', workspace_slug: 'inventory' } },
+    { params: { lang: 'cs', workspace_slug: 'inventar' } },
+  ];
+}
+
+const currentLang = getValidLanguageCode(Astro.params.lang);
+const t = useTranslations(currentLang);
+const entry =
+  (await getEntry('workspace', currentLang)) ?? (await getEntry('workspace', defaultLang));
+
+if (!entry) {
+  throw new Error('Missing workspace collection entries in src/content/workspace.');
+}
+
+const { title, intro, categories } = entry.data;
+---
+
+<Layout title={t('seo.workspace')} lang={currentLang}>
+  <a
+    href={`/${currentLang}/`}
+    aria-label={t('404.return')}
+    class="absolute top-8 left-8 text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100"
+  >
+    <Icon name="lucide:chevron-left" class="h-5 w-5" />
+  </a>
+  <LanguagePicker />
+
+  <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-24 px-6 py-32">
+    <header class="flex flex-col gap-4">
+      <h1 class="home-display-title">{title}</h1>
+      <p class="home-body-text">{intro}</p>
+    </header>
+
+    <section class="flex flex-col gap-12" aria-label={title}>
+      {
+        categories.map(section => (
+          <section
+            class="flex flex-col gap-4"
+            aria-labelledby={`workspace-${section.category.toLowerCase()}`}
+          >
+            <h2 id={`workspace-${section.category.toLowerCase()}`} class="home-section-title">
+              {section.label}
+            </h2>
+
+            <ul class="flex flex-col gap-4">
+              {section.items.map(item => (
+                <li class="rounded-lg border border-zinc-200 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900">
+                  <p class="home-body-text">
+                    <span class="home-inline-strong">{item.name}</span>
+                    {' - '}
+                    {item.description}
+                  </p>
+                  {item.link && (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="home-micro-label mt-3 inline-block transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+                    >
+                      {item.link}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </section>
+
+    <Footer lang={currentLang} />
+  </main>
+</Layout>

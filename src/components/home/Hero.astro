@@ -3,6 +3,7 @@ import { Icon } from 'astro-icon/components';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const inventoryPath = lang === 'cs' ? '/cs/inventar' : '/en/inventory';
 ---
 
 <div class="flex flex-col gap-16">
@@ -48,6 +49,12 @@ const t = useTranslations(lang);
       <a href="mailto:anna.zezulka@proton.me" class="flex items-center gap-2">
         <Icon name="lucide:mail" class="size-5" />
         <span>Email</span>
+      </a>
+    </li>
+    <li>
+      <a href={inventoryPath} class="flex items-center gap-2">
+        <Icon name="lucide:laptop-minimal" class="size-5" />
+        <span>{t('hero.inventory')}</span>
       </a>
     </li>
   </ul>

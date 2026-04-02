@@ -1,32 +1,21 @@
 ---
-// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
 import { defaultLang, languages } from '../i18n/dictionary';
+import { useTranslations } from '../i18n/utils';
 
+const t = useTranslations(defaultLang);
 const canonicalEn = new URL(`/${defaultLang}/`, Astro.site ?? Astro.url).toString();
 const supportedLangs = Object.keys(languages); // ['en', 'cs']
 const langEntries = Object.entries(languages);
 ---
 
-<!doctype html>
-<html lang={defaultLang}>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Anna Zezulka</title>
-    <meta name="robots" content="noindex" />
+<Layout title={t('seo.home')} lang={defaultLang} noIndex={true}>
+  <Fragment slot="head">
     <meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
     <link rel="canonical" href={canonicalEn} />
+  </Fragment>
 
-    <link rel="alternate" hreflang="x-default" href={canonicalEn} />
-    {
-      supportedLangs.map(code => (
-        <link
-          rel="alternate"
-          hreflang={code}
-          href={new URL(`/${code}/`, Astro.site ?? Astro.url).toString()}
-        />
-      ))
-    }
-
+  <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-4 px-6 py-16">
     <script is:inline define:vars={{ supportedLangs, defaultLang }}>
       const preferred =
         Array.isArray(navigator.languages) && navigator.languages.length
@@ -38,11 +27,10 @@ const langEntries = Object.entries(languages);
       const targetLang = supportedLangs.includes(prefLangCode) ? prefLangCode : defaultLang;
       window.location.replace(`/${targetLang}/`);
     </script>
-  </head>
-  <body>
+
     <noscript>
-      <p>Choose language:</p>
-      <p>
+      <p class="home-body-text">Choose language:</p>
+      <p class="home-body-text">
         {
           langEntries.map(([code, label], index) => (
             <>
@@ -53,5 +41,5 @@ const langEntries = Object.entries(languages);
         }
       </p>
     </noscript>
-  </body>
-</html>
+  </main>
+</Layout>

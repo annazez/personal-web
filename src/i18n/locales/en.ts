@@ -5,15 +5,19 @@ const en = {
   'hero.status': 'Currently running only the',
   'hero.layer': 'core',
   'hero.layerSuffix': 'layer.',
+  'hero.inventory': 'Inventory',
   'projects.title': 'Projects',
   'projects.subtitle':
     'A selection of work that demonstrates my approach to architecture and design.',
   'projects.visit': 'Visit',
-  'projects.source': 'Source',
+  'projects.source': 'Code',
   'projects.telperion.description':
     'Website for Telperion, a Czech environmental organization dedicated to educating young people about climate and sustainable living. Features bilingual support and interactive components.',
   'projects.personalWeb.description':
     'My personal portfolio website. A minimalist, privacy-first design with fast performance, zero tracking, and clean architecture.',
+  'seo.home': 'Home',
+  'seo.workspace': 'Inventory',
+  'seo.404': 'Not Found',
   'footer.carbonFootprint': 'Carbon footprint:',
   'footer.loading': 'calculating...',
   '404.message': 'Page not found',

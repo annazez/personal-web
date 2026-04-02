@@ -1,10 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { defaultLang } from '../i18n/dictionary';
+import { useTranslations } from '../i18n/utils';
 import { Icon } from 'astro-icon/components';
+
+const t = useTranslations(defaultLang);
 ---
 
-<Layout title="404: Not Found">
+<Layout title={t('seo.404')}>
   <main
     id="main-content"
     class="mx-auto flex min-h-[80vh] max-w-2xl flex-col items-center justify-center px-6 text-center"
@@ -32,7 +35,7 @@ import { Icon } from 'astro-icon/components';
         class="flex items-center gap-2 rounded-md border border-zinc-200 px-6 py-2 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-900"
       >
         <Icon name="lucide:arrow-left" class="size-4" />
-        <span>Home</span>
+        <span>{t('404.return')}</span>
       </a>
     </div>
   </main>

@@ -5,16 +5,17 @@ import Hero from '../../components/home/Hero.astro';
 import ProjectsSection from '../../components/home/ProjectsSection.astro';
 import Footer from '../../components/ui/Footer.astro';
 import { dictionary, getValidLanguageCode } from '../../i18n/dictionary';
+import { useTranslations } from '../../i18n/utils';
 
 export function getStaticPaths() {
   return Object.keys(dictionary).map(lang => ({ params: { lang } }));
 }
 
 const currentLang = getValidLanguageCode(Astro.params.lang);
-const seoTitle = 'Anna Zezulka';
+const t = useTranslations(currentLang);
 ---
 
-<Layout title={seoTitle} lang={currentLang}>
+<Layout title={t('seo.home')} lang={currentLang}>
   <LanguagePicker />
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-32 px-6 py-32">

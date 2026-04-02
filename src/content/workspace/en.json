@@ -1,0 +1,53 @@
+{
+  "lang": "en",
+  "title": "Inventory",
+  "intro": "Setup I use every day on the go.",
+  "categories": [
+    {
+      "category": "Hardware",
+      "label": "Hardware",
+      "items": [
+        {
+          "name": "Framework Laptop 13",
+          "description": "Notebook I use for everything - work, study, entertainment, communication, and other stuff."
+        },
+        {
+          "name": "Google Pixel 8a",
+          "description": "Phone compatible with the GrapheneOS project."
+        }
+      ]
+    },
+    {
+      "category": "Editor",
+      "label": "Editor",
+      "items": [
+        {
+          "name": "Visual Studio Code",
+          "description": "IDE with an emphasis on customizability and efficiency.",
+          "link": "https://code.visualstudio.com/"
+        }
+      ]
+    },
+    {
+      "category": "Software",
+      "label": "Software",
+      "items": [
+        {
+          "name": "Fedora Linux",
+          "description": "Linux distribution backed by community and up-to-date technology.",
+          "link": "https://fedoraproject.org/"
+        },
+        {
+          "name": "GrapheneOS",
+          "description": "Minimalistic hardened system that makes me feel more mindful of digital device usage.",
+          "link": "https://grapheneos.org/"
+        },
+        {
+          "name": "Firefox",
+          "description": "Primary browser for development, profiling, and accessibility checks.",
+          "link": "https://www.mozilla.org/firefox/"
+        }
+      ]
+    }
+  ]
+}

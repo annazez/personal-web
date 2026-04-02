@@ -1,15 +1,26 @@
 ---
-import { SEO } from 'astro-seo';
 import '../styles/global.css';
 import { languages } from '../i18n/dictionary';
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
   lang?: string;
+  noIndex?: boolean;
 }
 
-const { title, description = 'Anna Zezulka', lang = 'en' } = Astro.props;
+const { title, description = 'Anna Zezulka', lang = 'en', noIndex = false } = Astro.props;
+const siteName = 'Anna Zezulka';
+
+const normalizedTitle = title?.trim();
+const isAbsoluteRoot = Astro.url.pathname === '/';
+const pageTitle = normalizedTitle
+  ? normalizedTitle.includes(siteName)
+    ? normalizedTitle
+    : `${normalizedTitle} | ${siteName}`
+  : isAbsoluteRoot
+    ? siteName
+    : siteName;
 
 const langKeys = Object.keys(languages).join('|');
 const langRegex = new RegExp(`^/(${langKeys})`);
@@ -45,17 +56,14 @@ const siteUrl = Astro.site ?? Astro.url;
         document.documentElement.style.colorScheme = 'light';
       }
     </script>
-    <SEO
-      title={title}
-      description={description}
-      openGraph={{
-        basic: {
-          title: title,
-          type: 'website',
-          image: '/og-image.jpg',
-        },
-      }}
-    />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.jpg" />
+    {noIndex && <meta name="robots" content="noindex" />}
+    <slot name="head" />
     <link
       rel="preload"
       href="/fonts/AdwaitaSans-Regular.ttf"
