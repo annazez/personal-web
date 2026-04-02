@@ -44,19 +44,17 @@ describe('i18n utils', () => {
 
     it('should fallback to default language if translation is missing in the target dictionary', () => {
       const t = useTranslations('cs');
+      const testKey = 'seo.home' as const;
+      const originalCsValue = dictionary.cs[testKey];
 
-      const testKey = 'non.existent.key' as unknown as keyof typeof dictionary.en;
+      delete (dictionary.cs as Partial<typeof dictionary.cs>)[testKey];
 
-      // @ts-expect-error - simulating a missing key for fallback
-      dictionary[defaultLang][testKey] = 'Fallback Value';
-
-      // @ts-expect-error - verifying missing key
-      assert.strictEqual(dictionary['cs'][testKey], undefined);
-
-      assert.strictEqual(t(testKey), 'Fallback Value');
-
-      // @ts-expect-error - cleanup
-      delete dictionary[defaultLang][testKey];
+      try {
+        assert.strictEqual(dictionary.cs[testKey], undefined);
+        assert.strictEqual(t(testKey), dictionary[defaultLang][testKey]);
+      } finally {
+        dictionary.cs[testKey] = originalCsValue;
+      }
     });
   });
 });
