@@ -2,6 +2,12 @@ when:
   - event: [push, pull_request]
 
 steps:
+  security-audit:
+    image: node:22-alpine
+    commands:
+      - npm ci
+      - npm audit --audit-level=high
+
   verify:
     image: node:22-alpine
     commands:
