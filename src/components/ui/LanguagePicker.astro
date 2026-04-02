@@ -8,7 +8,7 @@ const langEntries = Object.entries(languages);
 ---
 
 <nav class="absolute top-8 right-8 flex items-center gap-4">
-  <div class="flex gap-4 font-mono text-xs tracking-widest uppercase">
+  <div class="home-micro-label flex gap-4">
     {
       langEntries.map(([code, label], index) => (
         <>
@@ -17,8 +17,8 @@ const langEntries = Object.entries(languages);
             data-lang-link="true"
             class={
               currentLang === code
-                ? 'font-medium text-zinc-900 dark:text-zinc-100'
-                : 'text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100'
+                ? 'text-zinc-900 dark:text-zinc-100'
+                : 'text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100'
             }
           >
             {label}

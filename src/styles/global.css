@@ -2,11 +2,21 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@font-face {
+  font-family: 'Adwaita Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Adwaita Sans'),
+    url('/fonts/AdwaitaSans-Regular.ttf') format('truetype');
+}
+
 @layer base {
   :root {
     /* Variable font names with fallback families. */
-    --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
+    --font-sans: 'Adwaita Sans', 'Cantarell', system-ui, -apple-system, sans-serif;
+    --default-mono-font-family: var(--font-sans);
 
     /* Light mode colors */
     --color-brand: #18181b;
@@ -14,6 +24,9 @@
     --color-dot: #e4e4e7;
     --color-accent: #3b82f6;
     --color-border: #e4e4e7;
+    --color-text-secondary: #52525b;
+    --color-text-muted: #71717a;
+    --color-text-strong: #27272a;
   }
 
   html.dark {
@@ -22,6 +35,9 @@
     --color-dot: #27272a;
     --color-accent: #60a5fa;
     --color-border: #27272a;
+    --color-text-secondary: #a1a1aa;
+    --color-text-muted: #71717a;
+    --color-text-strong: #e4e4e7;
   }
 
   html {
@@ -102,7 +118,7 @@
 
   @media print {
     body {
-      font-family: var(--font-mono) !important;
+      font-family: var(--font-sans) !important;
       background: white !important;
       color: black !important;
     }
@@ -145,6 +161,99 @@
 }
 
 @layer components {
+  /* Homepage typography roles to keep hierarchy calm and consistent. */
+  .home-display-title {
+    color: var(--color-brand);
+    font-size: 2.25rem;
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+
+  .home-section-title {
+    color: var(--color-brand);
+    font-size: 1.75rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .home-card-title {
+    color: var(--color-brand);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .home-body-text {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  .home-inline-strong {
+    color: var(--color-text-strong);
+    font-weight: 500;
+  }
+
+  .home-subtle-text {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .home-micro-label {
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .home-micro-copy {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .home-social-links {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .home-social-links a {
+    transition: color 150ms ease;
+  }
+
+  .home-social-links a:hover {
+    color: var(--color-brand);
+  }
+
+  .home-tag-text {
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .home-action-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  @media (min-width: 640px) {
+    .home-display-title {
+      font-size: 3rem;
+    }
+
+    .home-section-title {
+      font-size: 2rem;
+    }
+  }
+
   /* Scroll animation utilities */
   .fade-in {
     opacity: 0;
@@ -269,7 +378,7 @@ html:has(#audit:target) [aria-label]::after {
   position: absolute;
   background: #f43f5e; /* Tailwind rose-500 */
   color: white !important;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.65rem;
   padding: 0.1rem 0.3rem;
   border-radius: 0.25rem;

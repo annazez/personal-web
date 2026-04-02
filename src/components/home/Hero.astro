@@ -7,29 +7,29 @@ const t = useTranslations(lang);
 
 <div class="flex flex-col gap-16">
   <header class="flex flex-col gap-4">
-    <h1 class="text-4xl font-light tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-50">
+    <h1 class="home-display-title">
       Anna Zezulka
     </h1>
-    <p class="font-mono text-sm tracking-widest text-zinc-600 uppercase dark:text-zinc-400">
+    <p class="home-micro-label">
       {t('role.title')}
     </p>
   </header>
-  <section class="space-y-6 leading-relaxed text-zinc-600 dark:text-zinc-400">
+  <section class="home-body-text space-y-6">
     <p>{t('hero.manifesto')}</p>
     <p>
       {t('hero.status')}
-      <span class="font-medium text-zinc-900 dark:text-zinc-100">{t('hero.layer')}</span>
+      <span class="home-inline-strong">{t('hero.layer')}</span>
       {t('hero.layerSuffix')}
     </p>
   </section>
 
-  <ul class="flex gap-6 font-mono text-sm text-zinc-500">
+  <ul class="home-social-links flex gap-6">
     <li>
       <a
         href="https://www.linkedin.com/in/anna-zezulka-8956b9384"
         target="_blank"
         rel="me noopener noreferrer"
-        class="flex items-center gap-2 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+        class="flex items-center gap-2"
       >
         <Icon name="lucide:linkedin" class="size-5" />
         <span>LinkedIn</span>
@@ -40,7 +40,7 @@ const t = useTranslations(lang);
         href="https://github.com/annazez"
         target="_blank"
         rel="me noopener noreferrer"
-        class="flex items-center gap-2 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+        class="flex items-center gap-2"
       >
         <Icon name="lucide:github" class="size-5" />
         <span>GitHub</span>
@@ -49,7 +49,7 @@ const t = useTranslations(lang);
     <li>
       <a
         href="mailto:anna.zezulka@proton.me"
-        class="flex items-center gap-2 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+        class="flex items-center gap-2"
       >
         <Icon name="lucide:mail" class="size-5" />
         <span>Email</span>
