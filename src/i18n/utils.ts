@@ -1,4 +1,5 @@
 import { dictionary, defaultLang, type LanguageCode, type TranslationKey } from './dictionary';
+import { isLanguageCode } from './dictionary';
 
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split('/');

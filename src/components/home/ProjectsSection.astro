@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import ProjectCard from './ProjectCard.astro';
+import type { LanguageCode } from '../../i18n/dictionary';
 
 interface Project {
   title: string;
@@ -10,7 +11,7 @@ interface Project {
   image?: string;
 }
 
-const lang = getLangFromUrl(Astro.url);
+const lang = getLangFromUrl(Astro.url) as LanguageCode;
 const t = useTranslations(lang);
 
 const projects: Project[] = [

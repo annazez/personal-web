@@ -87,19 +87,30 @@ function getLocalizedHref(targetLang: LanguageCode): string {
     animation.addEventListener('finish', () => overlay.remove(), { once: true });
   }
 
-  document.querySelectorAll<HTMLAnchorElement>('a[data-lang-link="true"]').forEach(link => {
-    link.addEventListener('click', event => {
-      const href = link.getAttribute('href');
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLAnchorElement>('a[data-lang-link="true"]').forEach(link => {
+      link.addEventListener('click', event => {
+        const href = link.getAttribute('href');
 
-      if (!href || link.pathname === window.location.pathname) {
-        return;
-      }
+        if (!href || link.pathname === window.location.pathname) {
+          return;
+        }
 
-      event.preventDefault();
-      showLanguageSwitchOverlay();
-      window.setTimeout(() => {
-        window.location.href = href;
-      }, 80);
+        try {
+          const url = new URL(href, window.location.origin);
+          if (url.origin !== window.location.origin) {
+            return;
+          }
+        } catch {
+          return;
+        }
+
+        event.preventDefault();
+        showLanguageSwitchOverlay();
+        window.setTimeout(() => {
+          window.location.href = href;
+        }, 80);
+      });
     });
   });
 </script>

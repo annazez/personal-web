@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
+import type { LanguageCode } from '../../i18n/dictionary';
 
 interface Props {
   title: string;
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const { title, tags, repo, website, image } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
+const lang = getLangFromUrl(Astro.url) as LanguageCode;
 const t = useTranslations(lang);
 ---
 
