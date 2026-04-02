@@ -14,17 +14,10 @@ const updateCarbonFootprint = () => {
   const getSize = (entry: PerformanceEntry | null) => {
     if (!entry) return 0;
 
-    if (
-      'transferSize' in entry &&
-      'encodedBodySize' in entry &&
-      'decodedBodySize' in entry
-    ) {
+    if ('transferSize' in entry && 'encodedBodySize' in entry && 'decodedBodySize' in entry) {
       const timingEntry = entry as PerformanceResourceTiming;
       return (
-        timingEntry.transferSize ||
-        timingEntry.encodedBodySize ||
-        timingEntry.decodedBodySize ||
-        0
+        timingEntry.transferSize || timingEntry.encodedBodySize || timingEntry.decodedBodySize || 0
       );
     }
     return 0;
