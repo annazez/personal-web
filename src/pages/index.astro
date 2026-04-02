@@ -12,6 +12,8 @@ const langEntries = Object.entries(languages);
   <Fragment slot="head">
     <meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
     <link rel="canonical" href={canonicalEn} />
+    <meta name="supported-langs" content={Object.keys(languages).join(',')} />
+    <meta name="default-lang" content={defaultLang} />
   </Fragment>
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-4 px-6 py-16">

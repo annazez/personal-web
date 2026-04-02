@@ -37,8 +37,9 @@ const siteUrl = Astro.site ?? Astro.url;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'sha256-OVhk/f/mfTM1dgnPcPK/gEx3VS+RFXqpWHAfIHZScXA=' 'sha256-In0vSEX5Tvt/QxQDMj4fkAfnRyo7fTjYLgA1CZKCz3Q='; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
+      content="default-src 'self'; script-src 'self' 'sha256-OVhk/f/mfTM1dgnPcPK/gEx3VS+RFXqpWHAfIHZScXA=' 'sha256-In0vSEX5Tvt/QxQDMj4fkAfnRyo7fTjYLgA1CZKCz3Q='; style-src 'self'; style-src-elem 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
     />
+    <link rel="preload" href="/theme-init.js" as="script" />
     <ClientRouter />
     <script is:inline src="/theme-init.js"></script>
     <title>{pageTitle}</title>

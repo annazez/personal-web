@@ -54,11 +54,9 @@ const t = useTranslations(lang);
     >
   </p>
 
-  <script is:inline>
-    (() => {
-      const valueElement = document.getElementById('carbon-footprint-value');
-      if (!valueElement) return;
-
+  <script>
+    const valueElement = document.getElementById('carbon-footprint-value');
+    if (valueElement) {
       const loadingText = valueElement.getAttribute('data-loading') || '...';
       valueElement.textContent = loadingText;
 
@@ -67,9 +65,10 @@ const t = useTranslations(lang);
         const navigationEntry = navigationEntries.length > 0 ? navigationEntries[0] : null;
         const resources = performance.getEntriesByType('resource');
 
-        const getSize = entry => {
+        const getSize = (entry: PerformanceEntry | null) => {
           if (!entry) return 0;
-          return entry.transferSize || entry.encodedBodySize || entry.decodedBodySize || 0;
+          const e = entry as PerformanceResourceTiming;
+          return e.transferSize || e.encodedBodySize || e.decodedBodySize || 0;
         };
 
         const navigationSize = getSize(navigationEntry);
@@ -87,7 +86,7 @@ const t = useTranslations(lang);
         // SWD v4 model: 0.81 kWh/GB * 494 gCO2e/kWh = ~400g CO2e per GB (4.0e-7 g per byte)
         const gramsCo2 = totalSize * 4.0e-7;
 
-        const formatCarbonFootprint = value => {
+        const formatCarbonFootprint = (value: number) => {
           if (value >= 0.01) {
             return `${value.toFixed(2)} g CO₂e`;
           }
@@ -111,6 +110,6 @@ const t = useTranslations(lang);
           once: true,
         });
       }
-    })();
+    }
   </script>
 </footer>
