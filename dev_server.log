@@ -1,0 +1,19 @@
+
+> personal-web@1.0.0 dev
+> astro dev
+
+[vite] connected.
+21:03:31 [types] Generated 1ms
+[vite] connected.
+21:03:32 [content] Syncing content
+21:03:32 [content] Astro config changed
+21:03:32 [content] Clearing content store
+21:03:32 [content] Synced content
+21:03:32 [vite] Re-optimizing dependencies because vite config has changed
+ astro  v6.1.1 ready in 2957 ms
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+21:03:32 watching for file changes...
+21:04:00 [200] /en/ 52ms
+21:04:01 [vite] ✨ new dependencies optimized: astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-types.js, astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-swap-functions.js, astro/runtime/client/dev-toolbar/entrypoint.js
+21:04:01 [vite] ✨ optimized dependencies changed. reloading
