@@ -130,8 +130,12 @@
   }
 
   @media print {
+    @page {
+      margin: 2cm;
+    }
+
     body {
-      font-family: var(--font-sans) !important;
+      font-family: var(--font-mono) !important;
       background: white !important;
       color: black !important;
     }
@@ -149,8 +153,18 @@
 
     nav,
     #theme-toggle,
-    .skip-link {
+    .skip-link,
+    svg,
+    #carbon-footprint-value,
+    .language-picker {
       display: none !important;
+    }
+
+    section,
+    article,
+    li {
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
 
     article {
@@ -161,9 +175,9 @@
     }
 
     a::after {
-      content: ' (' attr(href) ')';
+      content: ' [REF: ' attr(href) ']';
       font-size: 0.8em;
-      color: #52525b;
+      color: black;
       margin-left: 0.25rem;
     }
 
