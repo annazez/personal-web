@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-import { supportedLangs } from '../i18n/dictionary';
+import { langPrefixRegex, supportedLangs } from '../i18n/dictionary';
 
 interface Props {
   title?: string;
@@ -23,8 +23,6 @@ const pageTitle = normalizedTitle
     ? siteName
     : siteName;
 
-const langKeys = supportedLangs.join('|');
-const langRegex = new RegExp(`^/(${langKeys})`);
 const pathname = Astro.url.pathname;
 // langPrefixRegex matches either `/en/` or `/en` (at string end)
 // To cleanly remove the language prefix from the path, we can strip the matching prefix
@@ -46,6 +44,7 @@ const siteUrl = Astro.site ?? Astro.url;
     <ClientRouter />
     <script is:inline>
       const root = document.documentElement;
+      const themeWindow = window;
 
       const platform = (() => {
         const ua = navigator.userAgent.toLowerCase();
@@ -68,7 +67,7 @@ const siteUrl = Astro.site ?? Astro.url;
 
       root.classList.add(`platform-${platform}`);
 
-      const theme = (() => {
+      const getPreferredTheme = () => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
           return localStorage.getItem('theme');
         }
@@ -76,13 +75,25 @@ const siteUrl = Astro.site ?? Astro.url;
           return 'dark';
         }
         return 'light';
-      })();
-      if (theme === 'dark') {
-        root.classList.add('dark');
-        root.style.colorScheme = 'dark';
-      } else {
-        root.classList.remove('dark');
-        root.style.colorScheme = 'light';
+      };
+
+      const applyPreferredTheme = () => {
+        const theme = getPreferredTheme();
+        if (theme === 'dark') {
+          root.classList.add('dark');
+          root.style.colorScheme = 'dark';
+        } else {
+          root.classList.remove('dark');
+          root.style.colorScheme = 'light';
+        }
+      };
+
+      applyPreferredTheme();
+
+      // Astro view transitions can swap DOM state; re-apply persisted theme right after swap.
+      if (!themeWindow.__themeAfterSwapBound) {
+        document.addEventListener('astro:after-swap', applyPreferredTheme);
+        themeWindow.__themeAfterSwapBound = true;
       }
     </script>
     <title>{pageTitle}</title>

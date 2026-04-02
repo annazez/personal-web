@@ -19,3 +19,18 @@ test('404 page has recovery links', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'English' })).toBeVisible();
   await expect(page.getByRole('link', { name: /Domu|Domů|Home/i })).toBeVisible();
 });
+
+test('preserves dark mode and toggle behavior after navigating to inventory', async ({ page }) => {
+  const root = page.locator('html');
+
+  await page.goto('/en/');
+  await page.getByRole('button', { name: /toggle dark mode/i }).click();
+  await expect(root).toHaveClass(/dark/);
+
+  await page.getByRole('link', { name: 'Inventory' }).click();
+  await expect(page).toHaveURL(/\/en\/inventory$/);
+  await expect(root).toHaveClass(/dark/);
+
+  await page.getByRole('button', { name: /toggle dark mode/i }).click();
+  await expect(root).not.toHaveClass(/dark/);
+});

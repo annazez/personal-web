@@ -12,18 +12,26 @@ import { Icon } from 'astro-icon/components';
 </button>
 
 <script>
-  const themeToggle = document.getElementById('theme-toggle');
-  const sunIcon = document.getElementById('sun-icon');
-  const moonIcon = document.getElementById('moon-icon');
+  const themeWindow = window as Window & {
+    __themePageLoadBound?: boolean;
+    __themeSyncBound?: boolean;
+  };
+  const prefersDarkMedia = window.matchMedia('(prefers-color-scheme: dark)');
 
-  // Check for saved theme preference or default to light mode
-  const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+  function getPreferredTheme(): 'light' | 'dark' {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      return savedTheme;
+    }
+    return prefersDarkMedia.matches ? 'dark' : 'light';
+  }
 
-  // Apply theme and optionally animate transition
+  // Apply theme and sync icon state for the current page DOM.
   function applyTheme(theme: 'light' | 'dark') {
     const html = document.documentElement;
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+
     if (theme === 'dark') {
       html.classList.add('dark');
       html.style.colorScheme = 'dark';
@@ -55,28 +63,48 @@ import { Icon } from 'astro-icon/components';
     });
   }
 
-  applyTheme(initialTheme as 'light' | 'dark');
-
-  // Handle theme toggle
-  themeToggle?.addEventListener('click', () => {
-    toggleTheme();
-  });
-
-  // Listen for system theme changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', async e => {
-    const newTheme = (e.matches ? 'dark' : 'light') as 'light' | 'dark';
-    localStorage.removeItem('theme'); // Clear saved preference to follow system
-    applyTheme(newTheme);
-  });
-
-  // Keep theme in sync across tabs/windows and animate there too
-  window.addEventListener('storage', async e => {
-    if (e.key !== 'theme') {
+  function bindThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle || themeToggle.dataset.bound === 'true') {
       return;
     }
 
-    const prefersDarkNow = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const syncedTheme = (e.newValue || (prefersDarkNow ? 'dark' : 'light')) as 'light' | 'dark';
-    applyTheme(syncedTheme);
-  });
+    themeToggle.dataset.bound = 'true';
+    themeToggle.addEventListener('click', () => {
+      toggleTheme();
+    });
+  }
+
+  function initThemeUI() {
+    applyTheme(getPreferredTheme());
+    bindThemeToggle();
+  }
+
+  initThemeUI();
+  if (!themeWindow.__themePageLoadBound) {
+    document.addEventListener('astro:page-load', initThemeUI);
+    themeWindow.__themePageLoadBound = true;
+  }
+
+  // Listen for system theme changes
+  if (!themeWindow.__themeSyncBound) {
+    prefersDarkMedia.addEventListener('change', e => {
+      const newTheme = (e.matches ? 'dark' : 'light') as 'light' | 'dark';
+      localStorage.removeItem('theme'); // Clear saved preference to follow system
+      applyTheme(newTheme);
+    });
+
+    // Keep theme in sync across tabs/windows and animate there too
+    window.addEventListener('storage', e => {
+      if (e.key !== 'theme') {
+        return;
+      }
+
+      const prefersDarkNow = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const syncedTheme = (e.newValue || (prefersDarkNow ? 'dark' : 'light')) as 'light' | 'dark';
+      applyTheme(syncedTheme);
+    });
+
+    themeWindow.__themeSyncBound = true;
+  }
 </script>

@@ -1,9 +1,9 @@
 import {
   dictionary,
   defaultLang,
+  langPrefixRegex,
   type LanguageCode,
   type TranslationKey,
-  isLanguageCode,
 } from './dictionary';
 
 export function getLangFromUrl(url: URL) {
