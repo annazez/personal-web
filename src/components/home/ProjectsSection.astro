@@ -4,7 +4,6 @@ import ProjectCard from './ProjectCard.astro';
 
 interface Project {
   title: string;
-  description: string;
   tags: string[];
   repo?: string;
   website?: string;
@@ -17,14 +16,12 @@ const t = useTranslations(lang);
 const projects: Project[] = [
   {
     title: 'Telperion Web',
-    description: t('projects.telperion.description'),
     tags: ['Astro', 'React', 'Tailwind', 'TypeScript', 'i18n'],
     website: 'https://telperion.cz',
     repo: 'https://github.com/annazez/telperion-web',
   },
   {
     title: 'Personal Web',
-    description: t('projects.personalWeb.description'),
     tags: ['Astro', 'Tailwind', 'SSG', 'Minimal'],
     repo: 'https://codeberg.org/annazez/personal-web',
   },
@@ -33,7 +30,7 @@ const projects: Project[] = [
 
 <section class="flex flex-col gap-6">
   <header class="flex flex-col gap-2">
-    <h2 class="home-section-title">
+    <h2 class="home-section-title font-medium">
       {t('projects.title')}
     </h2>
     <p class="home-subtle-text">
