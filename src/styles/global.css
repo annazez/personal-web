@@ -26,8 +26,9 @@
   }
 
   html.platform-apple {
-    --font-sans: 'SF Pro Text', 'SF Pro Display', 'San Francisco', -apple-system,
-      BlinkMacSystemFont, system-ui, sans-serif;
+    --font-sans:
+      'SF Pro Text', 'SF Pro Display', 'San Francisco', -apple-system, BlinkMacSystemFont,
+      system-ui, sans-serif;
     --font-mono: 'SF Mono', Menlo, Monaco, ui-monospace, monospace;
   }
 

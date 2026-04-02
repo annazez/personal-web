@@ -47,7 +47,11 @@ const siteUrl = Astro.site ?? Astro.url;
         const fingerprint = `${platformName} ${ua}`;
 
         if (fingerprint.includes('android')) return 'android';
-        if (fingerprint.includes('iphone') || fingerprint.includes('ipad') || fingerprint.includes('ipod')) {
+        if (
+          fingerprint.includes('iphone') ||
+          fingerprint.includes('ipad') ||
+          fingerprint.includes('ipod')
+        ) {
           return 'apple';
         }
         if (fingerprint.includes('mac')) return 'apple';

@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+echo "pre-push: running Prettier..."
+npm run --silent format
+
+if ! git diff --quiet || ! git diff --cached --quiet; then
+  echo "pre-push: formatting changes were made."
+  echo "pre-push: commit the changes, then run git push again."
+  git status --short
+  exit 1
+fi
