@@ -1,1 +1,1 @@
-/// <reference path="./types/fontsource.d.ts" />
+import './types/fontsource';
