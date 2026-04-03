@@ -12,3 +12,4 @@ steps:
     when:
       - event: cron
         cron: renovate_bot
+        branch: main
