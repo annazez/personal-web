@@ -1,6 +1,6 @@
 # Personal Website
 
-A fast, static personal website built with Astro, Tailwind CSS, and self-hosted variable fonts via @fontsource-variable for privacy and performance.
+A fast, static personal website built with Astro and Tailwind CSS.
 
 > ⚠️ **Repository Notice**
 > This repository is actively maintained on [Codeberg](https://codeberg.org/annazez/pages). The GitHub repository is an automated, read-only mirror. Please direct any issues or development matters to the Codeberg repository.
