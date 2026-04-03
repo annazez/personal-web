@@ -15,22 +15,22 @@ Security is a structural requirement, not a feature. This site enforces security
 
 ### Assets to Protect
 
-| Asset | Sensitivity | Protection |
-|-------|-------------|------------|
-| Deploy credentials | Critical | CI secrets only |
-| PGP private key | Critical | Never committed |
-| User privacy | High | No tracking, no data collection |
-| Code integrity | High | Signed commits, verified CI |
+| Asset              | Sensitivity | Protection                      |
+| ------------------ | ----------- | ------------------------------- |
+| Deploy credentials | Critical    | CI secrets only                 |
+| PGP private key    | Critical    | Never committed                 |
+| User privacy       | High        | No tracking, no data collection |
+| Code integrity     | High        | Signed commits, verified CI     |
 
 ### Attack Vectors Mitigated
 
-| Vector | Mitigation |
-|--------|------------|
-| XSS | Strict CSP, no user input, no external scripts |
-| Supply chain | Minimal deps, Renovate automation, npm audit |
-| Data leakage | No analytics, no third-party requests |
-| MITM | HTTPS enforcement, CSP `default-src 'self'` |
-| Information disclosure | No error messages, no stack traces |
+| Vector                 | Mitigation                                     |
+| ---------------------- | ---------------------------------------------- |
+| XSS                    | Strict CSP, no user input, no external scripts |
+| Supply chain           | Minimal deps, Renovate automation, npm audit   |
+| Data leakage           | No analytics, no third-party requests          |
+| MITM                   | HTTPS enforcement, CSP `default-src 'self'`    |
+| Information disclosure | No error messages, no stack traces             |
 
 ---
 
@@ -49,13 +49,13 @@ connect-src 'self'
 
 ### Rationale
 
-| Directive | Value | Justification |
-|-----------|-------|---------------|
-| `script-src 'unsafe-inline'` | Required | Astro theme script (inline, before first paint) |
-| `style-src 'unsafe-inline'` | Required | Tailwind utilities + CSS custom properties |
-| `img-src data:` | Required | Inline SVG support |
-| `font-src data:` | Defensive | System fonts only; no external font loads |
-| `connect-src 'self'` | Strict | No external XHR/fetch allowed |
+| Directive                    | Value     | Justification                                   |
+| ---------------------------- | --------- | ----------------------------------------------- |
+| `script-src 'unsafe-inline'` | Required  | Astro theme script (inline, before first paint) |
+| `style-src 'unsafe-inline'`  | Required  | Tailwind utilities + CSS custom properties      |
+| `img-src data:`              | Required  | Inline SVG support                              |
+| `font-src data:`             | Defensive | System fonts only; no external font loads       |
+| `connect-src 'self'`         | Strict    | No external XHR/fetch allowed                   |
 
 ### Violations = Build Failures
 
@@ -67,28 +67,28 @@ Any CSP violation in CI testing blocks deployment.
 
 ### Automated Controls
 
-| Control | Tool | Frequency |
-|---------|------|-----------|
-| Vulnerability scan | `npm audit` | Every CI run |
-| Safe updates | Renovate Bot | Continuous |
-| Lock file verification | npm | Every install |
+| Control                | Tool         | Frequency     |
+| ---------------------- | ------------ | ------------- |
+| Vulnerability scan     | `npm audit`  | Every CI run  |
+| Safe updates           | Renovate Bot | Continuous    |
+| Lock file verification | npm          | Every install |
 
 ### Dependency Rules
 
-| Rule | Enforcement |
-|------|-------------|
-| No runtime analytics | Manifesto requirement |
-| No external CDNs | CSP enforcement |
-| Minimal surface | Code review + AI validation |
-| Auto-merge safe updates | Renovate configuration |
+| Rule                    | Enforcement                 |
+| ----------------------- | --------------------------- |
+| No runtime analytics    | Manifesto requirement       |
+| No external CDNs        | CSP enforcement             |
+| Minimal surface         | Code review + AI validation |
+| Auto-merge safe updates | Renovate configuration      |
 
 ### Audit Levels
 
-| Level | CI Behavior |
-|-------|-------------|
-| `low` | Warning only |
-| `moderate` | Warning only |
-| `high` | **BUILD FAILS** |
+| Level      | CI Behavior     |
+| ---------- | --------------- |
+| `low`      | Warning only    |
+| `moderate` | Warning only    |
+| `high`     | **BUILD FAILS** |
 | `critical` | **BUILD FAILS** |
 
 ---
@@ -100,6 +100,7 @@ Any CSP violation in CI testing blocks deployment.
 **Location**: `public/.well-known/security.txt`
 
 **Fields**:
+
 ```
 Contact: mailto:anna.zezulka@proton.me
 Encryption: /pgp/public-key.asc
@@ -109,10 +110,10 @@ Expires: [ISO 8601 date]
 
 ### PGP Key Management
 
-| File | Content |
-|------|---------|
-| `public/pgp/public-key.asc` | Armored public key |
-| `~/.gnupg/` (local) | Private key (NEVER committed) |
+| File                        | Content                       |
+| --------------------------- | ----------------------------- |
+| `public/pgp/public-key.asc` | Armored public key            |
+| `~/.gnupg/` (local)         | Private key (NEVER committed) |
 
 ### Rotation Procedure
 
@@ -135,14 +136,14 @@ git push
 
 ### What This Site Does NOT Collect
 
-| Data Type | Status |
-|-----------|--------|
-| Analytics | None |
-| Cookies (third-party) | None |
-| User tracking | None |
-| Form submissions | None |
-| Session data | None |
-| IP logging | None |
+| Data Type             | Status |
+| --------------------- | ------ |
+| Analytics             | None   |
+| Cookies (third-party) | None   |
+| User tracking         | None   |
+| Form submissions      | None   |
+| Session data          | None   |
+| IP logging            | None   |
 
 ### Theme Storage
 
@@ -166,12 +167,12 @@ steps:
 
 ### Failure Conditions
 
-| Condition | Result |
-|-----------|--------|
+| Condition                   | Result         |
+| --------------------------- | -------------- |
 | High/critical vulnerability | Pipeline fails |
-| CSP violation in tests | Pipeline fails |
-| Missing typecheck | Pipeline fails |
-| Build failure | Pipeline fails |
+| CSP violation in tests      | Pipeline fails |
+| Missing typecheck           | Pipeline fails |
+| Build failure               | Pipeline fails |
 
 ---
 
@@ -211,8 +212,8 @@ Before any deployment:
 
 ## Compliance Notes
 
-| Standard | Status |
-|----------|--------|
-| GDPR | Compliant (no data collection) |
-| CCPA | Compliant (no data sale) |
-| ePrivacy | Compliant (no cookies) |
+| Standard | Status                         |
+| -------- | ------------------------------ |
+| GDPR     | Compliant (no data collection) |
+| CCPA     | Compliant (no data sale)       |
+| ePrivacy | Compliant (no cookies)         |

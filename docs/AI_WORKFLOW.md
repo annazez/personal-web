@@ -8,15 +8,15 @@ This document structures project context for AI coding agents to parse efficient
 
 ## Project Identity
 
-| Attribute | Value |
-|-----------|-------|
-| Name | Anna Zezulka Personal Web |
-| Type | Static site (Astro) |
-| Domain | Professional identity + technical inventory |
-| Languages | English (en), Czech (cs) |
-| Deployment | Codeberg Pages (`pages` branch) |
-| Build Output | `dist/` |
-| Styling | Tailwind CSS v4 (native CSS imports) |
+| Attribute    | Value                                       |
+| ------------ | ------------------------------------------- |
+| Name         | Anna Zezulka Personal Web                   |
+| Type         | Static site (Astro)                         |
+| Domain       | Professional identity + technical inventory |
+| Languages    | English (en), Czech (cs)                    |
+| Deployment   | Codeberg Pages (`pages` branch)             |
+| Build Output | `dist/`                                     |
+| Styling      | Tailwind CSS v4 (native CSS imports)        |
 
 ---
 
@@ -24,29 +24,29 @@ This document structures project context for AI coding agents to parse efficient
 
 ### Security
 
-| Rule | Enforcement |
-|------|-------------|
-| No secrets in source | CI audit blocks commits |
-| No third-party analytics | Manifesto requirement |
-| No ad-tech integrations | Manifesto requirement |
+| Rule                         | Enforcement                       |
+| ---------------------------- | --------------------------------- |
+| No secrets in source         | CI audit blocks commits           |
+| No third-party analytics     | Manifesto requirement             |
+| No ad-tech integrations      | Manifesto requirement             |
 | PGP key for security contact | `public/.well-known/security.txt` |
 
 ### Performance
 
-| Rule | Limit |
-|------|-------|
+| Rule       | Limit                                   |
+| ---------- | --------------------------------------- |
 | JavaScript | Zero-runtime unless feature requires it |
-| Webfonts | Forbidden — system fonts only |
-| CSS | Tailwind utilities + minimal custom |
-| Lighthouse | 100/100/100/100 target |
+| Webfonts   | Forbidden — system fonts only           |
+| CSS        | Tailwind utilities + minimal custom     |
+| Lighthouse | 100/100/100/100 target                  |
 
 ### Architecture
 
-| Rule | Rationale |
-|------|-----------|
-| No client frameworks | Reduces complexity and attack surface |
+| Rule                       | Rationale                                                               |
+| -------------------------- | ----------------------------------------------------------------------- |
+| No client frameworks       | Reduces complexity and attack surface                                   |
 | Zero-JS features preferred | `:has()`, `:target`, CSS variables enable functionality without runtime |
-| i18n at build time | Static generation, no runtime language detection |
+| i18n at build time         | Static generation, no runtime language detection                        |
 
 ---
 
@@ -54,30 +54,30 @@ This document structures project context for AI coding agents to parse efficient
 
 ### Writing Code
 
-| Do | Don't |
-|----|-------|
-| Small, focused patches | Large refactors without approval |
-| English in source files | Comments in other languages |
-| Preserve minimalist UI | Add visual complexity |
-| Use existing typography classes | Create new `text-*` utilities |
-| Zero-JS solutions first | Add JavaScript for visual effects |
+| Do                              | Don't                             |
+| ------------------------------- | --------------------------------- |
+| Small, focused patches          | Large refactors without approval  |
+| English in source files         | Comments in other languages       |
+| Preserve minimalist UI          | Add visual complexity             |
+| Use existing typography classes | Create new `text-*` utilities     |
+| Zero-JS solutions first         | Add JavaScript for visual effects |
 
 ### File Operations
 
-| Action | Rule |
-|--------|------|
+| Action       | Rule                                       |
+| ------------ | ------------------------------------------ |
 | Create files | Only when no existing file can be modified |
-| Edit files | Preserve existing structure and patterns |
-| Delete files | Only unused files (verify with grep) |
-| Move files | Only with explicit user instruction |
+| Edit files   | Preserve existing structure and patterns   |
+| Delete files | Only unused files (verify with grep)       |
+| Move files   | Only with explicit user instruction        |
 
 ### Dependency Changes
 
-| Change | Requirement |
-|--------|-------------|
-| Add package | Justify necessity; prefer no-dependency solution |
-| Update package | Let Renovate handle automatically |
-| Remove package | Verify no remaining imports |
+| Change         | Requirement                                      |
+| -------------- | ------------------------------------------------ |
+| Add package    | Justify necessity; prefer no-dependency solution |
+| Update package | Let Renovate handle automatically                |
+| Remove package | Verify no remaining imports                      |
 
 ---
 
@@ -132,12 +132,12 @@ personal-web/
 
 ### Zero-JavaScript Features
 
-| Feature | Implementation |
-|---------|----------------|
-| Theme toggle | Inline script + storage event sync |
-| X-ray mode | `#arch` hash + `:has(#arch:target)` |
-| Audit mode | `#audit` hash + CSS accessibility overlay |
-| 3D layers | `#layers` hash + CSS 3D transforms |
+| Feature      | Implementation                            |
+| ------------ | ----------------------------------------- |
+| Theme toggle | Inline script + storage event sync        |
+| X-ray mode   | `#arch` hash + `:has(#arch:target)`       |
+| Audit mode   | `#audit` hash + CSS accessibility overlay |
+| 3D layers    | `#layers` hash + CSS 3D transforms        |
 
 ### i18n Pattern
 

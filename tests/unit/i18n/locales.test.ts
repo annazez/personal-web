@@ -73,7 +73,11 @@ describe('locales', () => {
           const enPlaceholders = getPlaceholders(enValue);
           const csPlaceholders = getPlaceholders(csValue);
           if (enPlaceholders.length || csPlaceholders.length) {
-            assert.deepStrictEqual(csPlaceholders, enPlaceholders, `Placeholder mismatch for "${key}"`);
+            assert.deepStrictEqual(
+              csPlaceholders,
+              enPlaceholders,
+              `Placeholder mismatch for "${key}"`
+            );
           }
         }
       }

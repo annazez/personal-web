@@ -20,30 +20,30 @@
 
 ### Core Files
 
-| File | Responsibility |
-|------|----------------|
-| `src/layouts/Layout.underscore` | SEO metadata, CSP, shell structure |
-| `src/pages/index.astro` | Locale detection and redirect |
-| `src/pages/[lang]/index.astro` | Localized homepage |
-| `src/pages/[lang]/[workspace_slug].astro` | Inventory/workspace page |
-| `src/pages/en/projects/[slug].astro` | Project detail pages |
+| File                                      | Responsibility                     |
+| ----------------------------------------- | ---------------------------------- |
+| `src/layouts/Layout.underscore`           | SEO metadata, CSP, shell structure |
+| `src/pages/index.astro`                   | Locale detection and redirect      |
+| `src/pages/[lang]/index.astro`            | Localized homepage                 |
+| `src/pages/[lang]/[workspace_slug].astro` | Inventory/workspace page           |
+| `src/pages/en/projects/[slug].astro`      | Project detail pages               |
 
 ### Component Layers
 
-| Directory | Purpose |
-|-----------|---------|
-| `src/components/ui/` | Reusable UI primitives (buttons, toggles, pickers) |
-| `src/components/home/` | Homepage-specific section components |
-| `src/components/BackLink.astro` | Navigation primitive |
+| Directory                       | Purpose                                            |
+| ------------------------------- | -------------------------------------------------- |
+| `src/components/ui/`            | Reusable UI primitives (buttons, toggles, pickers) |
+| `src/components/home/`          | Homepage-specific section components               |
+| `src/components/BackLink.astro` | Navigation primitive                               |
 
 ### i18n System
 
-| File | Role |
-|------|------|
+| File                     | Role                            |
+| ------------------------ | ------------------------------- |
 | `src/i18n/dictionary.ts` | Language config, route mappings |
-| `src/i18n/utils.ts` | Translation lookup, URL helpers |
-| `src/i18n/locales/en.ts` | English strings |
-| `src/i18n/locales/cs.ts` | Czech strings |
+| `src/i18n/utils.ts`      | Translation lookup, URL helpers |
+| `src/i18n/locales/en.ts` | English strings                 |
+| `src/i18n/locales/cs.ts` | Czech strings                   |
 
 ---
 
@@ -87,12 +87,12 @@
 
 ### Accessibility (a11y)
 
-| Feature | Implementation |
-|---------|----------------|
-| Skip link | Targets `#main-content` |
-| Reduced motion | Respects `prefers-reduced-motion` |
-| Focus visible | Custom outline on `:focus-visible` |
-| Audit mode | `#audit` hash exposes aria-labels |
+| Feature        | Implementation                     |
+| -------------- | ---------------------------------- |
+| Skip link      | Targets `#main-content`            |
+| Reduced motion | Respects `prefers-reduced-motion`  |
+| Focus visible  | Custom outline on `:focus-visible` |
+| Audit mode     | `#audit` hash exposes aria-labels  |
 
 ---
 
@@ -101,6 +101,7 @@
 **Trigger**: `window.print()` or PDF export
 
 **Behavior**:
+
 - Strips UI elements (nav, theme toggle)
 - Forces monospace font
 - Expands URLs as text: `[REF: https://...]`
@@ -120,6 +121,7 @@ All modes use CSS `:has()` and `:target` pseudo-classes — no runtime required.
 **Purpose**: Visualize DOM structure as architectural blueprint
 
 **CSS Chain**:
+
 ```css
 html:has(#arch:target) * → outline all elements
 html:has(#arch:target) header/section/article → dashed brand color
@@ -133,6 +135,7 @@ html:has(#arch:target) body → remove dot-grid background
 **Purpose**: Real-time accessibility inspection
 
 **CSS Chain**:
+
 ```css
 html:has(#audit:target) → grayscale + contrast boost
 html:has(#audit:target) [aria-label]::after → expose label as tooltip
@@ -149,6 +152,7 @@ html:has(#audit:target) a:not([href]) → red dashed outline
 **Purpose**: Isometric exploded view of page hierarchy
 
 **CSS Chain**:
+
 ```css
 html:has(#layers:target) → overflow: hidden, bg: #09090b
 html:has(#layers:target) #page-shell → perspective + rotateX + rotateZ
@@ -180,8 +184,8 @@ Output: dist/ → Codeberg Pages
 
 ### Requirements
 
-| Secret | Purpose |
-|--------|---------|
+| Secret           | Purpose                |
+| ---------------- | ---------------------- |
 | `codeberg_token` | Push to `pages` branch |
 
 ---
@@ -219,10 +223,10 @@ connect-src 'self'                  # No external XHR
 
 ### Dependency Management
 
-| Tool | Role |
-|------|------|
-| `npm audit` | CI vulnerability scan (high/critical = fail) |
-| Renovate Bot | Automated PRs for safe updates |
+| Tool         | Role                                         |
+| ------------ | -------------------------------------------- |
+| `npm audit`  | CI vulnerability scan (high/critical = fail) |
+| Renovate Bot | Automated PRs for safe updates               |
 
 ### PGP Key Rotation
 
@@ -235,22 +239,22 @@ connect-src 'self'                  # No external XHR
 
 ## File Change Impact Matrix
 
-| File Modified | Affected Systems |
-|---------------|------------------|
-| `Layout.astro` | SEO, CSP, theme, all pages |
-| `global.css` | Typography, colors, special modes |
-| `dictionary.ts` | i18n routing, all translations |
-| `[workspace_slug].astro` | Inventory page only |
-| `components/ui/*` | All pages using primitives |
+| File Modified            | Affected Systems                  |
+| ------------------------ | --------------------------------- |
+| `Layout.astro`           | SEO, CSP, theme, all pages        |
+| `global.css`             | Typography, colors, special modes |
+| `dictionary.ts`          | i18n routing, all translations    |
+| `[workspace_slug].astro` | Inventory page only               |
+| `components/ui/*`        | All pages using primitives        |
 
 ---
 
 ## Design Principles
 
-| Principle | Enforcement |
-|-----------|-------------|
-| Architecture over improvisation | Structured docs, typed config |
-| Security by default | CSP, no analytics, audit mode |
-| Speed with ethics | SWD carbon calc, system fonts |
-| Privacy by design | No tracking, local theme storage |
-| Zero-runtime first | CSS `:has()` > JavaScript |
+| Principle                       | Enforcement                      |
+| ------------------------------- | -------------------------------- |
+| Architecture over improvisation | Structured docs, typed config    |
+| Security by default             | CSP, no analytics, audit mode    |
+| Speed with ethics               | SWD carbon calc, system fonts    |
+| Privacy by design               | No tracking, local theme storage |
+| Zero-runtime first              | CSS `:has()` > JavaScript        |

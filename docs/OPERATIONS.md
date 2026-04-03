@@ -72,15 +72,15 @@ npm run security-audit
 
 ### Gate Definitions
 
-| Command | Tool | Purpose | Fail Condition |
-|---------|------|---------|----------------|
-| `npm run check` | Astro | Validate syntax, imports | Any Astro error |
-| `npm run typecheck` | TypeScript | Type safety | Any TS error |
-| `npm run build` | Astro | Production build | Build failure |
-| `npm run test:e2e` | Playwright | Integration tests | Any test failure |
-| `npm run lighthouse:ci` | Lighthouse | Performance score | Score < 100 |
-| `npm run size:check` | Custom | Bundle limits | Exceeds threshold |
-| `npm run security-audit` | npm | Vulnerability scan | High/critical vuln |
+| Command                  | Tool       | Purpose                  | Fail Condition     |
+| ------------------------ | ---------- | ------------------------ | ------------------ |
+| `npm run check`          | Astro      | Validate syntax, imports | Any Astro error    |
+| `npm run typecheck`      | TypeScript | Type safety              | Any TS error       |
+| `npm run build`          | Astro      | Production build         | Build failure      |
+| `npm run test:e2e`       | Playwright | Integration tests        | Any test failure   |
+| `npm run lighthouse:ci`  | Lighthouse | Performance score        | Score < 100        |
+| `npm run size:check`     | Custom     | Bundle limits            | Exceeds threshold  |
+| `npm run security-audit` | npm        | Vulnerability scan       | High/critical vuln |
 
 ---
 
@@ -115,6 +115,7 @@ push → test → build → deploy
 **Target**: `pages` branch (Codeberg Pages)
 
 **Secrets Required**:
+
 - `CODEBERG_TOKEN`: Push authorization
 
 ---
@@ -123,11 +124,12 @@ push → test → build → deploy
 
 ### Automated Updates
 
-| Tool | Purpose | Config |
-|------|---------|--------|
+| Tool         | Purpose         | Config          |
+| ------------ | --------------- | --------------- |
 | Renovate Bot | Safe auto-merge | `renovate.json` |
 
 **Renovate Behavior**:
+
 - Patch/minor updates → auto-merge if tests pass
 - Major updates → PR for review
 - Runs on schedule (not every push)
@@ -239,15 +241,15 @@ npm ls
 
 ## File Impact Matrix
 
-| File Changed | Affected Systems | Validation Required |
-|--------------|------------------|---------------------|
-| `src/layouts/Layout.astro` | All pages (SEO, CSP, theme) | Full gate run |
-| `src/styles/global.css` | All pages (typography, colors) | Visual + Lighthouse |
-| `src/i18n/dictionary.ts` | All translations, routing | Typecheck + build |
-| `src/pages/[lang]/[workspace_slug].astro` | Inventory page only | E2E + visual |
-| `src/components/ui/*` | All pages using component | E2E + visual |
-| `public/.well-known/security.txt` | Security contact | Manual verification |
-| `.woodpecker/*.yml` | CI pipeline | Deploy test |
+| File Changed                              | Affected Systems               | Validation Required |
+| ----------------------------------------- | ------------------------------ | ------------------- |
+| `src/layouts/Layout.astro`                | All pages (SEO, CSP, theme)    | Full gate run       |
+| `src/styles/global.css`                   | All pages (typography, colors) | Visual + Lighthouse |
+| `src/i18n/dictionary.ts`                  | All translations, routing      | Typecheck + build   |
+| `src/pages/[lang]/[workspace_slug].astro` | Inventory page only            | E2E + visual        |
+| `src/components/ui/*`                     | All pages using component      | E2E + visual        |
+| `public/.well-known/security.txt`         | Security contact               | Manual verification |
+| `.woodpecker/*.yml`                       | CI pipeline                    | Deploy test         |
 
 ---
 
@@ -255,16 +257,16 @@ npm ls
 
 ### Required (CI Only)
 
-| Variable | Purpose | Scope |
-|----------|---------|-------|
+| Variable         | Purpose              | Scope   |
+| ---------------- | -------------------- | ------- |
 | `CODEBERG_TOKEN` | Deploy authorization | CI only |
 
 ### Not Required
 
-| Variable | Reason |
-|----------|--------|
-| `API_KEY` | No API calls |
-| `DATABASE_URL` | No database |
+| Variable       | Reason       |
+| -------------- | ------------ |
+| `API_KEY`      | No API calls |
+| `DATABASE_URL` | No database  |
 | `ANALYTICS_ID` | No analytics |
 
 ---
@@ -273,19 +275,19 @@ npm ls
 
 ### What We Monitor
 
-| Metric | Tool | Target |
-|--------|------|--------|
-| Lighthouse score | CI | 100/100/100/100 |
-| Bundle size | CI | Under threshold |
-| Vulnerabilities | CI | Zero high/critical |
+| Metric           | Tool | Target             |
+| ---------------- | ---- | ------------------ |
+| Lighthouse score | CI   | 100/100/100/100    |
+| Bundle size      | CI   | Under threshold    |
+| Vulnerabilities  | CI   | Zero high/critical |
 
 ### What We Don't Monitor
 
-| Metric | Reason |
-|--------|--------|
-| Page views | No analytics |
-| User behavior | Privacy principle |
-| Uptime | Static site; Codeberg handles |
+| Metric        | Reason                        |
+| ------------- | ----------------------------- |
+| Page views    | No analytics                  |
+| User behavior | Privacy principle             |
+| Uptime        | Static site; Codeberg handles |
 
 ---
 

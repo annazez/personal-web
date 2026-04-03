@@ -5,7 +5,9 @@ const DEFAULT_TIMEOUT_MS = 5000;
 const getSize = (entry: PerformanceEntry | null): number => {
   if (!entry) return 0;
   const timingEntry = entry as PerformanceResourceTiming;
-  return timingEntry.transferSize || timingEntry.encodedBodySize || timingEntry.decodedBodySize || 0;
+  return (
+    timingEntry.transferSize || timingEntry.encodedBodySize || timingEntry.decodedBodySize || 0
+  );
 };
 
 const formatCarbonFootprint = (value: number): string =>
@@ -23,7 +25,10 @@ const calculateCarbonValue = (): number | null => {
 
   const navigationSize = getSize(navigationEntry);
   const bodySize = new TextEncoder().encode(document.body?.innerHTML || '').length;
-  const totalSize = resources.reduce((sum, entry) => sum + getSize(entry), navigationSize + bodySize);
+  const totalSize = resources.reduce(
+    (sum, entry) => sum + getSize(entry),
+    navigationSize + bodySize
+  );
 
   if (!Number.isFinite(totalSize) || totalSize <= 0) return null;
 

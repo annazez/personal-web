@@ -1,7 +1,11 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-const calculateCarbonFootprint = (navigationSize: number, bodySize: number, resources: number[]): string => {
+const calculateCarbonFootprint = (
+  navigationSize: number,
+  bodySize: number,
+  resources: number[]
+): string => {
   const totalSize = resources.reduce((sum, size) => sum + size, navigationSize + bodySize);
   if (!Number.isFinite(totalSize) || totalSize <= 0) return 'N/A';
 
