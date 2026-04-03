@@ -50,7 +50,7 @@ All commands are run from the root of the project, from a terminal:
 - Public URL after deployment: `/pgp/public-key.asc`
 - `security.txt` references this URL via `Encryption:`.
 
-## AI-Optimized Docs
+## Docs
 
 - `docs/MANIFESTO.md`
 - `docs/AI_WORKFLOW.md`
