@@ -43,7 +43,7 @@ steps:
       RENOVATE_TOKEN:
         from_secret: codeberg_token
       RENOVATE_REPOSITORIES: annazez/pages
-      RENOVATE_GIT_AUTHOR: 'Renovate Bot <anna.zezulka@proton.me>'
+      RENOVATE_GIT_AUTHOR: 'Renovate Bot <anna@zezulka.me>'
       LOG_LEVEL: info
     when:
       - event: cron

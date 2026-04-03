@@ -307,4 +307,4 @@ Before deploying to production:
 
 ## Contact
 
-For operational issues, contact: anna.zezulka@proton.me
+For operational issues, contact: anna@zezulka.me

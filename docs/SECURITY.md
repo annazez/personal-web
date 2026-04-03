@@ -102,7 +102,7 @@ Any CSP violation in CI testing blocks deployment.
 **Fields**:
 
 ```
-Contact: mailto:anna.zezulka@proton.me
+Contact: mailto:anna@zezulka.me
 Encryption: /pgp/public-key.asc
 Preferred-Languages: en, cs
 Expires: [ISO 8601 date]
@@ -196,7 +196,7 @@ Before any deployment:
 
 ### If Vulnerability Discovered
 
-1. **Reporter**: Email `anna.zezulka@proton.me` with PGP encryption
+1. **Reporter**: Email `anna@zezulka.me` with PGP encryption
 2. **Response**: Acknowledge within 48 hours
 3. **Fix**: Patch and deploy
 4. **Disclosure**: Coordinated after fix is live
