@@ -1,9 +1,11 @@
 when:
   event: [cron, manual]
 
+skip_clone: true
+
 steps:
   renovate:
-    image: renovate/renovate:43.104.1
+    image: renovate/renovate:43.104.1-full
     environment:
       RENOVATE_PLATFORM: gitea
       RENOVATE_ENDPOINT: https://codeberg.org/api/v1
@@ -12,8 +14,5 @@ steps:
       RENOVATE_REPOSITORIES: annazez/pages
       RENOVATE_GIT_AUTHOR: 'Renovate Bot <anna@zezulka.me>'
       LOG_LEVEL: info
-    when:
-      - event: cron
-        cron: renovate_bot
-        branch: main
-      - event: manual
+    commands:
+      - renovate
