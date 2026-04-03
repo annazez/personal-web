@@ -65,28 +65,16 @@ describe('locales', () => {
     });
 
     it('should have consistent interpolation placeholders', () => {
-      // Check that any {placeholder} patterns match between languages
-      const enPlaceholders = new Map<string, string[]>();
-      const csPlaceholders = new Map<string, string[]>();
+      const getPlaceholders = (value: string) => value.match(/\{[^}]+\}/g)?.sort() ?? [];
 
-      for (const [key, value] of Object.entries(en)) {
-        const matches = value.match(/\{[^}]+\}/g);
-        if (matches) {
-          enPlaceholders.set(key, matches.sort());
-        }
-      }
-
-      for (const [key, value] of Object.entries(cs)) {
-        const matches = value.match(/\{[^}]+\}/g);
-        if (matches) {
-          csPlaceholders.set(key, matches.sort());
-        }
-      }
-
-      for (const [key, enMatches] of enPlaceholders) {
-        const csMatches = csPlaceholders.get(key);
-        if (csMatches) {
-          assert.deepStrictEqual(csMatches, enMatches, `Placeholder mismatch for key "${key}"`);
+      for (const [key, enValue] of Object.entries(en)) {
+        const csValue = cs[key as keyof typeof cs];
+        if (csValue) {
+          const enPlaceholders = getPlaceholders(enValue);
+          const csPlaceholders = getPlaceholders(csValue);
+          if (enPlaceholders.length || csPlaceholders.length) {
+            assert.deepStrictEqual(csPlaceholders, enPlaceholders, `Placeholder mismatch for "${key}"`);
+          }
         }
       }
     });

@@ -31,7 +31,7 @@ const { title, intro, categories } = entry.data;
 <Layout title={t('seo.workspace')} lang={currentLang}>
   <LanguagePicker />
 
-  <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-24 px-6 py-32">
+  <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-4 px-6 py-16">
     <BackLink href={`/${currentLang}/`} />
 
     <header class="flex flex-col gap-4">
@@ -39,11 +39,11 @@ const { title, intro, categories } = entry.data;
       <p class="home-body-text">{intro}</p>
     </header>
 
-    <section class="flex flex-col gap-12" aria-label={title}>
+    <section class="flex flex-col gap-8" aria-label={title}>
       {
         categories.map(section => (
           <section
-            class="flex flex-col gap-4"
+            class="flex flex-col gap-3"
             aria-labelledby={`workspace-${section.category.toLowerCase()}`}
           >
             <h2
@@ -55,7 +55,7 @@ const { title, intro, categories } = entry.data;
 
             <ul class="flex flex-col gap-4">
               {section.items.map(item => (
-                <li class="flex flex-col rounded-lg border border-zinc-200 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900">
+                <li class="flex flex-col rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900">
                   <h3 class="home-card-title font-medium">{item.name}</h3>
                   <p class="home-body-text mt-2">{item.description}</p>
                   {item.link && (

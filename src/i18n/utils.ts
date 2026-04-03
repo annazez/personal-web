@@ -1,15 +1,13 @@
 import {
   dictionary,
   defaultLang,
-  langPrefixRegex,
   type LanguageCode,
   type TranslationKey,
 } from './dictionary';
 
-export function getLangFromUrl(url: URL) {
-  const match = langPrefixRegex.exec(url.pathname);
-  if (match) return match[1] as LanguageCode;
-  return defaultLang;
+export function getLangFromUrl(url: URL): LanguageCode {
+  const match = /^\/(en|cs)(?:\/|$)/.exec(url.pathname);
+  return match?.[1] as LanguageCode ?? defaultLang;
 }
 
 export function useTranslations(lang: LanguageCode) {

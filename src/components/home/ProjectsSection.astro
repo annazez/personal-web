@@ -25,7 +25,7 @@ const articleBySlug = new Map(projectArticles.map(article => [article.data.slug,
 const projects: Project[] = [
   {
     slug: 'telperion',
-    title: 'Telperion Web',
+    title: 'Telperion',
     description: t('projects.telperion.description'),
     tags: ['Astro', 'React', 'Tailwind', 'TypeScript', 'i18n'],
     website: 'https://telperion.cz',
@@ -33,7 +33,7 @@ const projects: Project[] = [
   },
   {
     slug: 'personal-web',
-    title: 'Personal Web',
+    title: 'My Portfolio',
     description: t('projects.personalWeb.description'),
     tags: ['Astro', 'Tailwind', 'SSG', 'Minimal'],
     repo: 'https://codeberg.org/annazez/personal-web',
@@ -58,7 +58,7 @@ const projects: Project[] = [
 
         return (
           <ProjectCard
-            title={project.title}
+            title={article?.title ?? project.title}
             description={project.description}
             articleSlug={article?.slug}
             tags={article?.tags ?? project.tags}

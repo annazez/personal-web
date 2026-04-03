@@ -9,7 +9,9 @@ export const languages = {
 
 export type LanguageCode = keyof typeof languages;
 
-export const supportedLangs: ReadonlyArray<LanguageCode> = Object.keys(languages) as LanguageCode[];
+export const supportedLangs: ReadonlyArray<LanguageCode> = Object.keys(
+  languages
+) as LanguageCode[];
 export const languageEntries: ReadonlyArray<[LanguageCode, string]> = Object.entries(
   languages
 ) as Array<[LanguageCode, string]>;
@@ -21,7 +23,7 @@ export const dictionary: Record<LanguageCode, TranslationDictionary> = {
   cs,
 };
 
-export const langPrefixRegex = new RegExp(`^/(${Object.keys(languages).join('|')})(?:/|$)`);
+export const langPrefixRegex = /^\/(en|cs)(?:\/|$)/;
 
 export const routes = {
   workspace: {
@@ -32,11 +34,6 @@ export const routes = {
 
 export type { TranslationKey };
 
-export function isLanguageCode(value: string): value is LanguageCode {
-  return Object.prototype.hasOwnProperty.call(languages, value);
-}
-
 export function getValidLanguageCode(value: string | undefined): LanguageCode {
-  if (value && isLanguageCode(value)) return value;
-  return defaultLang;
+  return value === 'en' || value === 'cs' ? value : defaultLang;
 }

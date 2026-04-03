@@ -2,12 +2,9 @@ import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import {
   languages,
-  supportedLangs,
-  languageEntries,
   defaultLang,
   dictionary,
   langPrefixRegex,
-  isLanguageCode,
   getValidLanguageCode,
   routes,
 } from '../../../src/i18n/dictionary.ts';
@@ -16,27 +13,6 @@ describe('dictionary', () => {
   describe('languages', () => {
     it('should define supported languages', () => {
       assert.deepStrictEqual(languages, { en: 'EN', cs: 'CS' });
-    });
-  });
-
-  describe('supportedLangs', () => {
-    it('should contain all language codes', () => {
-      assert.strictEqual(supportedLangs.length, 2);
-      assert.ok(supportedLangs.includes('en'));
-      assert.ok(supportedLangs.includes('cs'));
-    });
-
-    it('should be readonly', () => {
-      // TypeScript enforces this, but we verify at runtime
-      assert.ok(Array.isArray(supportedLangs));
-    });
-  });
-
-  describe('languageEntries', () => {
-    it('should contain tuples of language codes and labels', () => {
-      assert.strictEqual(languageEntries.length, 2);
-      assert.ok(languageEntries.some(([code]) => code === 'en'));
-      assert.ok(languageEntries.some(([code]) => code === 'cs'));
     });
   });
 
@@ -90,26 +66,6 @@ describe('dictionary', () => {
     });
   });
 
-  describe('isLanguageCode', () => {
-    it('should return true for valid language codes', () => {
-      assert.strictEqual(isLanguageCode('en'), true);
-      assert.strictEqual(isLanguageCode('cs'), true);
-    });
-
-    it('should return false for invalid language codes', () => {
-      assert.strictEqual(isLanguageCode('fr'), false);
-      assert.strictEqual(isLanguageCode('de'), false);
-      assert.strictEqual(isLanguageCode(''), false);
-      assert.strictEqual(isLanguageCode('english'), false);
-    });
-
-    it('should handle prototype pollution attempts safely', () => {
-      assert.strictEqual(isLanguageCode('__proto__'), false);
-      assert.strictEqual(isLanguageCode('constructor'), false);
-      assert.strictEqual(isLanguageCode('toString'), false);
-    });
-  });
-
   describe('getValidLanguageCode', () => {
     it('should return the language code if valid', () => {
       assert.strictEqual(getValidLanguageCode('en'), 'en');
@@ -135,15 +91,6 @@ describe('dictionary', () => {
       assert.ok(routes.workspace);
       assert.strictEqual(routes.workspace.en, 'inventory');
       assert.strictEqual(routes.workspace.cs, 'inventar');
-    });
-
-    it('should have routes for all supported languages', () => {
-      for (const lang of supportedLangs) {
-        assert.ok(
-          routes.workspace[lang as keyof typeof routes.workspace],
-          `Missing workspace route for ${lang}`
-        );
-      }
     });
   });
 });

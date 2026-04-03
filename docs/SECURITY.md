@@ -1,26 +1,218 @@
-# Security Notes
+# Security Model
+
+## Core Position
+
+Security is a structural requirement, not a feature. This site enforces security through:
+
+- **Defense in depth**: Multiple overlapping controls
+- **Minimal attack surface**: No external dependencies, no analytics
+- **Transparent verification**: Public security contact, PGP encryption
+- **Automated enforcement**: CI gates block insecure changes
+
+---
+
+## Threat Model
+
+### Assets to Protect
+
+| Asset | Sensitivity | Protection |
+|-------|-------------|------------|
+| Deploy credentials | Critical | CI secrets only |
+| PGP private key | Critical | Never committed |
+| User privacy | High | No tracking, no data collection |
+| Code integrity | High | Signed commits, verified CI |
+
+### Attack Vectors Mitigated
+
+| Vector | Mitigation |
+|--------|------------|
+| XSS | Strict CSP, no user input, no external scripts |
+| Supply chain | Minimal deps, Renovate automation, npm audit |
+| Data leakage | No analytics, no third-party requests |
+| MITM | HTTPS enforcement, CSP `default-src 'self'` |
+| Information disclosure | No error messages, no stack traces |
+
+---
+
+## Content Security Policy
+
+### Current Policy
+
+```
+default-src 'self'
+script-src 'self' 'unsafe-inline'
+style-src 'self' 'unsafe-inline'
+img-src 'self' data:
+font-src 'self' data:
+connect-src 'self'
+```
+
+### Rationale
+
+| Directive | Value | Justification |
+|-----------|-------|---------------|
+| `script-src 'unsafe-inline'` | Required | Astro theme script (inline, before first paint) |
+| `style-src 'unsafe-inline'` | Required | Tailwind utilities + CSS custom properties |
+| `img-src data:` | Required | Inline SVG support |
+| `font-src data:` | Defensive | System fonts only; no external font loads |
+| `connect-src 'self'` | Strict | No external XHR/fetch allowed |
+
+### Violations = Build Failures
+
+Any CSP violation in CI testing blocks deployment.
+
+---
+
+## Dependency Security
+
+### Automated Controls
+
+| Control | Tool | Frequency |
+|---------|------|-----------|
+| Vulnerability scan | `npm audit` | Every CI run |
+| Safe updates | Renovate Bot | Continuous |
+| Lock file verification | npm | Every install |
+
+### Dependency Rules
+
+| Rule | Enforcement |
+|------|-------------|
+| No runtime analytics | Manifesto requirement |
+| No external CDNs | CSP enforcement |
+| Minimal surface | Code review + AI validation |
+| Auto-merge safe updates | Renovate configuration |
+
+### Audit Levels
+
+| Level | CI Behavior |
+|-------|-------------|
+| `low` | Warning only |
+| `moderate` | Warning only |
+| `high` | **BUILD FAILS** |
+| `critical` | **BUILD FAILS** |
+
+---
 
 ## Public Security Contact
 
-- security.txt path: public/.well-known/security.txt
-- contact channel: anna.zezulka@proton.me
-- encryption key URL: /pgp/public-key.asc
+### security.txt
 
-## Privacy Defaults
+**Location**: `public/.well-known/security.txt`
 
-- No third-party tracking scripts.
-- No ad-tech integrations.
-- Performance checks run in CI only.
+**Fields**:
+```
+Contact: mailto:anna.zezulka@proton.me
+Encryption: /pgp/public-key.asc
+Preferred-Languages: en, cs
+Expires: [ISO 8601 date]
+```
 
-## Decentralized Identity
+### PGP Key Management
 
-- External profile links use rel="me" to support two-way verification on the Fediverse and open-source platforms such as Mastodon and Codeberg.
+| File | Content |
+|------|---------|
+| `public/pgp/public-key.asc` | Armored public key |
+| `~/.gnupg/` (local) | Private key (NEVER committed) |
 
-## Release Checklist
+### Rotation Procedure
 
-1. Run npm run check.
-2. Run npm run typecheck.
-3. Run npm run build.
-4. Run npm run test:e2e.
-5. Run npm run lighthouse:ci.
-6. Run npm run size:check.
+```bash
+# 1. Export new key
+gpg --armor --export > public/pgp/public-key.asc
+
+# 2. Update security.txt expiry
+# Edit public/.well-known/security.txt
+
+# 3. Commit and deploy
+git add public/
+git commit -m "Rotate PGP key"
+git push
+```
+
+---
+
+## Privacy Guarantees
+
+### What This Site Does NOT Collect
+
+| Data Type | Status |
+|-----------|--------|
+| Analytics | None |
+| Cookies (third-party) | None |
+| User tracking | None |
+| Form submissions | None |
+| Session data | None |
+| IP logging | None |
+
+### Theme Storage
+
+- **Scope**: `localStorage` only (client-side)
+- **Sync**: `storage` event for cross-tab sync
+- **Data**: Single key `theme` with value `light` or `dark`
+- **No server transmission**
+
+---
+
+## CI Security Steps
+
+### Woodpecker Pipeline
+
+```yaml
+steps:
+  - security-audit: npm audit --audit-level=high
+  - build: npm run build
+  - deploy: push to pages branch
+```
+
+### Failure Conditions
+
+| Condition | Result |
+|-----------|--------|
+| High/critical vulnerability | Pipeline fails |
+| CSP violation in tests | Pipeline fails |
+| Missing typecheck | Pipeline fails |
+| Build failure | Pipeline fails |
+
+---
+
+## Release Security Checklist
+
+Before any deployment:
+
+- [ ] `npm run security-audit` passes (no high/critical)
+- [ ] `npm run check` passes (Astro validation)
+- [ ] `npm run typecheck` passes (TypeScript)
+- [ ] `npm run build` succeeds (production build)
+- [ ] `npm run test:e2e` passes (integration tests)
+- [ ] `npm run lighthouse:ci` passes (performance gate)
+- [ ] `npm run size:check` passes (bundle limits)
+- [ ] No secrets in git history (verify with git-secrets or similar)
+- [ ] PGP key current (check `security.txt` expiry)
+
+---
+
+## Incident Response
+
+### If Vulnerability Discovered
+
+1. **Reporter**: Email `anna.zezulka@proton.me` with PGP encryption
+2. **Response**: Acknowledge within 48 hours
+3. **Fix**: Patch and deploy
+4. **Disclosure**: Coordinated after fix is live
+
+### If Credentials Compromised
+
+1. Revoke compromised token immediately
+2. Generate new credentials
+3. Update CI secrets
+4. Audit git history for unauthorized changes
+
+---
+
+## Compliance Notes
+
+| Standard | Status |
+|----------|--------|
+| GDPR | Compliant (no data collection) |
+| CCPA | Compliant (no data sale) |
+| ePrivacy | Compliant (no cookies) |

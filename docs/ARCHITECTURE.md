@@ -1,46 +1,256 @@
 # Architecture
 
+## System Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      Astro Static Site                       │
+├─────────────────────────────────────────────────────────────┤
+│  Build Time                    │  Runtime (Browser)          │
+│  - Content collection          │  - Theme toggle (minimal)   │
+│  - i18n routing                │  - Hash-based modes         │
+│  - Tailwind compilation        │  - 3D layers interaction    │
+│  - Zero external deps          │  - No analytics             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Topology
 
-- src/pages/index.astro: locale redirect entrypoint
-- src/pages/[lang]/index.astro: localized homepage
-- src/layouts/Layout.astro: SEO and shell
-- src/components/home: domain section components
-- src/components/ui: reusable UI primitives
-- src/i18n: locale config, dictionary, and translation helpers
+### Core Files
 
-## Core Implementations
+| File | Responsibility |
+|------|----------------|
+| `src/layouts/Layout.underscore` | SEO metadata, CSP, shell structure |
+| `src/pages/index.astro` | Locale detection and redirect |
+| `src/pages/[lang]/index.astro` | Localized homepage |
+| `src/pages/[lang]/[workspace_slug].astro` | Inventory/workspace page |
+| `src/pages/en/projects/[slug].astro` | Project detail pages |
 
-- Sustainability / Carbon Footprint: the site calculates carbon footprint natively in the browser using the Performance API and TextEncoder, including cached resource fallback handling, and follows the Sustainable Web Design (SWD) v4 model without any external API tracking.
-- Accessibility (a11y): the global skip link targets #main-content, and theme transitions respect prefers-reduced-motion so users with vestibular disorders can disable the overlay animation.
-- Theme Management: dark mode is implemented with a custom toggle that syncs across browser tabs through the storage event and uses an inline blocking script to prevent FOUC during initial render.
+### Component Layers
+
+| Directory | Purpose |
+|-----------|---------|
+| `src/components/ui/` | Reusable UI primitives (buttons, toggles, pickers) |
+| `src/components/home/` | Homepage-specific section components |
+| `src/components/BackLink.astro` | Navigation primitive |
+
+### i18n System
+
+| File | Role |
+|------|------|
+| `src/i18n/dictionary.ts` | Language config, route mappings |
+| `src/i18n/utils.ts` | Translation lookup, URL helpers |
+| `src/i18n/locales/en.ts` | English strings |
+| `src/i18n/locales/cs.ts` | Czech strings |
+
+---
+
+## Implemented Features
+
+### Theme System
+
+**Implementation**: Inline blocking script + storage event sync
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ 1. Inline script reads localStorage on page load        │
+│ 2. Applies .dark class before first paint (FOUC guard)  │
+│ 3. storage event listener syncs across tabs             │
+│ 4. prefers-color-scheme fallback for first visit        │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Files**: `Layout.astro` (lines 45-98)
+
+---
+
+### Carbon Footprint Calculator
+
+**Standard**: Sustainable Web Design (SWD) v4 Model
+
+**Implementation**: Browser-native calculation using Performance API
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ 1. Measure transferred bytes (performance entries)      │
+│ 2. Apply SWD emissions factor (0.00000057 kWh/MB)       │
+│ 3. Convert to CO2e using grid intensity                 │
+│ 4. Cache-aware: excludes cached resources from calc     │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Zero external API calls** — all computation is local.
+
+---
+
+### Accessibility (a11y)
+
+| Feature | Implementation |
+|---------|----------------|
+| Skip link | Targets `#main-content` |
+| Reduced motion | Respects `prefers-reduced-motion` |
+| Focus visible | Custom outline on `:focus-visible` |
+| Audit mode | `#audit` hash exposes aria-labels |
+
+---
 
 ### Blueprint Print Mode
 
-When the page is printed or exported to PDF, a CSS `@media print` query strips away the UI, enforces a monospace font, expands URL links as text, and injects a technical architectural header. The printed output intentionally reads like a strict technical specification document rather than a conventional webpage. Semantic sections use `break-inside: avoid` to prevent awkward page splits.
+**Trigger**: `window.print()` or PDF export
 
-## Special Features & Easter Eggs
+**Behavior**:
+- Strips UI elements (nav, theme toggle)
+- Forces monospace font
+- Expands URLs as text: `[REF: https://...]`
+- Injects architectural header banner
+- Applies `break-inside: avoid` to sections
 
-### Architectural X-Ray
+**CSS**: `@media print` in `global.css`
 
-Appending `#arch` to the URL triggers a global structural wireframe through a Zero-JavaScript implementation that uses modern CSS `:has()` and `:target`. The mode outlines the page into a semantic blueprint, strips away visual polish, and aligns with the project’s strict zero-bloat, high-performance philosophy.
+---
 
-### Accessibility Auditor Mode
+## Special Modes (Zero-JavaScript)
 
-Appending `#audit` to the URL triggers a Zero-JavaScript accessibility audit layer that uses CSS `:has()` and `:target` to apply grayscale filtering, visually expose `aria-label` values as tooltips, and highlight missing `alt` attributes or broken links. It acts as an interactive proof of the site’s color-independent hierarchy and strict a11y standards without adding runtime scripting.
+All modes use CSS `:has()` and `:target` pseudo-classes — no runtime required.
 
-### Exploded Layers 3D
+### X-Ray Mode (`#arch`)
 
-Appending `#layers` to the URL triggers an isometric 3D transformation of the entire DOM. The base effect uses CSS `perspective`, `preserve-3d`, and `translateZ` to visually explode the structural hierarchy of the page, while a lightweight client-side interaction layer maps mouse wheel zoom and click-drag rotation onto CSS variables for a more tactile model. The JavaScript is lazy-loaded only when the hash is present and cleans up properly on exit.
+**Purpose**: Visualize DOM structure as architectural blueprint
 
-## i18n Model
+**CSS Chain**:
+```css
+html:has(#arch:target) * → outline all elements
+html:has(#arch:target) header/section/article → dashed brand color
+html:has(#arch:target) body → remove dot-grid background
+```
 
-- Locale dictionaries are split into src/i18n/locales
-- src/i18n/dictionary.ts composes dictionaries and exports typed helpers
-- src/i18n/utils.ts handles language detection and translation lookup
+---
 
-## Deployment
+### Audit Mode (`#audit`)
 
-- Manual: npm run deploy
-- CI: Woodpecker deploy step runs npm run deploy:ci
-- Publish branch: pages
+**Purpose**: Real-time accessibility inspection
+
+**CSS Chain**:
+```css
+html:has(#audit:target) → grayscale + contrast boost
+html:has(#audit:target) [aria-label]::after → expose label as tooltip
+html:has(#audit:target) img:not([alt]) → red dashed outline
+html:has(#audit:target) a:not([href]) → red dashed outline
+```
+
+**Tooltip Format**: `[aria: <label-value>]` positioned absolutely
+
+---
+
+### 3D Layers Mode (`#layers`)
+
+**Purpose**: Isometric exploded view of page hierarchy
+
+**CSS Chain**:
+```css
+html:has(#layers:target) → overflow: hidden, bg: #09090b
+html:has(#layers:target) #page-shell → perspective + rotateX + rotateZ
+html:has(#layers:target) header/section/ul → translateZ(50px)
+html:has(#layers:target) h1/h2/p/a → translateZ(30px)
+```
+
+**JavaScript Enhancement**: Lazy-loaded interaction layer for mouse drag rotation and wheel zoom (maps to CSS variables `--layers-rotate-x`, `--layers-rotate-z`, `--layers-scale`)
+
+**Cleanup**: Event listeners removed on hash change
+
+---
+
+## Deployment Pipeline
+
+### Manual Deploy
+
+```bash
+npm run deploy
+```
+
+### CI Deploy (Woodpecker)
+
+```yaml
+Pipeline: test → build → deploy
+Target Branch: pages
+Output: dist/ → Codeberg Pages
+```
+
+### Requirements
+
+| Secret | Purpose |
+|--------|---------|
+| `codeberg_token` | Push to `pages` branch |
+
+---
+
+## Quality Gates
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ npm run check        → Astro validation                 │
+│ npm run typecheck    → TypeScript check                │
+│ npm run build        → Production build                │
+│ npm run test:e2e     → Playwright E2E tests            │
+│ npm run lighthouse:ci → Performance audit (CI)         │
+│ npm run size:check   → Bundle size limits              │
+│ npm run security-audit → npm vulnerability scan        │
+└─────────────────────────────────────────────────────────┘
+```
+
+All gates must pass before merge.
+
+---
+
+## Security Model
+
+### Content Security Policy
+
+```
+default-src 'self'
+script-src 'self' 'unsafe-inline'   # Astro requires inline for theme script
+style-src 'self' 'unsafe-inline'    # Tailwind + inline theme application
+img-src 'self' data:                # SVG support
+font-src 'self' data:               # System fonts only
+connect-src 'self'                  # No external XHR
+```
+
+### Dependency Management
+
+| Tool | Role |
+|------|------|
+| `npm audit` | CI vulnerability scan (high/critical = fail) |
+| Renovate Bot | Automated PRs for safe updates |
+
+### PGP Key Rotation
+
+1. Export armored key: `gpg --armor --export`
+2. Replace `public/pgp/public-key.asc`
+3. Update `security.txt` expiry field
+4. Commit and deploy
+
+---
+
+## File Change Impact Matrix
+
+| File Modified | Affected Systems |
+|---------------|------------------|
+| `Layout.astro` | SEO, CSP, theme, all pages |
+| `global.css` | Typography, colors, special modes |
+| `dictionary.ts` | i18n routing, all translations |
+| `[workspace_slug].astro` | Inventory page only |
+| `components/ui/*` | All pages using primitives |
+
+---
+
+## Design Principles
+
+| Principle | Enforcement |
+|-----------|-------------|
+| Architecture over improvisation | Structured docs, typed config |
+| Security by default | CSP, no analytics, audit mode |
+| Speed with ethics | SWD carbon calc, system fonts |
+| Privacy by design | No tracking, local theme storage |
+| Zero-runtime first | CSS `:has()` > JavaScript |
