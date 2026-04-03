@@ -4,36 +4,12 @@
   "labels": ["dependencies", "security"],
   "packageRules": [
     {
-      "groupName": "framework",
-      "matchPackageNames": ["astro", "tailwindcss", "@tailwindcss/*", "@astrojs/*"],
+      "matchPackageNames": ["*"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
     {
-      "groupName": "tooling",
-      "matchPackageNames": [
-        "eslint",
-        "eslint-*",
-        "typescript-eslint",
-        "prettier",
-        "prettier-*",
-        "cspell",
-        "@cspell/*",
-        "@lhci/cli"
-      ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true
-    },
-    {
-      "groupName": "playwright",
-      "matchPackageNames": ["@playwright/test"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": false
-    },
-    {
-      "matchManagers": ["dockerfile"],
-      "matchPackageNames": ["mcr.microsoft.com/playwright"],
-      "groupName": "playwright",
+      "matchPackageNames": ["@playwright/test", "mcr.microsoft.com/playwright"],
       "automerge": false
     }
   ]
