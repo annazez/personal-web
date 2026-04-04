@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { Icon } from 'astro-icon/components';
 import ProjectCard from './ProjectCard.astro';
 
 interface Props {
@@ -37,43 +38,125 @@ const projects: Project[] = [
     tags: ['Astro', 'Tailwind', 'SSG', 'Minimal'],
     repo: 'https://codeberg.org/annazez/personal-web',
   },
+  {
+    slug: 'mental-health-app',
+    title: 'Mental Health App',
+    description: t('projects.mentalHealth.description'),
+    tags: ['WIP', 'App'],
+  },
 ];
 ---
 
-<section class="flex flex-col gap-8">
+<project-carousel class="flex flex-col gap-6">
   <header class="flex flex-col gap-2">
     <h2 class="home-section-title font-medium">
       {t('projects.title')}
     </h2>
-    <p class="home-subtle-text">
+    <p class="home-body-text">
       {t('projects.subtitle')}
     </p>
   </header>
 
-  <div class="projects-grid">
-    {
-      projects.map(project => {
-        const article = articleBySlug.get(project.slug);
+  <div class="relative group">
+    <div class="projects-track flex w-full gap-4 overflow-x-auto snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth pb-2">
+      {
+        projects.map(project => {
+          const article = articleBySlug.get(project.slug);
 
-        return (
-          <ProjectCard
-            title={article?.title ?? project.title}
-            description={project.description}
-            articleSlug={article?.slug}
-            tags={article?.tags ?? project.tags}
-            repo={project.repo}
-            website={project.website}
-          />
-        );
-      })
-    }
+          return (
+            <div class="w-full flex-none shrink-0 snap-center">
+              <div class="h-full">
+                <ProjectCard
+                  title={article?.title ?? project.title}
+                  description={project.description}
+                  articleSlug={article?.slug ?? (project.slug !== 'personal-web' ? project.slug : undefined)}
+                  tags={article?.tags ?? project.tags}
+                  repo={project.repo}
+                  website={project.website}
+                />
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+    
+    <div class="flex items-center justify-between mt-2 px-2">
+      <button class="nav-btn prev text-[var(--color-text-muted)] hover:text-[var(--color-brand)] transition-colors p-2 disabled:opacity-30 disabled:hover:text-[var(--color-text-muted)]" aria-label="Previous project">
+        <Icon name="lucide:arrow-left" class="size-5 sm:size-6" />
+      </button>
+      <div class="dots flex justify-center flex-1 gap-2">
+        {projects.map((_, i) => (
+          <button aria-label={`Go to slide ${i + 1}`} class="dot size-2.5 rounded-full bg-[var(--color-border)] transition-colors data-[active=true]:bg-[var(--color-brand)]"></button>
+        ))}
+      </div>
+      <button class="nav-btn next text-[var(--color-text-muted)] hover:text-[var(--color-brand)] transition-colors p-2 disabled:opacity-30 disabled:hover:text-[var(--color-text-muted)]" aria-label="Next project">
+        <Icon name="lucide:arrow-right" class="size-5 sm:size-6" />
+      </button>
+    </div>
   </div>
-</section>
+</project-carousel>
 
-<style>
-  .projects-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: 1fr;
+<script>
+  class ProjectCarousel extends HTMLElement {
+    private _cleanup?: () => void;
+
+    connectedCallback() {
+      const track = this.querySelector('.projects-track');
+      const prevBtn = this.querySelector('.prev') as HTMLButtonElement | null;
+      const nextBtn = this.querySelector('.next') as HTMLButtonElement | null;
+      const dots = this.querySelectorAll('.dot');
+      
+      if (!track || !prevBtn || !nextBtn || !dots.length) return;
+      
+      const updateState = () => {
+        const scrollLeft = track.scrollLeft;
+        const width = track.clientWidth;
+        if (width === 0) return;
+        const index = Math.round(scrollLeft / width);
+        
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === dots.length - 1;
+        
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.setAttribute('data-active', 'true');
+          } else {
+            dot.removeAttribute('data-active');
+          }
+        });
+      };
+
+      track.addEventListener('scroll', () => {
+        requestAnimationFrame(updateState);
+      });
+      
+      prevBtn.addEventListener('click', () => {
+        track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
+      });
+      
+      nextBtn.addEventListener('click', () => {
+        track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
+      });
+      
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          track.scrollTo({ left: track.clientWidth * i, behavior: 'smooth' });
+        });
+      });
+      
+      setTimeout(() => updateState(), 50);
+      window.addEventListener('resize', updateState);
+      
+      this._cleanup = () => window.removeEventListener('resize', updateState);
+    }
+    
+    disconnectedCallback() {
+      if (this._cleanup) this._cleanup();
+    }
   }
-</style>
+  
+  if (!customElements.get('project-carousel')) {
+    customElements.define('project-carousel', ProjectCarousel);
+  }
+</script>

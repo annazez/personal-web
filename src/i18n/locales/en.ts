@@ -1,7 +1,10 @@
 const en = {
   'role.title': 'Software Architect',
   'hero.manifesto':
-    'I create architecture that leaves no room for chaos. Systems must be uncompromisingly optimized, secure, and aligned with moral values for the greater good. Now in the era of AI, I am dedicated to building a web that is not only fast and secure but also ethical and sustainable.',
+    'I design systems that are fast, accessible, and built to last - not just today, but for whoever comes after me.',
+  'home.contact': 'Have a project in mind, or just want to say hello?',
+  'home.contactCta': 'Get in touch →',
+  'footer.lastUpdated': 'Last updated:',
   'hero.minimalByDesign': 'Minimal by design.',
   'hero.inventory': 'Inventory',
   'projects.title': 'Projects',
@@ -11,9 +14,10 @@ const en = {
   'projects.source': 'Code',
   readCaseStudy: 'Read case study',
   'projects.telperion.description':
-    'Website for Telperion, a Czech environmental organization dedicated to educating young people about climate and sustainable living. Features bilingual support and interactive components.',
+    'Telperion had a broken, inaccessible website that made their climate education work invisible online. I rebuilt it from scratch - bilingual, fully accessible (WCAG), statically generated with Astro, and documented with an architecture guide so future contributors can take over without friction. The result is a fast, sustainable site that the organization fully owns and can maintain independently.',
   'projects.personalWeb.description':
     'My personal portfolio website. A minimalist, privacy-first design with fast performance, zero tracking, and clean architecture.',
+  'projects.mentalHealth.description': 'Work in progress.',
   back: 'Back',
   feedTitle: 'Anna Zezulka – Projects',
   feedDescription: 'Case studies and project write-ups.',

@@ -9,6 +9,7 @@ interface Props {
 
 const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
+const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-GB', { year: 'numeric', month: 'long' });
 ---
 
 <footer
@@ -59,17 +60,20 @@ const t = useTranslations(lang);
     -->
   </div>
 
-  <p class="home-micro-copy w-full sm:ml-auto sm:w-auto sm:text-right" data-carbon-footprint>
-    <span>{t('footer.carbonFootprint')}</span>
-    <span
-      id="carbon-footprint-value"
-      data-loading={t('footer.loading')}
-      data-timeout-ms="5000"
-      style="display:inline-block;min-height:1.25em"
-    >
-      {t('footer.loading')}</span
-    >
-  </p>
+  <div class="flex flex-col sm:items-end gap-1 home-micro-copy w-full sm:ml-auto sm:w-auto sm:text-right">
+    <p class="home-body-text">{t('footer.lastUpdated')} {lastUpdated}</p>
+    <p data-carbon-footprint>
+      <span>{t('footer.carbonFootprint')}</span>
+      <span
+        id="carbon-footprint-value"
+        data-loading={t('footer.loading')}
+        data-timeout-ms="5000"
+        style="display:inline-block;min-height:1.25em"
+      >
+        {t('footer.loading')}</span
+      >
+    </p>
+  </div>
 
   <script src="../../scripts/carbon-footprint.ts"></script>
 </footer>
