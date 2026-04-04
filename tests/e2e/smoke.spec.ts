@@ -10,7 +10,7 @@ test('can switch language from EN to CS', async ({ page }) => {
   await page.goto('/en/');
   await page.getByRole('link', { name: 'CS' }).click();
   await expect(page).toHaveURL(/\/cs\/$/);
-  await expect(page.getByText(/Softwarova|Softwarová/i)).toBeVisible();
+  await expect(page.getByText(/Softwarova|Softwarová/i).first()).toBeVisible();
 });
 
 test('404 page has recovery links', async ({ page }) => {
