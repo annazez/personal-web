@@ -18,7 +18,7 @@ const t = useTranslations(lang);
 ---
 
 <article
-  class="flex h-full min-w-0 flex-col gap-5 rounded-xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8 transition-colors hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 dark:hover:shadow-zinc-900/20"
+  class="flex h-full min-w-0 flex-col gap-5 rounded-xl border border-zinc-200 bg-zinc-50 p-6 transition-colors hover:border-zinc-300 hover:shadow-md sm:p-8 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 dark:hover:shadow-zinc-900/20"
 >
   <div class="flex flex-1 flex-col gap-2">
     <div class="flex items-start justify-between">
@@ -54,35 +54,31 @@ const t = useTranslations(lang);
           website && repo ? 'grid-cols-2' : 'grid-cols-1',
         ]}
       >
-    {
-      website && (
-        <a
-          href={website}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${t('projects.visit')} ${title}`}
-          class="flex w-full items-center justify-center gap-2 rounded-md bg-zinc-200 px-4 py-2.5 text-sm font-medium text-[var(--color-brand)] transition-colors hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600"
-        >
-          <Icon name="lucide:external-link" class="h-4 w-4" />
-          {t('projects.visit')}
-        </a>
-      )
-    }
-    {
-      repo && (
-        <a
-          href={repo}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${t('projects.source')} ${title}`}
-          class="flex w-full items-center justify-center gap-2 rounded-md bg-zinc-100 px-4 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
-        >
-          <Icon name="lucide:code-2" class="h-4 w-4" />
-          {t('projects.source')}
-        </a>
-      )
-    }
-  </div>
+        {website && (
+          <a
+            href={website}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${t('projects.visit')} ${title}`}
+            class="flex w-full items-center justify-center gap-2 rounded-md bg-zinc-200 px-4 py-2.5 text-sm font-medium text-[var(--color-brand)] transition-colors hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600"
+          >
+            <Icon name="lucide:external-link" class="h-4 w-4" />
+            {t('projects.visit')}
+          </a>
+        )}
+        {repo && (
+          <a
+            href={repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${t('projects.source')} ${title}`}
+            class="flex w-full items-center justify-center gap-2 rounded-md bg-zinc-100 px-4 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+          >
+            <Icon name="lucide:code-2" class="h-4 w-4" />
+            {t('projects.source')}
+          </a>
+        )}
+      </div>
     )
   }
 

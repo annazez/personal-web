@@ -9,7 +9,10 @@ interface Props {
 
 const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
-const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-GB', { year: 'numeric', month: 'long' });
+const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-GB', {
+  year: 'numeric',
+  month: 'long',
+});
 ---
 
 <footer
@@ -60,7 +63,9 @@ const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-
     -->
   </div>
 
-  <div class="flex flex-col sm:items-end gap-1 home-micro-copy w-full sm:ml-auto sm:w-auto sm:text-right">
+  <div
+    class="home-micro-copy flex w-full flex-col gap-1 sm:ml-auto sm:w-auto sm:items-end sm:text-right"
+  >
     <p class="home-body-text">{t('footer.lastUpdated')} {lastUpdated}</p>
     <p data-carbon-footprint>
       <span>{t('footer.carbonFootprint')}</span>

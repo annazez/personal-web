@@ -36,7 +36,7 @@ const projectArticles = await getCollection('projects', ({ data }) => data.lang 
         <div class="flex flex-wrap items-center gap-6">
           <a
             href="mailto:anna@zezulka.me"
-            class="inline-flex px-6 py-3 border-2 border-[var(--color-brand)] text-[var(--color-brand)] hover:bg-[var(--color-brand)] hover:text-[var(--color-bg)] font-medium rounded-full transition-colors"
+            class="inline-flex rounded-full border-2 border-[var(--color-brand)] px-6 py-3 font-medium text-[var(--color-brand)] transition-colors hover:bg-[var(--color-brand)] hover:text-[var(--color-bg)]"
           >
             {t('home.contactCta')}
           </a>
@@ -45,7 +45,7 @@ const projectArticles = await getCollection('projects', ({ data }) => data.lang 
               href="https://www.linkedin.com/in/anna-zezulka-8956b9384"
               target="_blank"
               rel="me noopener noreferrer"
-              class="hover:text-[var(--color-text)] transition-colors"
+              class="transition-colors hover:text-[var(--color-text)]"
               title="LinkedIn"
             >
               <span class="sr-only">LinkedIn</span>
@@ -55,7 +55,7 @@ const projectArticles = await getCollection('projects', ({ data }) => data.lang 
               href="https://github.com/annazez"
               target="_blank"
               rel="me noopener noreferrer"
-              class="hover:text-[var(--color-text)] transition-colors"
+              class="transition-colors hover:text-[var(--color-text)]"
               title="GitHub"
             >
               <span class="sr-only">GitHub</span>
