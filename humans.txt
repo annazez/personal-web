@@ -1,0 +1,9 @@
+/* TEAM */
+Architect & Developer: Anna Zezulka
+Location: Ostrava, Czech Republic
+
+/* SITE */
+Last update: 2026-03-31
+Language: English, Czech
+Framework: Astro, Tailwind CSS v4
+Hosting: Codeberg Pages
