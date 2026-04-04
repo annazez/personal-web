@@ -4,6 +4,10 @@
   "editor.formatOnSaveMode": "file",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
 
+  // CSS Linting
+  "css.lint.unknownAtRules": "ignore",
+  "css.customData": [".vscode/css_custom_data.json"],
+
   // Prettier
   "prettier.enable": true,
   "prettier.requireConfig": true,

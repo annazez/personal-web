@@ -31,7 +31,10 @@ if (!projectEntry) {
 
 const { Content } = await render(projectEntry);
 const { title, summary, publishedAt, tags } = projectEntry.data;
-const canonicalUrl = new URL(`/${currentLang}/projects/${slug}/`, Astro.site ?? Astro.url).toString();
+const canonicalUrl = new URL(
+  `/${currentLang}/projects/${slug}/`,
+  Astro.site ?? Astro.url
+).toString();
 const publishedLabel = publishedAt.toLocaleDateString(currentLang === 'cs' ? 'cs-CZ' : 'en-US', {
   day: 'numeric',
   month: 'long',
