@@ -12,14 +12,14 @@ const t = useTranslations(lang);
 ---
 
 <footer
-  class="flex w-full flex-wrap items-center gap-x-6 gap-y-3 border-t border-zinc-200 pt-8 dark:border-zinc-800"
+  class="flex w-full flex-wrap items-center gap-x-6 gap-y-3 border-t border-[var(--color-border)] pt-8"
 >
   <div class="flex items-center gap-6">
     <a
       href={`/${lang}/${routes.workspace[lang]}`}
       aria-label={t('hero.inventory')}
       title={t('hero.inventory')}
-      class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+      class="text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-brand)]"
       ><Icon name="lucide:laptop-minimal" class="h-5 w-5" /></a
     >
     <a
@@ -28,21 +28,21 @@ const t = useTranslations(lang);
       rel="me noopener noreferrer"
       aria-label="Source code on Codeberg"
       title="Source code on Codeberg"
-      class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+      class="text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-brand)]"
       ><Icon name="lucide:code-2" class="h-5 w-5" /></a
     >
     <a
       href="/humans.txt"
       aria-label="Humans.txt"
       title="Humans.txt"
-      class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+      class="text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-brand)]"
       ><Icon name="lucide:file-text" class="h-5 w-5" /></a
     >
     <a
       href="/pgp/public-key.asc"
       aria-label="PGP public key"
       title="PGP public key"
-      class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+      class="text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-brand)]"
       ><Icon name="lucide:key-round" class="h-5 w-5" /></a
     >
 
@@ -53,7 +53,7 @@ const t = useTranslations(lang);
       download
       aria-label={t('footer.downloadCv')}
       title={t('footer.downloadCv')}
-      class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+      class="text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-brand)]"
       ><Icon name="lucide:file-down" class="h-5 w-5" /></a
     >
     -->

@@ -10,10 +10,9 @@ interface Props {
   tags: string[];
   repo?: string;
   website?: string;
-  image?: string;
 }
 
-const { title, description, summary, articleSlug, tags, repo, website, image } = Astro.props;
+const { title, description, summary, articleSlug, tags, repo, website } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
@@ -21,11 +20,11 @@ const t = useTranslations(lang);
 <article
   class="flex min-w-0 flex-col gap-3 rounded-lg border border-zinc-200 bg-zinc-50 px-6 py-4 transition-colors hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 dark:hover:shadow-zinc-900/20"
 >
-  {image && <img src={image} alt={title} class="h-48 w-full rounded-md object-cover" />}
+
 
   <div class="flex flex-1 flex-col gap-2">
     <div class="flex items-start justify-between">
-      <h3 class="home-card-title font-normal">{title}</h3>
+      <h3 class="home-card-title">{title}</h3>
     </div>
 
     {description && <p class="home-subtle-text">{description}</p>}
@@ -41,7 +40,7 @@ const t = useTranslations(lang);
     >
       {
         tags.map(tag => (
-          <span class="home-tag-text inline-block rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] whitespace-nowrap dark:bg-zinc-800">
+          <span class="home-tag-text inline-block rounded-full bg-zinc-100 px-2 py-0.5 whitespace-nowrap dark:bg-zinc-800">
             {tag}
           </span>
         ))
@@ -51,7 +50,7 @@ const t = useTranslations(lang);
 
   <div
     class:list={[
-      'mt-auto grid gap-2 border-t border-zinc-200 pt-3 dark:border-zinc-800',
+      'mt-auto grid gap-2 border-t border-[var(--color-border)] pt-3',
       website && repo ? 'grid-cols-2' : 'grid-cols-1',
     ]}
   >
@@ -62,7 +61,7 @@ const t = useTranslations(lang);
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${t('projects.visit')} ${title}`}
-          class="home-action-text flex w-full items-center justify-center gap-2 rounded-md bg-zinc-200 px-3 py-2 text-zinc-900 transition-colors hover:bg-zinc-300 dark:bg-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-600"
+          class="home-action-text flex w-full items-center justify-center gap-2 rounded-md bg-zinc-200 px-3 py-2 text-[var(--color-brand)] transition-colors hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600"
         >
           <Icon name="lucide:external-link" class="h-4 w-4" />
           {t('projects.visit')}
@@ -76,7 +75,7 @@ const t = useTranslations(lang);
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${t('projects.source')} ${title}`}
-          class="home-action-text flex w-full items-center justify-center gap-2 rounded-md bg-zinc-100 px-3 py-2 text-zinc-700 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+          class="home-action-text flex w-full items-center justify-center gap-2 rounded-md bg-zinc-100 px-3 py-2 text-[var(--color-text-secondary)] transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
         >
           <Icon name="lucide:code-2" class="h-4 w-4" />
           {t('projects.source')}
@@ -90,7 +89,7 @@ const t = useTranslations(lang);
       <a
         href={`/${lang}/projects/${articleSlug}/`}
         aria-label={`${t('readCaseStudy')} ${title}`}
-        class="home-action-text mt-1 flex w-full items-center justify-center gap-2 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+        class="home-action-text mt-1 flex w-full items-center justify-center gap-2 rounded-md border border-[var(--color-border)] bg-zinc-50 px-3 py-2 text-[var(--color-text-secondary)] transition-colors hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800"
       >
         <Icon name="lucide:file-text" class="h-4 w-4" />
         {t('readCaseStudy')}

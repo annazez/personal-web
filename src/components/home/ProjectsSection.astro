@@ -14,7 +14,6 @@ interface Project {
   tags: string[];
   repo?: string;
   website?: string;
-  image?: string;
 }
 
 const { projectArticles } = Astro.props;
@@ -41,7 +40,7 @@ const projects: Project[] = [
 ];
 ---
 
-<section class="flex flex-col gap-6">
+<section class="flex flex-col gap-8">
   <header class="flex flex-col gap-2">
     <h2 class="home-section-title font-medium">
       {t('projects.title')}
@@ -64,7 +63,6 @@ const projects: Project[] = [
             tags={article?.tags ?? project.tags}
             repo={project.repo}
             website={project.website}
-            image={project.image}
           />
         );
       })
@@ -75,7 +73,7 @@ const projects: Project[] = [
 <style>
   .projects-grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem;
     grid-template-columns: 1fr;
   }
 </style>

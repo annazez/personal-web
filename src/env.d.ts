@@ -1,1 +1,1 @@
-import './types/fontsource';
+/// <reference types="astro/client" />

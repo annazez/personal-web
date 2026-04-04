@@ -10,29 +10,29 @@ const t = useTranslations(defaultLang);
 <Layout title={t('seo.404')}>
   <main
     id="main-content"
-    class="mx-auto flex min-h-[80vh] max-w-2xl flex-col items-center justify-center px-6 text-center"
+    class="mx-auto flex max-w-2xl flex-col items-center justify-center px-6 py-32 text-center"
   >
-    <h1 class="text-9xl font-light tracking-tight text-zinc-900 dark:text-zinc-50">404</h1>
+    <h1 class="home-display-title">404</h1>
 
-    <p class="mt-4 text-sm tracking-widest text-zinc-500 uppercase dark:text-zinc-400">
+    <p class="home-micro-label mt-4">
       System Node Not Found
     </p>
 
-    <p class="mt-6 text-zinc-600 dark:text-zinc-400">
+    <p class="home-body-text mt-6">
       The architecture you are looking for has been moved or doesn't exist in this dimension.
     </p>
 
     <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
       <a
         href="/en/"
-        class="rounded-md border border-zinc-200 px-6 py-2 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-900"
+        class="home-action-text rounded-md border border-zinc-200 px-6 py-2 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900"
       >
         English
       </a>
 
       <a
         href={`/${defaultLang}/`}
-        class="flex items-center gap-2 rounded-md border border-zinc-200 px-6 py-2 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-900"
+        class="home-action-text flex items-center gap-2 rounded-md border border-zinc-200 px-6 py-2 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900"
       >
         <Icon name="lucide:arrow-left" class="size-4" />
         <span>{t('404.return')}</span>
