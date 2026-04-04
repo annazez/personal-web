@@ -1,0 +1,41 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="flex flex-col gap-6 pt-8">
+  <div class="flex flex-col gap-5">
+    <p class="home-body-text">{t('home.contact')}</p>
+    <div class="flex flex-wrap items-center gap-6">
+      <a
+        href="mailto:anna@zezulka.me"
+        class="inline-flex rounded-full border-2 border-[var(--color-brand)] px-6 py-3 font-medium text-[var(--color-brand)] transition-colors hover:bg-[var(--color-brand)] hover:text-[var(--color-bg)]"
+      >
+        {t('home.contactCta')}
+      </a>
+      <div class="home-social-links flex items-center gap-4">
+        <a
+          href="https://www.linkedin.com/in/anna-zezulka-8956b9384"
+          target="_blank"
+          rel="me noopener noreferrer"
+          title="LinkedIn"
+        >
+          <span class="sr-only">LinkedIn</span>
+          <Icon name="lucide:linkedin" class="size-6" />
+        </a>
+        <a
+          href="https://signal.me/#eu/9qRmDm7yUKwySQZKonrkTt3YjPXONZKdBY8K-IB_rE6Fhuo0bbROi7IKN-l2C1Ky"
+          target="_blank"
+          rel="me noopener noreferrer"
+          title="Signal"
+        >
+          <span class="sr-only">Signal</span>
+          <Icon name="simple-icons:signal" class="size-6" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

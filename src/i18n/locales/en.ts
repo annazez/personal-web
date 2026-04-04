@@ -10,6 +10,28 @@ const en = {
   'projects.title': 'Projects',
   'projects.subtitle':
     'A selection of work that demonstrates my approach to architecture and design.',
+  'projects.more': 'More →',
+  'about.title': 'About me',
+  'about.more': 'More →',
+  'about.comingSoon': 'Coming soon',
+  'about.preview':
+    "I'm a software architect and psychology student based in Ostrava. I volunteer with Amnesty International and build systems that prioritize people, accessibility, and longevity over trends.",
+  'about.subtitle': 'Software architect & psychology student based in Ostrava.',
+  'about.section.who': 'Who I am',
+  'about.section.how': 'How I work',
+  'about.card.psych.title': 'Psychology meets technology',
+  'about.card.psych.description':
+    "I'm a software architect and psychology student - a combination that shapes everything I build. I care about systems that are fast and accessible, but also about the people who use them.",
+  'about.card.amnesty.title': 'Volunteer coordinator, Amnesty International Ostrava',
+  'about.card.amnesty.description':
+    "I organize events, educate about human rights, and translate materials. It's where my values meet my free time.",
+  'about.card.static.title': 'Static, privacy-first architecture',
+  'about.card.static.description':
+    "I work primarily with Astro, TypeScript, Tailwind, and React - with a strong preference for systems that don't depend on me to keep running.",
+  'about.card.contact.title': 'Get in touch',
+  'about.card.contact.description':
+    "If that sounds like a good fit for your project, I'd love to hear from you.",
+  'about.contact': 'anna@zezulka.me',
   'projects.visit': 'Visit',
   'projects.source': 'Code',
   readCaseStudy: 'Read case study',

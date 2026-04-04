@@ -185,6 +185,23 @@
     line-height: 1.15;
   }
 
+  .home-section-more-link {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition-property: color, text-decoration-color;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .home-section-more-link:hover {
+    color: var(--color-brand);
+    text-decoration-color: currentColor;
+  }
+
   .home-card-title {
     color: var(--color-brand);
     font-size: 1.25rem;

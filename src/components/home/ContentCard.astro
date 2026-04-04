@@ -1,0 +1,30 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  link?: string;
+  linkHref?: string;
+}
+
+const { title, description, link, linkHref } = Astro.props;
+const href = linkHref || link;
+const isExternal = href && !href.startsWith('mailto:') && !href.startsWith('/');
+---
+
+<li
+  class="flex flex-col rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900"
+>
+  <h3 class="home-card-title font-medium">{title}</h3>
+  <p class="home-body-text mt-2">{description}</p>
+  {
+    link && (
+      <a
+        href={href}
+        class="home-micro-label mt-3 inline-block transition-colors hover:text-(--color-brand)"
+        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      >
+        {link}
+      </a>
+    )
+  }
+</li>

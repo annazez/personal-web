@@ -28,6 +28,10 @@ export const routes = {
     en: 'inventory',
     cs: 'inventar',
   } satisfies Record<LanguageCode, string>,
+  about: {
+    en: 'about',
+    cs: 'o-mne',
+  } satisfies Record<LanguageCode, string>,
 } as const;
 
 export type { TranslationKey };

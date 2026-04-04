@@ -4,6 +4,8 @@ import Layout from '../../layouts/Layout.astro';
 import LanguagePicker from '../../components/ui/LanguagePicker.astro';
 import Hero from '../../components/home/Hero.astro';
 import ProjectsSection from '../../components/home/ProjectsSection.astro';
+import AboutSection from '../../components/home/AboutSection.astro';
+import ContactSection from '../../components/home/ContactSection.astro';
 import Footer from '../../components/ui/Footer.astro';
 import { Icon } from 'astro-icon/components';
 import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
@@ -29,42 +31,9 @@ const projectArticles = await getCollection('projects', ({ data }) => data.lang 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
     <Hero />
     <ProjectsSection projectArticles={projectArticles} />
+    <AboutSection />
 
-    <section class="flex flex-col gap-6 pt-8">
-      <div class="flex flex-col gap-5">
-        <p class="home-body-text">{t('home.contact')}</p>
-        <div class="flex flex-wrap items-center gap-6">
-          <a
-            href="mailto:anna@zezulka.me"
-            class="inline-flex rounded-full border-2 border-[var(--color-brand)] px-6 py-3 font-medium text-[var(--color-brand)] transition-colors hover:bg-[var(--color-brand)] hover:text-[var(--color-bg)]"
-          >
-            {t('home.contactCta')}
-          </a>
-          <div class="flex items-center gap-4 text-[var(--color-text-muted)]">
-            <a
-              href="https://www.linkedin.com/in/anna-zezulka-8956b9384"
-              target="_blank"
-              rel="me noopener noreferrer"
-              class="transition-colors hover:text-[var(--color-text)]"
-              title="LinkedIn"
-            >
-              <span class="sr-only">LinkedIn</span>
-              <Icon name="lucide:linkedin" class="size-6" />
-            </a>
-            <a
-              href="https://github.com/annazez"
-              target="_blank"
-              rel="me noopener noreferrer"
-              class="transition-colors hover:text-[var(--color-text)]"
-              title="GitHub"
-            >
-              <span class="sr-only">GitHub</span>
-              <Icon name="lucide:github" class="size-6" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+    <ContactSection />
 
     <Footer lang={currentLang} />
   </main>
