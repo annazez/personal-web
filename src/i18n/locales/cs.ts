@@ -16,16 +16,14 @@ const cs: TranslationDictionary = {
   'about.more': 'Více →',
   'about.comingSoon': 'Připravuji',
   'about.preview':
-    'Jsem softwarová architekta a studentka psychologie z Ostravy. Jsem dobrovolnicí v Amnesty International a stavím systémy, které upřednostňují lidi, přístupnost a dlouhověkost před trendy.',
-  'about.subtitle': 'Softwarová architekta a studentka psychologie z Ostravy.',
+    'Jsem softwarová architekta a studentka psychologie. Stavím systémy, které upřednostňují lidi, přístupnost a dlouhověkost před trendy.',
+  'about.subtitle': 'Softwarová architekta a studentka psychologie.',
   'about.section.who': 'Kdo jsem',
   'about.section.how': 'Jak pracuji',
   'about.card.psych.title': 'Psychologie a technologie',
   'about.card.psych.description':
     'Jsem softwarová architekta a studentka psychologie - kombinace, která formuje vše, co stavím. Zajímají mě systémy, které jsou rychlé a přístupné, ale také lidé, kteří je používají.',
-  'about.card.amnesty.title': 'Koordinátorka dobrovolníků, Amnesty International Ostrava',
-  'about.card.amnesty.description':
-    'Organizuji akce, vzdělávám o lidských právech a překládám materiály. Je to místo, kde se potkávají moje hodnoty a volný čas.',
+
   'about.card.static.title': 'Statická, privacy-first architektura',
   'about.card.static.description':
     'Pracuji především s Astrem, TypeScriptem, Tailwindem a Reactem - s důrazem na systémy, které na mně nemusí záviset, aby dlouhodobě fungovaly.',
@@ -37,10 +35,9 @@ const cs: TranslationDictionary = {
   'projects.source': 'Kód',
   readCaseStudy: 'Číst případovou studii',
   'projects.telperion.description':
-    'Telperion měl rozbitý, nepřístupný web, který jejich práci dělal neviditelnou. Postavila jsem ho od základů - dvojjazyčný, plně přístupný (WCAG), staticky generovaný v Astru, zdokumentovaný tak, aby ho zvládl kdokoliv po mně. Výsledkem je rychlý web, který organizace plně vlastní a může ho udržovat samostatně.',
-  'projects.personalWeb.description':
-    'Moje osobní webové portfolio. Minimalistický design zaměřený na soukromí s vysokým výkonem, bez sledování a čistou architekturou.',
-  'projects.mentalHealth.description': 'Rozpracováno.',
+    'Web neziskovky byl rozbitý a dělal jejich klimatické vzdělávání neviditelným. Navrhla jsem a dodala kompletní Jamstack ekosystém: dvojjazyčný i18n routing, automatizované e-mailové toky, WCAG přístupnost ověřovanou v CI a plně statický výstup bez potřeby serveru. Organizace nyní vlastní nezávislou, výkonnou přítomnost postavenou tak, aby vydržela.',
+  'projects.mentalHealth.description':
+    'Návrh architektury multidisciplinární wellbeing platformy pro český trh, vyvíjené ve spolupráci se specialisty na neurorehabilitaci. Zahrnuje sledování nálady (metoda RULER), digitální deník, monitorování spánku a modul krizové intervence - s klinicky podloženou personalizací přes dotazníky WHO-5, GAD-7 a PHQ-9. Aktuálně ve fázi návrhu architektury.',
   back: 'Zpět',
   feedTitle: 'Anna Zezulka – Projekty',
   feedDescription: 'Případové studie a zápisky o projektech.',

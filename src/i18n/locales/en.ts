@@ -15,16 +15,14 @@ const en = {
   'about.more': 'More →',
   'about.comingSoon': 'Coming soon',
   'about.preview':
-    "I'm a software architect and psychology student based in Ostrava. I volunteer with Amnesty International and build systems that prioritize people, accessibility, and longevity over trends.",
-  'about.subtitle': 'Software architect & psychology student based in Ostrava.',
+    "I'm a software architect and psychology student. I build systems that prioritize people, accessibility, and longevity over trends.",
+  'about.subtitle': 'Software architect & psychology student.',
   'about.section.who': 'Who I am',
   'about.section.how': 'How I work',
   'about.card.psych.title': 'Psychology meets technology',
   'about.card.psych.description':
     "I'm a software architect and psychology student - a combination that shapes everything I build. I care about systems that are fast and accessible, but also about the people who use them.",
-  'about.card.amnesty.title': 'Volunteer coordinator, Amnesty International Ostrava',
-  'about.card.amnesty.description':
-    "I organize events, educate about human rights, and translate materials. It's where my values meet my free time.",
+
   'about.card.static.title': 'Static, privacy-first architecture',
   'about.card.static.description':
     "I work primarily with Astro, TypeScript, Tailwind, and React - with a strong preference for systems that don't depend on me to keep running.",
@@ -36,10 +34,9 @@ const en = {
   'projects.source': 'Code',
   readCaseStudy: 'Read case study',
   'projects.telperion.description':
-    'Telperion had a broken, inaccessible website that made their climate education work invisible online. I rebuilt it from scratch - bilingual, fully accessible (WCAG), statically generated with Astro, and documented with an architecture guide so future contributors can take over without friction. The result is a fast, sustainable site that the organization fully owns and can maintain independently.',
-  'projects.personalWeb.description':
-    'My personal portfolio website. A minimalist, privacy-first design with fast performance, zero tracking, and clean architecture.',
-  'projects.mentalHealth.description': 'Work in progress.',
+    'An NGO\'s broken website was making their climate education work invisible. I designed and delivered a complete Jamstack ecosystem: bilingual i18n routing, automated email workflows, WCAG-compliant accessibility validated in CI, and fully static output that requires no server. The NGO now owns an independent, high-performance presence built to last.',
+  'projects.mentalHealth.description':
+    'Architecture design for a multidisciplinary wellbeing platform for the Czech market, built in collaboration with neurorehabilitation specialists. Covers mood tracking (RULER method), digital diary, sleep monitoring, and a crisis intervention module - with clinically-grounded personalisation via WHO-5, GAD-7, and PHQ-9 questionnaires. Currently in architecture design phase.',
   back: 'Back',
   feedTitle: 'Anna Zezulka – Projects',
   feedDescription: 'Case studies and project write-ups.',

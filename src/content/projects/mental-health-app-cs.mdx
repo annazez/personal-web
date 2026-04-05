@@ -2,11 +2,57 @@
 title: Mental Health App
 slug: mental-health-app
 lang: cs
-summary: Rozpracováno.
+summary: Návrh architektury multidisciplinární wellbeing platformy pokrývající mezeru v lokalizovaných, klinicky podložených nástrojích na českém trhu - vyvíjeno ve spolupráci se specialisty na neurorehabilitaci.
 publishedAt: 2026-04-04
 tags:
+  - Architektura
+  - Mobilní
+  - Zdravotnictví
   - WIP
-  - App
 ---
 
-Případová studie se připravuje. Rozpracováno.
+## Kontext
+
+Českému trhu chybí komplexní, klinicky podložené digitální nástroje pro duševní zdraví v českém jazyce. Existující řešení jsou buď generické wellness trackery bez terapeutické hloubky, nebo klinické systémy nepřístupné běžným uživatelům. Tento projekt přesně tuto mezeru adresuje.
+
+Aplikace je vyvíjena ve spolupráci s **Doc. Kotyrbou** a je navržena pro integraci do **neurorehabilačního systému NeuroCare**, čímž získává klinickou věrohodnost odlišující ji od přeplněného trhu generických wellness aplikací. Cílovou skupinou jsou lidé zvládající úzkost, depresi a stresové stavy, stejně jako uživatelé v postrehabilitační fázi.
+
+## Hlavní moduly
+
+Architektura se dělí do čtyř primárních funkčních domén, každá s vlastními datovými modely, požadavky na soukromí a interakčními vzory:
+
+**Sledování nálady (metoda RULER)** - Strukturované emocionální sebehodnocení pomocí vědecky podložené metody RULER (Recognise, Understand, Label, Express, Regulate). Modul zobrazuje longitudinální vzorce nálady a slouží jako primární zdroj dat pro personalizační engine.
+
+**Digitální deník** - Soukromý deník s end-to-end šifrováním a analýzou sentimentu jako neobsesivní opt-in vrstvou. Výzvy jsou dynamicky přizpůsobovány na základě aktuálního emocionálního stavu uživatele a diagnostické výchozí linie.
+
+**Monitorování spánku** - Pasivní sběr dat přes senzory zařízení a volitelná integrace nositelných technologií. Modul koreluje metriky kvality spánku se záznamy nálady a odhaluje využitelné vzorce bez patologizace normálních výkyvů.
+
+**Krizová intervence (SOS modul)** - Zpevněný, vždy dostupný nouzový průchod. Modul poskytuje stupňované možnosti intervence: od uzemnění a dechových cvičení po přímý kontakt s krizovými linkami. Architektonický požadavek: modul musí zůstat dostupný i při omezené konektivitě, kritické assety jsou tedy defaultně cachovány offline.
+
+## Záznamy architektonických rozhodnutí
+
+### ADR-01: Soukromí dat a klinická transparentnost
+
+**Kontext:** Aplikace zpracovává citlivé zdravotní údaje Kategorie I dle GDPR. Uživatelé sdílející intimní detaily o svém duševním stavu musí mít naprostou jistotu ohledně toho, jak jsou jejich data používána, uchovávána a - klíčově - nikdy prodávána. Důvěra není UX funkcí; je samotným produktem.
+
+**Rozhodnutí:** Architektura privacy-by-design s maximálním lokálním zpracováním dat. Explicitní, granulované toky souhlasu pro veškerá data opouštějící zařízení. Jasný anonymizační pipeline pro případné přispívání k výzkumu, s opt-in mechanikou a srozumitelným vysvětlením způsobu využití dat. Žádné dark patterns. Žádné výchozí sdílení dat. Anonymizační vrstva odděluje PII od klinických dat v bodě příjmu, před jakoukoli agregací.
+
+**Důsledky:** Omezená flexibilita pro cloudové personalizační funkce v reálném čase v raných verzích. Vyšší počáteční investice do local-first datové vrstvy. Výrazná dlouhodobá výhoda v důvěře uživatelů, regulatorní shodě a vhodnosti pro integraci do certifikovaných klinických systémů jako NeuroCare.
+
+---
+
+### ADR-02: Klinicky podložený personalizační engine
+
+**Kontext:** Generické wellness aplikace nabízejí generické rady. Tato aplikace musí dodávat kontextově přiměřený obsah uživatelům v různých psychologických stavech - od zvládání mírného stresu po aktivní epizody nálady. Jednotná odpověď je v této oblasti aktivně škodlivá.
+
+**Rozhodnutí:** Personalizační engine je inicializován třemi validovanými klinickými nástroji: **WHO-5** (celková pohoda), **GAD-7** (závažnost úzkosti) a **PHQ-9** (screening deprese). Tyto dotazníky jsou administrovány periodicky a v kontextově vhodných momentech (nikoli jako rušivé popupy). Výsledné skóre tvoří dynamický model stavu uživatele, který řídí doporučení obsahu, obtížnost cvičení, tón výzev v deníku a frekvenci notifikací.
+
+Úpravy doporučení řízené AI jsou prováděny transparentně; uživatelé mohou nahlédnout do důvodu zobrazení konkrétního doporučení. Engine nediagnostikuje; kontextualizuje. Klinická interpretace zůstává doménou kvalifikovaných odborníků v rámci integrační vrstvy NeuroCare.
+
+**Důsledky:** Výrazně komplexnější taxonomie obsahu a logika doporučení oproti standardnímu systému založenému na pravidlech. Vyžaduje průběžný klinický poradní vztah pro validaci prahových skóre a protokolů odpovědí. Kompromisem je systém poskytující skutečně personalizovanou podporu, nikoli pouze personalizaci jako marketingovou funkci.
+
+## Aktuální stav
+
+**Probíhá / Fáze návrhu architektury.** Systémová architektura a specifikace modulů jsou hotové. Rámec klinické spolupráce s Doc. Kotyrbou a specifikace integrace NeuroCare jsou v aktivním vývoji. Inženýrská implementace začíná po dokončení přezkumu architektury soukromí.
+
+Architektonické základy jsou záměrně robustní: rozhodnutí přijatá v této fázi určují, zda bude aplikace schopna v budoucnu fungovat v certifikovaném klinickém kontextu, nebo zůstane spotřebitelským produktem. Tento rozdíl je brán vážně od samého počátku.

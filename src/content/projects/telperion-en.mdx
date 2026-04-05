@@ -2,22 +2,46 @@
 title: Telperion
 slug: telperion
 lang: en
-summary: Rebuilding a bilingual NGO site with a structured Astro architecture and privacy-first defaults.
+summary: Designing a complete Jamstack ecosystem for a bilingual NGO - from infrastructure and i18n routing to automated email workflows and zero-maintenance ownership.
 publishedAt: 2026-04-03
 tags:
   - Astro
-  - Tailwind
   - i18n
+  - SSG
+  - WCAG
+  - Jamstack
 ---
 
 ## The Problem
 
-Telperion is an NGO focused on climate education, but their previous website was visually broken, difficult to navigate, and lacked basic accessibility features. This made their crucial resources almost invisible online and hindered their mission to educate the public.
+Telperion is an NGO dedicated to climate education. Their existing digital presence was a liability: the site was visually broken, structurally inaccessible, and offered no coherent bilingual experience. Their educational resources - the core output of their mission - were nearly invisible to the public. The organisation lacked the in-house developer capacity to maintain a complex system, which made long-term sustainability a non-negotiable requirement from day one.
 
-## The Approach
+## The Architecture
 
-I rebuilt the platform from the ground up using Astro for fast static generation and a minimal JavaScript footprint. The new architecture is fully bilingual (English and Czech), adheres strictly to WCAG accessibility guidelines, and is styled with a modular Tailwind CSS system. I prioritized performance and resilience, ensuring the site loads instantly even on slow connections.
+This was not a frontend reskin. The engagement covered the full delivery stack: static site generation, native i18n routing, integrated contact and application form handling, automated transactional email via a serverless function layer, and a newsletter integration for ongoing audience engagement. The result is a self-contained, independently operated ecosystem that requires no runtime server, no database, and no paid third-party CMS.
+
+The NGO now has complete ownership. A contributor with basic HTML literacy can update content without touching infrastructure. A future developer inherits a fully documented, dependency-minimal codebase with a clear architectural rationale.
+
+## Architectural Decision Records
+
+### ADR-01: Static Site Generation via Astro
+
+**Context:** The NGO required exceptional performance, an extremely low carbon footprint, and a hosting cost that trends toward zero. A dynamic server-rendered site would introduce operational overhead the client could not sustainably absorb.
+
+**Decision:** Astro as the SSG framework with zero client-side JavaScript by default.
+
+**Consequences:** Sub-second load times on constrained connections. No backend attack surface - the entire output is a folder of pre-rendered HTML, CSS, and optimised assets. Hosting on a static CDN eliminates server management entirely. The architectural choice directly maps to the NGO's own values around sustainability.
+
+---
+
+### ADR-02: Native i18n Routing and CI-Enforced WCAG Compliance
+
+**Context:** Telperion operates across a bilingual (Czech and English) audience, including users with visual impairments who depend on screen readers. Accessibility could not be an afterthought bolted on at the end; it had to be load-bearing.
+
+**Decision:** Astro's built-in i18n routing for language separation. Strict WCAG 2.1 AA compliance validated at every build via automated Lighthouse and axe-core checks integrated into the CI/CD pipeline. No PR merges if contrast ratios, ARIA labelling, or heading structure are violated.
+
+**Consequences:** The language-aware URL structure (`/en/`, `/cs/`) is handled at the framework level with no client-side routing overhead. Accessibility regressions are caught before they reach production, meaning the project's commitment to inclusive design is structurally enforced, not aspirational.
 
 ## The Outcome
 
-The result is a sustainable, lightning-fast website that Telperion fully owns. I also delivered comprehensive architectural documentation, empowering future contributors to maintain and extend the site without friction or dependency on any single developer.
+The delivered ecosystem achieves a Lighthouse performance score of 100. The site is fully bilingual, fully accessible, zero-cookie, and zero-tracking by design. The NGO has an authoritative online presence that reflects the seriousness of their educational mission and a maintainable codebase they genuinely own.

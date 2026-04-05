@@ -2,11 +2,57 @@
 title: Mental Health App
 slug: mental-health-app
 lang: en
-summary: Work in progress.
+summary: Architecture design for a multidisciplinary wellbeing platform targeting the gap in localized, clinically-grounded mental health tooling on the Czech market - built in collaboration with neurorehabilitation specialists.
 publishedAt: 2026-04-04
 tags:
+  - Architecture
+  - Mobile
+  - Healthcare
   - WIP
-  - App
 ---
 
-Case study coming soon. Work in progress.
+## Context
+
+The Czech market lacks comprehensive, clinically-grounded digital mental health tools in the local language. Existing solutions are either generic wellness trackers without therapeutic depth, or clinical systems that are inaccessible to non-specialist users. This project addresses that gap directly.
+
+The application is being developed in collaboration with **Doc. Kotyrba** and is designed for integration into the **NeuroCare neurorehabilitation system**, giving it a clinical credibility layer that distinguishes it from the crowded generic wellness app market. The target population includes individuals managing anxiety, depression, and stress-related conditions, as well as users in post-rehabilitation phases.
+
+## Core Modules
+
+The architecture decomposes into four primary functional domains, each with distinct data models, privacy requirements, and interaction patterns:
+
+**Mood Tracking (RULER Method)** - Structured emotional self-reporting using the evidence-based RULER framework (Recognise, Understand, Label, Express, Regulate). The module surfaces longitudinal mood patterns and serves as the primary data source for the personalisation engine.
+
+**Digital Diary** - A private, end-to-end encrypted journaling module with sentiment analysis as an opt-in non-intrusive layer. Prompts are dynamically adjusted based on the user's current emotional state and diagnostic baseline.
+
+**Sleep Monitoring** - Passive data collection via device sensors and optional wearable integration. The module correlates sleep quality metrics with mood entries to surface actionable pattern insights without pathologising normal variation.
+
+**Crisis Intervention (SOS Module)** - A hardened, always-accessible emergency pathway. The module provides graded intervention options: from grounding exercises and breathing protocols to direct contact with crisis lines. Architectural requirement: this module must remain accessible even in degraded connectivity states, meaning critical assets are cached offline by default.
+
+## Architectural Decision Records
+
+### ADR-01: Data Privacy and Clinical Transparency
+
+**Context:** The application handles Category I sensitive health data under GDPR. Users sharing intimate details about their mental state must have absolute confidence in how that data is used, stored, and - critically - never sold. Trust is not a UX feature; it is the product.
+
+**Decision:** A privacy-by-design architecture with full local data processing where possible. Explicit, granular consent flows for any data that leaves the device. A clear anonymisation pipeline for any research data contribution, with opt-in mechanics and a plain-language data usage explanation. No dark patterns. No default data sharing. The anonymisation layer separates PII from clinical data at the point of ingestion, before any aggregation occurs.
+
+**Consequences:** Reduced flexibility for real-time cloud-based personalisation features in early versions. Higher initial engineering investment in the local-first data layer. Significant long-term advantage in user trust, regulatory compliance, and suitability for integration into certified clinical systems like NeuroCare.
+
+---
+
+### ADR-02: Clinically-Grounded Personalisation Engine
+
+**Context:** Generic wellness apps offer generic advice. This application needs to deliver contextually appropriate content to users in genuinely varied psychological states - from mild stress management to active mood episodes. A one-size response is actively harmful in this domain.
+
+**Decision:** The personalisation engine is seeded by three validated clinical instruments: **WHO-5** (general wellbeing), **GAD-7** (anxiety severity), and **PHQ-9** (depression screening). These questionnaires are administered periodically and at contextually appropriate moments (not as intrusive popups). The resulting scores form a dynamic user state model that governs content recommendations, exercise difficulty, diary prompt tone, and notification frequency.
+
+AI-driven recommendation adjustments are made transparently, with users able to inspect why a particular recommendation was surfaced. The engine does not diagnose; it contextualises. Clinical interpretation remains the domain of qualified professionals within the NeuroCare integration layer.
+
+**Consequences:** Significantly more complex content taxonomy and recommendation logic than a standard rule-based system. Requires an ongoing clinical advisory relationship to validate scoring thresholds and response protocols. The tradeoff is a system that provides genuinely personalised support rather than performing personalisation as a marketing feature.
+
+## Current Status
+
+**Work in Progress / Architecture Design Phase.** The system architecture and module specifications are complete. The clinical collaboration framework with Doc. Kotyrba and the NeuroCare integration spec are in active development. Engineering implementation begins following finalisation of the privacy architecture review.
+
+The design groundwork is intentionally robust: the decisions made at this phase determine whether the application can eventually operate within a certified clinical context or remains a consumer product. That distinction is being taken seriously from the start.
