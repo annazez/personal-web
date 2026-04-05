@@ -34,7 +34,7 @@ const en = {
   'projects.source': 'Code',
   readCaseStudy: 'Read case study',
   'projects.telperion.description':
-    'An NGO\'s broken website was making their climate education work invisible. I designed and delivered a complete Jamstack ecosystem: bilingual i18n routing, automated email workflows, WCAG-compliant accessibility validated in CI, and fully static output that requires no server. The NGO now owns an independent, high-performance presence built to last.',
+    "An NGO's broken website was making their climate education work invisible. I designed and delivered a complete Jamstack ecosystem: bilingual i18n routing, automated email workflows, WCAG-compliant accessibility validated in CI, and fully static output that requires no server. The NGO now owns an independent, high-performance presence built to last.",
   'projects.mentalHealth.description':
     'Architecture design for a multidisciplinary wellbeing platform for the Czech market, built in collaboration with neurorehabilitation specialists. Covers mood tracking (RULER method), digital diary, sleep monitoring, and a crisis intervention module - with clinically-grounded personalisation via WHO-5, GAD-7, and PHQ-9 questionnaires. Currently in architecture design phase.',
   back: 'Back',
