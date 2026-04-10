@@ -12,17 +12,16 @@ test('carbon footprint hides when unavailable', async ({ page }) => {
       return originalGetEntriesByType(type);
     };
 
-    // Override document.body?.innerHTML to have 0 length when TextEncoder reads it,
-    // though empty navigation and resource entries should be enough to yield size 0.
-    // The calculateCarbonValue relies on:
-    // navigationSize (0) + bodySize + resourcesSize (0)
-    // If bodySize > 0, it might calculate a small footprint.
-    // Let's redefine TextEncoder to always return 0 length.
-    const OriginalTextEncoder = globalThis.TextEncoder;
-    globalThis.TextEncoder = class TextEncoderMock extends OriginalTextEncoder {
-      encode(_input?: string) {
+    // Patch TextEncoder.prototype.encode to return empty bytes for string inputs,
+    // forcing bodySize to 0 so that calculateCarbonValue returns null.
+    // Combined with the empty navigation/resource entries above, totalSize becomes 0
+    // and the error path ('Carbon footprint unavailable') is triggered.
+    const origEncode = TextEncoder.prototype.encode;
+    TextEncoder.prototype.encode = function (input?: string) {
+      if (typeof input === 'string') {
         return new Uint8Array(0);
       }
+      return origEncode.call(this, input);
     };
   });
 
@@ -30,6 +29,10 @@ test('carbon footprint hides when unavailable', async ({ page }) => {
 
   // The carbon footprint parent is a <p> tag with data-carbon-footprint.
   const parentContainer = page.locator('p[data-carbon-footprint]');
+
+  // Assert the element is present in the DOM before checking visibility,
+  // so the test doesn't silently pass if the element is missing for unrelated reasons.
+  await expect(parentContainer).toHaveCount(1);
 
   // Wait for the container to become hidden due to the error.
   // The error is thrown after a 500ms calculation delay.
