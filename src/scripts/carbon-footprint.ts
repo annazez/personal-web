@@ -43,13 +43,12 @@ const renderCarbonFootprint = (valueElement: HTMLElement): Promise<void> => {
   return new Promise<void>((resolve) => {
     const handleTransitionEnd = (event: TransitionEvent) => {
       if (event.propertyName !== 'opacity') return;
-      valueElement.removeEventListener('transitionend', handleTransitionEnd);
       valueElement.textContent = formatCarbonFootprint(gramsCo2);
       valueElement.style.opacity = '1';
       resolve();
     };
 
-    valueElement.addEventListener('transitionend', handleTransitionEnd);
+    valueElement.addEventListener('transitionend', handleTransitionEnd, { once: true });
     valueElement.style.opacity = '0';
   });
 };
