@@ -4,6 +4,8 @@ const cs: TranslationDictionary = {
   'role.title': 'Softwarová architektka',
   'hero.manifesto':
     'Navrhuji systémy, které jsou rychlé, přístupné a postavené tak, aby fungovaly nezávisle na mně.',
+  'home.contactLabel': 'Kontakt',
+  'home.contactTitle': 'Ozvěte se',
   'home.contact': 'Chcete pomoci s projektem?',
   'home.contactCta': 'Napište mi →',
   'home.social.linkedin': 'LinkedIn',
@@ -18,7 +20,7 @@ const cs: TranslationDictionary = {
   'hero.minimalByDesign': 'Navrženo minimalisticky.',
   'projects.title': 'Projekty',
   'projects.subtitle': 'Výběr prací, které ukazují můj přístup k architektuře a designu.',
-  'projects.more': 'Více →',
+  'projects.more': 'Všechny projekty',
   'projects.visit': 'Navštívit',
   'projects.source': 'Kód',
   'projects.carousel.previous': 'Předchozí projekt',
@@ -46,6 +48,7 @@ const cs: TranslationDictionary = {
   'quality.title': 'Kvalita webu',
   'quality.summary':
     'Poslední snapshot Lighthouse CI generovaný v doručovací pipeline pro transparentnost a technický audit.',
+  'quality.details': 'podrobnosti',
   'footer.carbonFootprint': 'Uhlíková stopa:',
   'footer.loading': 'počítám...',
   '404.return': 'Domů',

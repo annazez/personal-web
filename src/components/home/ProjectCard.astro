@@ -23,7 +23,7 @@ const safeRepo = toSafeExternalUrl(repo);
 <article class="flex h-full min-w-0 flex-col gap-5">
   <div class="flex flex-1 flex-col gap-2">
     <div class="flex items-start justify-between">
-      <h3>{title}</h3>
+      <h3 class="text-[1.625rem] leading-[1.15] font-medium tracking-[-0.02em]">{title}</h3>
     </div>
 
     {description && <p class="home-body-text">{description}</p>}
@@ -48,51 +48,53 @@ const safeRepo = toSafeExternalUrl(repo);
   </div>
 
   {
-    (safeWebsite || safeRepo) && (
-      <div
-        class:list={[
-          'mt-auto grid gap-2 border-t border-(--color-border) pt-3',
-          safeWebsite && safeRepo ? 'grid-cols-2' : 'grid-cols-1',
-        ]}
-      >
-        {safeWebsite && (
-          <a
-            href={safeWebsite}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${t('projects.visit')} ${title}`}
-            class="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-200 px-4 py-2.5 text-sm font-medium text-(--color-brand) transition-colors hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600"
+    (safeWebsite || safeRepo || articleSlug) && (
+      <div class="mt-auto flex flex-col gap-2">
+        {(safeWebsite || safeRepo) && (
+          <div
+            class:list={[
+              'grid gap-2 border-t border-(--color-border) pt-3',
+              safeWebsite && safeRepo ? 'grid-cols-2' : 'grid-cols-1',
+            ]}
           >
-            <Icon name="lucide:external-link" class="h-4 w-4" />
-            {t('projects.visit')}
-          </a>
+            {safeWebsite && (
+              <a
+                href={safeWebsite}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${t('projects.visit')} ${title}`}
+                class="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-200 px-4 py-2.5 text-sm font-medium text-(--color-brand) transition-colors hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600"
+              >
+                <Icon name="lucide:external-link" class="h-4 w-4" />
+                {t('projects.visit')}
+              </a>
+            )}
+            {safeRepo && (
+              <a
+                href={safeRepo}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${t('projects.source')} ${title}`}
+                class="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-100 px-4 py-2.5 text-sm font-medium text-(--color-text-secondary) transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+              >
+                <Icon name="lucide:code-2" class="h-4 w-4" />
+                {t('projects.source')}
+              </a>
+            )}
+          </div>
         )}
-        {safeRepo && (
+
+        {articleSlug && (
           <a
-            href={safeRepo}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${t('projects.source')} ${title}`}
-            class="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-100 px-4 py-2.5 text-sm font-medium text-(--color-text-secondary) transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+            href={`/${lang}/projects/${articleSlug}/`}
+            aria-label={`${t('readCaseStudy')} ${title}`}
+            class="flex w-full items-center justify-center gap-2 rounded-xl border border-(--color-border) bg-zinc-50 px-4 py-2.5 text-sm font-medium text-(--color-text-secondary) transition-colors hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800"
           >
-            <Icon name="lucide:code-2" class="h-4 w-4" />
-            {t('projects.source')}
+            <Icon name="lucide:file-text" class="h-4 w-4" />
+            {t('readCaseStudy')}
           </a>
         )}
       </div>
-    )
-  }
-
-  {
-    articleSlug && (
-      <a
-        href={`/${lang}/projects/${articleSlug}/`}
-        aria-label={`${t('readCaseStudy')} ${title}`}
-        class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-(--color-border) bg-zinc-50 px-4 py-2.5 text-sm font-medium text-(--color-text-secondary) transition-colors hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800"
-      >
-        <Icon name="lucide:file-text" class="h-4 w-4" />
-        {t('readCaseStudy')}
-      </a>
     )
   }
 </article>

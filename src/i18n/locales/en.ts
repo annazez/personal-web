@@ -2,6 +2,8 @@ const en = {
   'role.title': 'Software Architect',
   'hero.manifesto':
     'I design systems that are fast, accessible, and built to last - not just today, but for whoever comes after me.',
+  'home.contactLabel': 'Contact',
+  'home.contactTitle': "Let's talk",
   'home.contact': 'Have a project in mind, or just want to say hello?',
   'home.contactCta': 'Get in touch →',
   'home.social.linkedin': 'LinkedIn',
@@ -17,7 +19,7 @@ const en = {
   'projects.title': 'Projects',
   'projects.subtitle':
     'A selection of work that demonstrates my approach to architecture and design.',
-  'projects.more': 'More →',
+  'projects.more': 'View all projects',
   'projects.visit': 'Visit',
   'projects.source': 'Code',
   'projects.carousel.previous': 'Previous project',
@@ -46,6 +48,7 @@ const en = {
   'quality.title': 'Site quality',
   'quality.summary':
     'Latest Lighthouse CI snapshot generated in the delivery pipeline for transparency and technical review.',
+  'quality.details': 'Details',
   'footer.carbonFootprint': 'Carbon footprint:',
   'footer.loading': 'calculating...',
   '404.return': 'Home',

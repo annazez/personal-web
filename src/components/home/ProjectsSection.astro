@@ -42,14 +42,15 @@ const projects: Project[] = [
 <section
   class="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5"
 >
-  <project-carousel class="flex flex-col gap-6">
-    <header class="flex flex-col gap-2">
-      <h2 class="flex items-baseline justify-between gap-4">
-        <span>{t('projects.title')}</span>
+  <project-carousel class="flex flex-col gap-4">
+    <header class="flex flex-col gap-3 border-b border-(--color-border) pb-4">
+      <div class="flex items-center justify-between gap-4">
+        <h2>{t('projects.title')}</h2>
         <a href={projectsHref} class="home-section-more-link">
-          {moreLabel}
+          <span>{moreLabel}</span>
+          <Icon name="lucide:arrow-right" class="home-section-more-link-icon" />
         </a>
-      </h2>
+      </div>
       <p class="home-body-text">
         {t('projects.subtitle')}
       </p>
@@ -65,18 +66,16 @@ const projects: Project[] = [
 
             return (
               <div class="w-full flex-none shrink-0 snap-center">
-                <div class="h-full overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5">
-                  <ProjectCard
-                    title={article?.title ?? project.title}
-                    description={project.description}
-                    articleSlug={
-                      project.slug === 'telperion' ? (article?.slug ?? project.slug) : undefined
-                    }
-                    tags={article?.tags ?? []}
-                    repo={project.repo}
-                    website={project.website}
-                  />
-                </div>
+                <ProjectCard
+                  title={article?.title ?? project.title}
+                  description={project.description}
+                  articleSlug={
+                    project.slug === 'telperion' ? (article?.slug ?? project.slug) : undefined
+                  }
+                  tags={article?.tags ?? []}
+                  repo={project.repo}
+                  website={project.website}
+                />
               </div>
             );
           })
@@ -90,7 +89,7 @@ const projects: Project[] = [
         >
           <Icon name="lucide:arrow-left" class="size-5 sm:size-6" />
         </button>
-        <div class="dots flex flex-1 justify-center gap-2">
+        <div class="dots flex flex-1 justify-center gap-3">
           {
             projects.map((_, i) => (
               <button
