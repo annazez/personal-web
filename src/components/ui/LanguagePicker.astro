@@ -42,14 +42,14 @@ function getLocalizedHref(targetLang: LanguageCode): string {
             aria-current={currentLang === code ? 'page' : undefined}
             class={
               currentLang === code
-                ? 'text-[var(--color-brand)]'
-                : 'text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-brand)]'
+                ? 'text-(--color-brand)'
+                : 'text-(--color-text-muted) transition-colors hover:text-(--color-brand)'
             }
           >
             {label}
           </a>
           {index < languageEntries.length - 1 && (
-            <span class="text-[var(--color-text-muted)]">/</span>
+            <span class="text-(--color-text-muted)">/</span>
           )}
         </>
       ))

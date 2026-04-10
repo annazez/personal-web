@@ -85,7 +85,7 @@ const projects: Project[] = [
 
     <div class="mt-2 flex items-center justify-between px-2">
       <button
-        class="nav-btn prev p-2 text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-brand)] disabled:opacity-30 disabled:hover:text-[var(--color-text-muted)]"
+        class="nav-btn prev p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) disabled:opacity-30 disabled:hover:text-(--color-text-muted)"
         aria-label="Previous project"
       >
         <Icon name="lucide:arrow-left" class="size-5 sm:size-6" />
@@ -95,13 +95,13 @@ const projects: Project[] = [
           projects.map((_, i) => (
             <button
               aria-label={`Go to slide ${i + 1}`}
-              class="dot size-2.5 rounded-full bg-[var(--color-border)] transition-colors data-[active=true]:bg-[var(--color-brand)]"
+              class="dot size-2.5 rounded-full bg-(--color-border) transition-colors data-[active=true]:bg-(--color-brand)"
             />
           ))
         }
       </div>
       <button
-        class="nav-btn next p-2 text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-brand)] disabled:opacity-30 disabled:hover:text-[var(--color-text-muted)]"
+        class="nav-btn next p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) disabled:opacity-30 disabled:hover:text-(--color-text-muted)"
         aria-label="Next project"
       >
         <Icon name="lucide:arrow-right" class="size-5 sm:size-6" />
