@@ -29,7 +29,7 @@ const projectArticles = await getCollection('projects', ({ data }) => data.lang 
     <BackLink href={`/${currentLang}/`} />
 
     <header class="flex flex-col gap-3">
-      <h1 class="home-display-title">{t('projects.title')}</h1>
+      <h1>{t('projects.title')}</h1>
       <p class="home-body-text max-w-2xl">{t('projects.subtitle')}</p>
     </header>
 

@@ -1,30 +1,88 @@
 ---
+import placeholderData from '../data/lighthouse.localhost.json';
 import lighthouseData from '../data/lighthouse.json';
 import type { LighthouseData } from '../types/lighthouse';
 
-const data = lighthouseData as LighthouseData;
-const hasData = Boolean(data.generatedAt);
+const isLocalhost = Astro.url.hostname === 'localhost' || Astro.url.hostname === '127.0.0.1';
+const data = (isLocalhost ? placeholderData : lighthouseData) as LighthouseData;
+const pages = [...(data.pages ?? [])].sort((a, b) => a.path.localeCompare(b.path));
+const selectedPage = pages[0] ?? null;
+const hasData = pages.length > 0;
 
 const measuredAt = data.generatedAt ? new Date(data.generatedAt) : null;
 const measuredAtLabel =
   measuredAt && !Number.isNaN(measuredAt.getTime())
     ? measuredAt.toLocaleString('cs-CZ')
-    : data.generatedAt;
+    : 'No snapshot available yet.';
 
-const scores = [
-  { key: 'performance', label: 'Performance', value: data.performance },
-  { key: 'accessibility', label: 'Accessibility', value: data.accessibility },
-  { key: 'best-practices', label: 'Best practices', value: data.bestPractices },
-  { key: 'seo', label: 'SEO', value: data.seo },
-] as const;
+type ScoreKey = 'performance' | 'accessibility' | 'bestPractices' | 'seo';
+type MetricKey = 'lcp' | 'tbt' | 'cls' | 'fcp' | 'ttfb';
 
-const metrics = [
-  { key: 'lcp', label: 'LCP', value: data.lcp },
-  { key: 'tbt', label: 'TBT', value: data.tbt },
-  { key: 'cls', label: 'CLS', value: data.cls },
-  { key: 'fcp', label: 'FCP', value: data.fcp },
-  { key: 'ttfb', label: 'TTFB', value: data.ttfb },
-] as const;
+const scoreDefinitions: ReadonlyArray<{ key: ScoreKey; label: string }> = [
+  { key: 'performance', label: 'Performance' },
+  { key: 'accessibility', label: 'Accessibility' },
+  { key: 'bestPractices', label: 'Best practices' },
+  { key: 'seo', label: 'SEO' },
+];
+
+const metricDefinitions: ReadonlyArray<{ key: MetricKey; label: string }> = [
+  { key: 'lcp', label: 'LCP' },
+  { key: 'tbt', label: 'TBT' },
+  { key: 'cls', label: 'CLS' },
+  { key: 'fcp', label: 'FCP' },
+  { key: 'ttfb', label: 'TTFB' },
+];
+
+const rankLookupByScoreKey: Record<ScoreKey, Map<string, number>> = {
+  performance: new Map<string, number>(),
+  accessibility: new Map<string, number>(),
+  bestPractices: new Map<string, number>(),
+  seo: new Map<string, number>(),
+};
+
+const rankCountByScoreKey: Record<ScoreKey, number> = {
+  performance: 0,
+  accessibility: 0,
+  bestPractices: 0,
+  seo: 0,
+};
+
+for (const score of scoreDefinitions) {
+  const rankedPages = pages
+    .filter(page => typeof page[score.key] === 'number')
+    .sort((a, b) => (b[score.key] as number) - (a[score.key] as number));
+
+  rankCountByScoreKey[score.key] = rankedPages.length;
+  for (const [index, page] of rankedPages.entries()) {
+    rankLookupByScoreKey[score.key].set(page.path, index + 1);
+  }
+}
+
+const formatTimestamp = (value: string | null): string => {
+  if (!value) {
+    return 'N/A';
+  }
+
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString('cs-CZ');
+};
+
+const formatRank = (scoreKey: ScoreKey, path: string | null): string => {
+  if (!path) {
+    return 'N/A';
+  }
+
+  const rank = rankLookupByScoreKey[scoreKey].get(path);
+  const total = rankCountByScoreKey[scoreKey];
+  if (!rank || total === 0) {
+    return 'N/A';
+  }
+
+  return `#${rank}/${total}`;
+};
+
+const resultsByPath = Object.fromEntries(pages.map(page => [page.path, page]));
+const serializedResultsByPath = JSON.stringify(resultsByPath).replace(/</g, '\\u003c');
 
 const scoreClassName = (score: number | null): string => {
   if (score === null) {
@@ -44,39 +102,420 @@ const scoreClassName = (score: number | null): string => {
 ---
 
 {
-  hasData && (
-    <section class="space-y-5" aria-label="Lighthouse results">
-      <header class="space-y-1">
-        <h2 class="text-lg font-semibold text-(--color-text)">Lighthouse CI</h2>
-        <p class="text-sm text-(--color-text-muted)">
-          Mereno:
-          <time datetime={data.generatedAt!}>{measuredAtLabel}</time>
-        </p>
+  (
+    <section
+      class="flex flex-col gap-6"
+      aria-label="Lighthouse results"
+      data-lighthouse-dashboard
+      data-results={serializedResultsByPath}
+    >
+      <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h2>Lighthouse CI</h2>
+          {data.generatedAt ? (
+            <p class="text-sm text-(--color-text-muted)">
+              <time datetime={data.generatedAt}>{measuredAtLabel}</time>
+            </p>
+          ) : (
+            <p class="text-sm text-(--color-text-muted)">No snapshot available yet.</p>
+          )}
+        </div>
+
+        <div class="w-full sm:w-auto sm:min-w-64">
+          <select
+            id="lighthouse-page-filter"
+            data-page-select
+            class="home-body-text w-full rounded-lg border border-(--color-border) bg-(--color-bg) px-3 py-2"
+          >
+            {pages.map(page => (
+              <option value={page.path} selected={page.path === selectedPage?.path}>
+                {page.path}
+              </option>
+            ))}
+          </select>
+        </div>
       </header>
 
-      <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-        {scores.map(score => (
-          <div class="rounded-xl border border-(--color-border) bg-(--color-bg-surface) p-3">
-            <p class="text-xs font-medium tracking-wide text-(--color-text-muted) uppercase">
-              {score.label}
-            </p>
-            <p
-              class={`mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1 ring-inset ${scoreClassName(score.value)}`}
-            >
-              {score.value ?? 'N/A'}
-            </p>
+      <div class="flex flex-col gap-4">
+        <dl class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+          <div class="flex items-center justify-between gap-3 border-b border-(--color-border) py-1.5">
+            <dt class="text-sm font-medium text-(--color-text)">Path</dt>
+            <dd class="text-sm text-(--color-text-muted)" data-page-path>
+              {selectedPage?.path ?? 'N/A'}
+            </dd>
           </div>
-        ))}
+
+          <div class="flex items-center justify-between gap-3 border-b border-(--color-border) py-1.5">
+            <dt class="text-sm font-medium text-(--color-text)">URL</dt>
+            <dd class="truncate text-sm text-(--color-text-muted)" data-page-url>
+              {selectedPage?.url ?? 'N/A'}
+            </dd>
+          </div>
+
+          <div class="flex items-center justify-between gap-3 border-b border-(--color-border) py-1.5">
+            <dt class="text-sm font-medium text-(--color-text)">Measured</dt>
+            <dd class="text-sm text-(--color-text-muted)" data-page-time>
+              {formatTimestamp(selectedPage?.generatedAt ?? null)}
+            </dd>
+          </div>
+
+          <div class="flex items-center justify-between gap-3 border-b border-(--color-border) py-1.5">
+            <dt class="text-sm font-medium text-(--color-text)">Runs</dt>
+            <dd class="text-sm text-(--color-text-muted)" data-page-runs>
+              {selectedPage?.runs ?? 'N/A'}
+            </dd>
+          </div>
+        </dl>
+
+        <div class="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          {scoreDefinitions.map(score => (
+            <div class="rounded-xl border border-(--color-border) bg-(--color-bg-surface) p-3">
+              <p class="text-xs font-medium tracking-wide text-(--color-text-muted) uppercase">
+                {score.label}
+              </p>
+              <p
+                data-score-badge={score.key}
+                class={`mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1 ring-inset ${scoreClassName(selectedPage?.[score.key] ?? null)}`}
+              >
+                {selectedPage?.[score.key] ?? 'N/A'}
+              </p>
+              <p class="mt-1 text-xs text-(--color-text-muted)" data-score-rank={score.key}>
+                {formatRank(score.key, selectedPage?.path ?? null)}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <dl class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+          {metricDefinitions.map(metric => (
+            <div class="flex items-center justify-between gap-3 border-b border-(--color-border) py-1.5">
+              <dt class="text-sm font-medium text-(--color-text)">{metric.label}</dt>
+              <dd class="text-sm text-(--color-text-muted)" data-metric-value={metric.key}>
+                {selectedPage?.[metric.key] ?? 'N/A'}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
 
-      <dl class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
-        {metrics.map(metric => (
-          <div class="flex items-center justify-between gap-3 border-b border-(--color-border) py-1.5">
-            <dt class="text-sm font-medium text-(--color-text)">{metric.label}</dt>
-            <dd class="text-sm text-(--color-text-muted)">{metric.value ?? 'N/A'}</dd>
-          </div>
-        ))}
-      </dl>
+      {!hasData && (
+        <p class="text-sm text-(--color-text-muted)">
+          No Lighthouse page results available yet. Run Lighthouse CI to populate this dashboard.
+        </p>
+      )}
     </section>
   )
 }
+
+<script is:inline>
+  const dashboards = document.querySelectorAll('[data-lighthouse-dashboard]');
+
+  const scoreKeys = ['performance', 'accessibility', 'bestPractices', 'seo'];
+  const metricKeys = ['lcp', 'tbt', 'cls', 'fcp', 'ttfb'];
+  const badgeBaseClass =
+    'mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1 ring-inset';
+
+  const scoreClassName = value => {
+    if (typeof value !== 'number') {
+      return 'bg-stone-100 text-stone-700 ring-stone-200';
+    }
+
+    if (value >= 90) {
+      return 'bg-emerald-100 text-emerald-800 ring-emerald-200';
+    }
+
+    if (value >= 50) {
+      return 'bg-amber-100 text-amber-800 ring-amber-200';
+    }
+
+    return 'bg-rose-100 text-rose-800 ring-rose-200';
+  };
+
+  const normalizePath = value => {
+    if (!value) {
+      return null;
+    }
+
+    try {
+      const parsed =
+        value.startsWith('http://') || value.startsWith('https://')
+          ? new URL(value)
+          : new URL(value, window.location.origin);
+      let pathname = parsed.pathname || '/';
+      const hasFileExtension = /\/[^/]+\.[^/]+$/.test(pathname);
+      if (!hasFileExtension && !pathname.endsWith('/')) {
+        pathname += '/';
+      }
+      return pathname;
+    } catch {
+      return null;
+    }
+  };
+
+  const isTechnicalPath = path => {
+    if (!path) {
+      return true;
+    }
+
+    const lowered = path.toLowerCase();
+    if (lowered === '/404/' || lowered.endsWith('/404/')) {
+      return true;
+    }
+
+    if (lowered.endsWith('.xml') || lowered.endsWith('.txt') || lowered.endsWith('.asc')) {
+      return true;
+    }
+
+    if (lowered.includes('/sitemap')) {
+      return true;
+    }
+
+    if (lowered.endsWith('/rss.xml')) {
+      return true;
+    }
+
+    if (lowered.startsWith('/pgp/')) {
+      return true;
+    }
+
+    if (lowered === '/robots.txt' || lowered === '/humans.txt') {
+      return true;
+    }
+
+    return false;
+  };
+
+  const parseTimestamp = value => {
+    if (!value) {
+      return 'N/A';
+    }
+
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString();
+  };
+
+  const buildRankData = entries => {
+    const rankMaps = {};
+    const counts = {};
+
+    for (const key of scoreKeys) {
+      const ranked = [...entries]
+        .filter(entry => typeof entry?.[key] === 'number')
+        .sort((a, b) => b[key] - a[key]);
+
+      const rankMap = {};
+      for (let index = 0; index < ranked.length; index += 1) {
+        rankMap[ranked[index].path] = index + 1;
+      }
+
+      rankMaps[key] = rankMap;
+      counts[key] = ranked.length;
+    }
+
+    return { rankMaps, counts };
+  };
+
+  const fetchXml = async url => {
+    const response = await fetch(url, {
+      headers: { Accept: 'application/xml,text/xml' },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Unable to fetch sitemap: ${url}`);
+    }
+
+    return response.text();
+  };
+
+  const parseSitemapLocations = xml => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xml, 'application/xml');
+    if (doc.querySelector('parsererror')) {
+      return { kind: 'invalid', locations: [] };
+    }
+
+    const sitemapLocations = [...doc.querySelectorAll('sitemap > loc')]
+      .map(node => node.textContent?.trim())
+      .filter(Boolean);
+    if (sitemapLocations.length > 0) {
+      return { kind: 'index', locations: sitemapLocations };
+    }
+
+    const pageLocations = [...doc.querySelectorAll('url > loc')]
+      .map(node => node.textContent?.trim())
+      .filter(Boolean);
+    return { kind: 'urlset', locations: pageLocations };
+  };
+
+  const fetchSitemapPaths = async () => {
+    const roots = ['/sitemap-index.xml', '/sitemap.xml'];
+    const discoveredPaths = new Set();
+
+    for (const rootUrl of roots) {
+      try {
+        const rootXml = await fetchXml(rootUrl);
+        const rootParsed = parseSitemapLocations(rootXml);
+
+        if (rootParsed.kind === 'urlset') {
+          for (const location of rootParsed.locations) {
+            const path = normalizePath(location);
+            if (path && !isTechnicalPath(path)) {
+              discoveredPaths.add(path);
+            }
+          }
+          break;
+        }
+
+        if (rootParsed.kind === 'index') {
+          const nestedXmlList = await Promise.all(
+            rootParsed.locations.map(async location => {
+              try {
+                return await fetchXml(location);
+              } catch {
+                return null;
+              }
+            })
+          );
+
+          for (const nestedXml of nestedXmlList) {
+            if (!nestedXml) {
+              continue;
+            }
+
+            const nestedParsed = parseSitemapLocations(nestedXml);
+            if (nestedParsed.kind !== 'urlset') {
+              continue;
+            }
+
+            for (const location of nestedParsed.locations) {
+              const path = normalizePath(location);
+              if (path && !isTechnicalPath(path)) {
+                discoveredPaths.add(path);
+              }
+            }
+          }
+
+          break;
+        }
+      } catch {
+        continue;
+      }
+    }
+
+    return [...discoveredPaths].sort((a, b) => a.localeCompare(b));
+  };
+
+  for (const dashboard of dashboards) {
+    if (!(dashboard instanceof HTMLElement)) {
+      continue;
+    }
+
+    const rawResults = dashboard.getAttribute('data-results') ?? '{}';
+    let resultsByPath = {};
+
+    try {
+      resultsByPath = JSON.parse(rawResults);
+    } catch {
+      resultsByPath = {};
+    }
+
+    const resultEntries = Object.values(resultsByPath).filter(
+      entry => entry && typeof entry.path === 'string'
+    );
+    const rankData = buildRankData(resultEntries);
+
+    const select = dashboard.querySelector('[data-page-select]');
+    const pagePathNode = dashboard.querySelector('[data-page-path]');
+    const pageUrlNode = dashboard.querySelector('[data-page-url]');
+    const pageTimeNode = dashboard.querySelector('[data-page-time]');
+    const pageRunsNode = dashboard.querySelector('[data-page-runs]');
+
+    if (
+      !(select instanceof HTMLSelectElement) ||
+      !(pagePathNode instanceof HTMLElement) ||
+      !(pageUrlNode instanceof HTMLElement) ||
+      !(pageTimeNode instanceof HTMLElement) ||
+      !(pageRunsNode instanceof HTMLElement)
+    ) {
+      continue;
+    }
+
+    const setOptions = paths => {
+      const previousValue = select.value;
+      select.innerHTML = '';
+
+      for (const path of paths) {
+        const option = document.createElement('option');
+        option.value = path;
+        option.textContent = path;
+        select.append(option);
+      }
+
+      const fallbackValue =
+        previousValue && paths.includes(previousValue) ? previousValue : (paths[0] ?? '');
+
+      select.value = fallbackValue;
+    };
+
+    const setPageDetails = path => {
+      const entry = path ? resultsByPath[path] : null;
+
+      pagePathNode.textContent = path || 'N/A';
+      pageUrlNode.textContent = entry?.url ?? 'N/A';
+      pageTimeNode.textContent = parseTimestamp(entry?.generatedAt ?? null);
+      pageRunsNode.textContent = typeof entry?.runs === 'number' ? String(entry.runs) : 'N/A';
+
+      for (const scoreKey of scoreKeys) {
+        const badge = dashboard.querySelector(`[data-score-badge="${scoreKey}"]`);
+        const rank = dashboard.querySelector(`[data-score-rank="${scoreKey}"]`);
+        if (!(badge instanceof HTMLElement) || !(rank instanceof HTMLElement)) {
+          continue;
+        }
+
+        const scoreValue = entry?.[scoreKey];
+        badge.textContent = typeof scoreValue === 'number' ? String(scoreValue) : 'N/A';
+        badge.className = `${badgeBaseClass} ${scoreClassName(scoreValue)}`;
+
+        const scoreRank = entry?.path ? rankData.rankMaps[scoreKey][entry.path] : null;
+        const total = rankData.counts[scoreKey] ?? 0;
+        rank.textContent = scoreRank && total > 0 ? `#${scoreRank}/${total}` : 'N/A';
+      }
+
+      for (const metricKey of metricKeys) {
+        const metricNode = dashboard.querySelector(`[data-metric-value="${metricKey}"]`);
+        if (!(metricNode instanceof HTMLElement)) {
+          continue;
+        }
+
+        const metricValue = entry?.[metricKey];
+        metricNode.textContent = metricValue ?? 'N/A';
+      }
+    };
+
+    const initialPaths = [...new Set(resultEntries.map(entry => entry.path))].sort((a, b) =>
+      a.localeCompare(b)
+    );
+    setOptions(initialPaths);
+    setPageDetails(select.value || null);
+
+    select.addEventListener('change', () => {
+      setPageDetails(select.value || null);
+    });
+
+    fetchSitemapPaths()
+      .then(sitemapPaths => {
+        if (sitemapPaths.length === 0) {
+          return;
+        }
+
+        const mergedPaths = [...new Set([...initialPaths, ...sitemapPaths])].sort((a, b) =>
+          a.localeCompare(b)
+        );
+        setOptions(mergedPaths);
+        setPageDetails(select.value || null);
+      })
+      .catch(() => {
+        // Keep initial page list if sitemap fetch fails.
+      });
+  }
+</script>

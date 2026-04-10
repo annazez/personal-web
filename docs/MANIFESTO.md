@@ -21,6 +21,7 @@ This website enforces a strict engineering philosophy:
 | Technical inventory | Public catalog of work and tools    |
 | Static platform     | Astro-generated, zero-runtime       |
 | Publication base    | Future technical writing platform   |
+| Navigation feel     | SPA-like continuity, static-first   |
 
 ---
 
@@ -42,6 +43,8 @@ This website enforces a strict engineering philosophy:
 ### Zero-Runtime Principle
 
 **Rule**: If CSS can do it, JavaScript shouldn't.
+
+**UX expectation**: The site should feel SPA-like in continuity and responsiveness, while the delivery model remains SSG and zero-JS by default.
 
 **Examples**:
 

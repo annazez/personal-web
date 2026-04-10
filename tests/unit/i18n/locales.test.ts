@@ -13,7 +13,6 @@ describe('locales', () => {
       assert.ok(en['projects.visit']);
       assert.ok(en['projects.source']);
       assert.ok(en['seo.home']);
-      assert.ok(en['footer.downloadCv']);
       assert.ok(en['footer.carbonFootprint']);
     });
 

@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { useTranslations } from '../../i18n/utils';
-import { defaultLang, routes, type LanguageCode } from '../../i18n/dictionary';
+import { defaultLang, type LanguageCode } from '../../i18n/dictionary';
 
 interface Props {
   lang?: LanguageCode;
@@ -9,6 +9,7 @@ interface Props {
 
 const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
+const qualityHref = `/${lang}/quality/`;
 const lastUpdatedDateTime = new Date().toISOString();
 const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-GB', {
   year: 'numeric',
@@ -21,11 +22,11 @@ const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-
 >
   <nav aria-label={t('footer.navigation')} class="flex items-center gap-6">
     <a
-      href={`/${lang}/${routes.workspace[lang]}`}
-      aria-label={t('hero.inventory')}
-      title={t('hero.inventory')}
+      href={qualityHref}
+      aria-label={t('footer.siteQuality')}
+      title={t('footer.siteQuality')}
       class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
-      ><Icon name="lucide:laptop-minimal" class="h-5 w-5" /></a
+      ><Icon name="lucide:gauge" class="h-5 w-5" /></a
     >
     <a
       href="https://codeberg.org/annazez/pages"
@@ -49,15 +50,6 @@ const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-
       title={t('footer.pgpPublicKey')}
       class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
       ><Icon name="lucide:key-round" class="h-5 w-5" /></a
-    >
-
-    <a
-      href="/cv.pdf"
-      download
-      aria-label={t('footer.downloadCv')}
-      title={t('footer.downloadCv')}
-      class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
-      ><Icon name="lucide:file-down" class="h-5 w-5" /></a
     >
   </nav>
 

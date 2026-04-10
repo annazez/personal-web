@@ -6,7 +6,9 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<section class="flex flex-col gap-6 pt-8">
+<section
+  class="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5"
+>
   <div class="flex flex-col gap-5">
     <p class="home-body-text">{t('home.contact')}</p>
     <div class="flex flex-wrap items-center gap-6">
@@ -31,7 +33,7 @@ const t = useTranslations(lang);
           rel="me noopener noreferrer"
           aria-label={t('home.social.signal')}
         >
-          <Icon name="simple-icons:signal" class="size-6" />
+          <Icon name="lucide:message-square-more" class="size-6" />
         </a>
       </div>
     </div>

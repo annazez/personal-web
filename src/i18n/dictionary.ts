@@ -23,18 +23,7 @@ export const dictionary: Record<LanguageCode, TranslationDictionary> = {
 
 export const langPrefixRegex = /^\/(en|cs)(?:\/|$)/;
 
-export const routes = {
-  workspace: {
-    en: 'inventory',
-    cs: 'inventar',
-  } satisfies Record<LanguageCode, string>,
-  about: {
-    en: 'about',
-    cs: 'o-mne',
-  } satisfies Record<LanguageCode, string>,
-} as const;
-
-export const localizedSlugSets: ReadonlyArray<Record<LanguageCode, string>> = Object.values(routes);
+export const localizedSlugSets: ReadonlyArray<Record<LanguageCode, string>> = [];
 
 export const routeLookup: ReadonlyMap<string, Record<LanguageCode, string>> = new Map(
   localizedSlugSets.flatMap(slugSet =>

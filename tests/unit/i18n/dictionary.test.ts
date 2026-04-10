@@ -6,7 +6,6 @@ import {
   dictionary,
   langPrefixRegex,
   getValidLanguageCode,
-  routes,
   routeLookup,
 } from '../../../src/i18n/dictionary.ts';
 
@@ -88,24 +87,19 @@ describe('dictionary', () => {
   });
 
   describe('routes', () => {
-    it('should define localized routes', () => {
-      assert.ok(routes.workspace);
-      assert.strictEqual(routes.workspace.en, 'inventory');
-      assert.strictEqual(routes.workspace.cs, 'inventar');
+    it('should not define localized non-language routes when none exist', () => {
+      assert.strictEqual(routeLookup.size, 0);
     });
   });
 
   describe('routeLookup', () => {
-    it('should contain all localized segments with language prefix', () => {
-      assert.strictEqual(routeLookup.get('en:inventory'), routes.workspace);
-      assert.strictEqual(routeLookup.get('cs:inventar'), routes.workspace);
-      assert.strictEqual(routeLookup.get('en:about'), routes.about);
-      assert.strictEqual(routeLookup.get('cs:o-mne'), routes.about);
+    it('should be empty when no localized slug mappings are configured', () => {
+      assert.strictEqual(routeLookup.size, 0);
     });
 
     it('should not match segment from different language', () => {
-      assert.strictEqual(routeLookup.get('cs:inventory'), undefined);
-      assert.strictEqual(routeLookup.get('en:inventar'), undefined);
+      assert.strictEqual(routeLookup.get('cs:about'), undefined);
+      assert.strictEqual(routeLookup.get('en:o-mne'), undefined);
     });
 
     it('should return undefined for unknown segments', () => {

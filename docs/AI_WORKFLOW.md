@@ -40,6 +40,10 @@ This document structures project context for AI coding agents to parse efficient
 | CSS        | Tailwind utilities + minimal custom     |
 | Lighthouse | 100/100/100/100 target                  |
 
+## UX Goal
+
+The site should present SPA-like navigation continuity and perceived responsiveness, but agents must preserve the SSG baseline and keep JavaScript absent unless a feature explicitly requires it.
+
 ### Architecture
 
 | Rule                       | Rationale                                                               |

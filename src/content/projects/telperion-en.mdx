@@ -12,9 +12,24 @@ tags:
   - Jamstack
 ---
 
+import BeforeAfterSlider from '../../components/case-study/BeforeAfterSlider.astro';
+
 ## The Problem
 
 Telperion is an NGO dedicated to climate education. Their existing digital presence was a liability: the site was visually broken, structurally inaccessible, and offered no coherent bilingual experience. Their educational resources - the core output of their mission - were nearly invisible to the public. The organisation lacked the in-house developer capacity to maintain a complex system, which made long-term sustainability a non-negotiable requirement from day one.
+
+## Before and After
+
+<BeforeAfterSlider
+  beforeSrc="/images/old_telperion_web.webp"
+  afterSrc="/images/new_telperion_web.png"
+  beforeAlt="Legacy Telperion website with broken visual hierarchy and inconsistent layout."
+  afterAlt="Redesigned Telperion website with clear structure, improved readability, and modern visual system."
+  beforeLabel="Before"
+  afterLabel="After"
+  sliderLabel="Drag to compare the old and new Telperion website"
+  caption="Move the slider to compare the original Telperion website with the redesigned version."
+/>
 
 ## The Architecture
 

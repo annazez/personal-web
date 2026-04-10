@@ -39,73 +39,77 @@ const projects: Project[] = [
 ];
 ---
 
-<project-carousel class="flex flex-col gap-6">
-  <header class="flex flex-col gap-2">
-    <h2 class="home-section-title flex items-baseline justify-between gap-4 font-medium">
-      <span>{t('projects.title')}</span>
-      <a href={projectsHref} class="home-section-more-link">
-        {moreLabel}
-      </a>
-    </h2>
-    <p class="home-body-text">
-      {t('projects.subtitle')}
-    </p>
-  </header>
+<section
+  class="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5"
+>
+  <project-carousel class="flex flex-col gap-6">
+    <header class="flex flex-col gap-2">
+      <h2 class="flex items-baseline justify-between gap-4">
+        <span>{t('projects.title')}</span>
+        <a href={projectsHref} class="home-section-more-link">
+          {moreLabel}
+        </a>
+      </h2>
+      <p class="home-body-text">
+        {t('projects.subtitle')}
+      </p>
+    </header>
 
-  <div class="group relative">
-    <div
-      class="projects-track flex w-full snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-    >
-      {
-        projects.map(project => {
-          const article = articleBySlug.get(project.slug);
-
-          return (
-            <div class="w-full flex-none shrink-0 snap-center">
-              <div class="h-full">
-                <ProjectCard
-                  title={article?.title ?? project.title}
-                  description={project.description}
-                  articleSlug={
-                    project.slug === 'telperion' ? (article?.slug ?? project.slug) : undefined
-                  }
-                  tags={article?.tags ?? []}
-                  repo={project.repo}
-                  website={project.website}
-                />
-              </div>
-            </div>
-          );
-        })
-      }
-    </div>
-
-    <div class="mt-2 flex items-center justify-between px-2">
-      <button
-        class="nav-btn prev p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) disabled:opacity-30 disabled:hover:text-(--color-text-muted)"
-        aria-label={t('projects.carousel.previous')}
+    <div class="group relative">
+      <div
+        class="projects-track flex w-full snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        <Icon name="lucide:arrow-left" class="size-5 sm:size-6" />
-      </button>
-      <div class="dots flex flex-1 justify-center gap-2">
         {
-          projects.map((_, i) => (
-            <button
-              aria-label={`${t('projects.carousel.slide')} ${i + 1}`}
-              class="dot size-2.5 rounded-full bg-(--color-border) transition-colors data-[active=true]:bg-(--color-brand)"
-            />
-          ))
+          projects.map(project => {
+            const article = articleBySlug.get(project.slug);
+
+            return (
+              <div class="w-full flex-none shrink-0 snap-center">
+                <div class="h-full overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5">
+                  <ProjectCard
+                    title={article?.title ?? project.title}
+                    description={project.description}
+                    articleSlug={
+                      project.slug === 'telperion' ? (article?.slug ?? project.slug) : undefined
+                    }
+                    tags={article?.tags ?? []}
+                    repo={project.repo}
+                    website={project.website}
+                  />
+                </div>
+              </div>
+            );
+          })
         }
       </div>
-      <button
-        class="nav-btn next p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) disabled:opacity-30 disabled:hover:text-(--color-text-muted)"
-        aria-label={t('projects.carousel.next')}
-      >
-        <Icon name="lucide:arrow-right" class="size-5 sm:size-6" />
-      </button>
+
+      <div class="mt-2 flex items-center justify-between px-2">
+        <button
+          class="nav-btn prev p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) disabled:opacity-30 disabled:hover:text-(--color-text-muted)"
+          aria-label={t('projects.carousel.previous')}
+        >
+          <Icon name="lucide:arrow-left" class="size-5 sm:size-6" />
+        </button>
+        <div class="dots flex flex-1 justify-center gap-2">
+          {
+            projects.map((_, i) => (
+              <button
+                aria-label={`${t('projects.carousel.slide')} ${i + 1}`}
+                class="dot size-2.5 rounded-full bg-(--color-border) transition-colors data-[active=true]:bg-(--color-brand)"
+              />
+            ))
+          }
+        </div>
+        <button
+          class="nav-btn next p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) disabled:opacity-30 disabled:hover:text-(--color-text-muted)"
+          aria-label={t('projects.carousel.next')}
+        >
+          <Icon name="lucide:arrow-right" class="size-5 sm:size-6" />
+        </button>
+      </div>
     </div>
-  </div>
-</project-carousel>
+  </project-carousel>
+</section>
 
 <script>
   class ProjectCarousel extends HTMLElement {

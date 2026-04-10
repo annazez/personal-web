@@ -6,8 +6,8 @@
       "url": [
         "http://127.0.0.1:4322/en/",
         "http://127.0.0.1:4322/cs/",
-        "http://127.0.0.1:4322/en/inventory/",
-        "http://127.0.0.1:4322/cs/inventar/"
+        "http://127.0.0.1:4322/en/projects/",
+        "http://127.0.0.1:4322/cs/projects/"
       ],
       "numberOfRuns": 3,
       "settings": {

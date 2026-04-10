@@ -245,15 +245,14 @@ npm ls
 
 ## File Impact Matrix
 
-| File Changed                              | Affected Systems               | Validation Required |
-| ----------------------------------------- | ------------------------------ | ------------------- |
-| `src/layouts/Layout.astro`                | All pages (SEO, CSP, theme)    | Full gate run       |
-| `src/styles/global.css`                   | All pages (typography, colors) | Visual + Lighthouse |
-| `src/i18n/dictionary.ts`                  | All translations, routing      | Typecheck + build   |
-| `src/pages/[lang]/[workspace_slug].astro` | Inventory page only            | E2E + visual        |
-| `src/components/ui/*`                     | All pages using component      | E2E + visual        |
-| `public/.well-known/security.txt`         | Security contact               | Manual verification |
-| `.woodpecker/*.yml`                       | CI pipeline                    | Deploy test         |
+| File Changed                      | Affected Systems               | Validation Required |
+| --------------------------------- | ------------------------------ | ------------------- |
+| `src/layouts/Layout.astro`        | All pages (SEO, CSP, theme)    | Full gate run       |
+| `src/styles/global.css`           | All pages (typography, colors) | Visual + Lighthouse |
+| `src/i18n/dictionary.ts`          | All translations, routing      | Typecheck + build   |
+| `src/components/ui/*`             | All pages using component      | E2E + visual        |
+| `public/.well-known/security.txt` | Security contact               | Manual verification |
+| `.woodpecker/*.yml`               | CI pipeline                    | Deploy test         |
 
 ---
 

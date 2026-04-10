@@ -14,19 +14,20 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
+The user-facing navigation should feel SPA-like, but the implementation stays SSG-first and avoids client-side runtime by default.
+
 ---
 
 ## Topology
 
 ### Core Files
 
-| File                                      | Responsibility                     |
-| ----------------------------------------- | ---------------------------------- |
-| `src/layouts/Layout.underscore`           | SEO metadata, CSP, shell structure |
-| `src/pages/index.astro`                   | Locale detection and redirect      |
-| `src/pages/[lang]/index.astro`            | Localized homepage                 |
-| `src/pages/[lang]/[workspace_slug].astro` | Inventory/workspace page           |
-| `src/pages/en/projects/[slug].astro`      | Project detail pages               |
+| File                                 | Responsibility                     |
+| ------------------------------------ | ---------------------------------- |
+| `src/layouts/Layout.underscore`      | SEO metadata, CSP, shell structure |
+| `src/pages/index.astro`              | Locale detection and redirect      |
+| `src/pages/[lang]/index.astro`       | Localized homepage                 |
+| `src/pages/en/projects/[slug].astro` | Project detail pages               |
 
 ### Component Layers
 
@@ -35,6 +36,22 @@
 | `src/components/ui/`            | Reusable UI primitives (buttons, toggles, pickers) |
 | `src/components/home/`          | Homepage-specific section components               |
 | `src/components/BackLink.astro` | Navigation primitive                               |
+
+### Shared Surface Template
+
+The site uses one reusable panel shell for cards and dashboard blocks:
+
+- `rounded-2xl`
+- `border border-(--color-border)`
+- `bg-(--color-bg-surface)`
+- `shadow-sm`
+- `px-4 py-5 sm:px-5`
+
+Use this shell consistently across pages so the design reads as one system rather than separate one-off cards.
+
+Current uses include the homepage Projects, Contact, and Lighthouse dashboard panels.
+
+Typography is likewise semantic: page titles use `h1`, section titles use `h2`, card titles use `h3`, and markdown content follows the same scale.
 
 ### i18n System
 
@@ -239,13 +256,12 @@ connect-src 'self'                  # No external XHR
 
 ## File Change Impact Matrix
 
-| File Modified            | Affected Systems                  |
-| ------------------------ | --------------------------------- |
-| `Layout.astro`           | SEO, CSP, theme, all pages        |
-| `global.css`             | Typography, colors, special modes |
-| `dictionary.ts`          | i18n routing, all translations    |
-| `[workspace_slug].astro` | Inventory page only               |
-| `components/ui/*`        | All pages using primitives        |
+| File Modified     | Affected Systems                  |
+| ----------------- | --------------------------------- |
+| `Layout.astro`    | SEO, CSP, theme, all pages        |
+| `global.css`      | Typography, colors, special modes |
+| `dictionary.ts`   | i18n routing, all translations    |
+| `components/ui/*` | All pages using primitives        |
 
 ---
 

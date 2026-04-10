@@ -4,7 +4,6 @@ import Layout from '../../layouts/Layout.astro';
 import LanguagePicker from '../../components/ui/LanguagePicker.astro';
 import Hero from '../../components/home/Hero.astro';
 import ProjectsSection from '../../components/home/ProjectsSection.astro';
-import AboutSection from '../../components/home/AboutSection.astro';
 import ContactSection from '../../components/home/ContactSection.astro';
 import Footer from '../../components/ui/Footer.astro';
 import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
@@ -30,7 +29,6 @@ const projectArticles = await getCollection('projects', ({ data }) => data.lang 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
     <Hero />
     <ProjectsSection projectArticles={projectArticles} />
-    <AboutSection />
 
     <ContactSection />
 

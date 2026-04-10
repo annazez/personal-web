@@ -1,0 +1,298 @@
+---
+interface Props {
+  beforeSrc: string;
+  afterSrc: string;
+  beforeAlt: string;
+  afterAlt: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+  sliderLabel?: string;
+  caption?: string;
+  initialPosition?: number;
+}
+
+const {
+  beforeSrc,
+  afterSrc,
+  beforeAlt,
+  afterAlt,
+  beforeLabel = 'Before',
+  afterLabel = 'After',
+  sliderLabel = 'Compare before and after website versions',
+  caption,
+  initialPosition = 50,
+} = Astro.props;
+
+const clampedInitial = Math.max(0, Math.min(100, initialPosition));
+---
+
+<figure class="before-after" data-before-after>
+  <div
+    class="before-after__viewport"
+    data-before-after-viewport
+    style={`--before-after-position: ${clampedInitial}%`}
+  >
+    <img
+      class="before-after__image"
+      src={beforeSrc}
+      alt={beforeAlt}
+      loading="lazy"
+      decoding="async"
+    />
+
+    <div class="before-after__after-layer" aria-hidden="true">
+      <img
+        class="before-after__image"
+        src={afterSrc}
+        alt={afterAlt}
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+
+    <div class="before-after__divider" data-before-after-divider>
+      <span
+        class="before-after__handle"
+        role="slider"
+        tabindex="0"
+        aria-label={sliderLabel}
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow={String(clampedInitial)}
+        data-before-after-handle
+      >
+        <span class="before-after__handle-icon" aria-hidden="true">↔</span>
+      </span>
+    </div>
+
+    <span class="before-after__badge before-after__badge--before">{beforeLabel}</span>
+    <span class="before-after__badge before-after__badge--after">{afterLabel}</span>
+  </div>
+
+  <input
+    class="before-after__range"
+    type="range"
+    min="0"
+    max="100"
+    step="1"
+    value={clampedInitial}
+    aria-label={sliderLabel}
+    data-before-after-input
+  />
+
+  {caption && <figcaption class="before-after__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .before-after {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+
+  .before-after__viewport {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    background: var(--color-bg-surface);
+  }
+
+  .before-after__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .before-after__after-layer {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 0 0 var(--before-after-position));
+  }
+
+  .before-after__divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--before-after-position);
+    width: 2px;
+    background: var(--color-bg-surface);
+    border-left: 1px solid color-mix(in srgb, var(--color-brand) 70%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--color-brand) 70%, transparent);
+    transform: translateX(-1px);
+    z-index: 2;
+    cursor: ew-resize;
+    touch-action: none;
+  }
+
+  .before-after__handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-bg-surface) 90%, transparent);
+    color: var(--color-text-strong);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-brand) 14%, transparent);
+    cursor: ew-resize;
+    user-select: none;
+    touch-action: none;
+  }
+
+  .before-after__handle:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-brand) 80%, transparent);
+    outline-offset: 2px;
+  }
+
+  .before-after__handle-icon {
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
+  .before-after__badge {
+    position: absolute;
+    top: 0.75rem;
+    z-index: 1;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-bg-surface) 88%, transparent);
+    color: var(--color-text-strong);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.65rem;
+  }
+
+  .before-after__badge--before {
+    left: 0.75rem;
+  }
+
+  .before-after__badge--after {
+    right: 0.75rem;
+  }
+
+  .before-after__range {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .before-after__caption {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+</style>
+
+<script is:inline>
+  const sliders = document.querySelectorAll('[data-before-after]');
+
+  for (const slider of sliders) {
+    const viewport = slider.querySelector('[data-before-after-viewport]');
+    const input = slider.querySelector('[data-before-after-input]');
+    const divider = slider.querySelector('[data-before-after-divider]');
+    const handle = slider.querySelector('[data-before-after-handle]');
+
+    if (
+      !(viewport instanceof HTMLElement) ||
+      !(input instanceof HTMLInputElement) ||
+      !(divider instanceof HTMLElement) ||
+      !(handle instanceof HTMLElement)
+    ) {
+      continue;
+    }
+
+    const clamp = value => Math.max(0, Math.min(100, value));
+
+    const syncSliderPosition = () => {
+      viewport.style.setProperty('--before-after-position', `${input.value}%`);
+      handle.setAttribute('aria-valuenow', input.value);
+      handle.setAttribute('aria-valuetext', `${input.value}%`);
+    };
+
+    const setFromClientX = clientX => {
+      const bounds = viewport.getBoundingClientRect();
+      if (!bounds.width) {
+        return;
+      }
+
+      const percent = ((clientX - bounds.left) / bounds.width) * 100;
+      input.value = String(Math.round(clamp(percent)));
+      syncSliderPosition();
+    };
+
+    const onPointerDown = event => {
+      if (!(event instanceof PointerEvent)) {
+        return;
+      }
+
+      event.preventDefault();
+      divider.setPointerCapture(event.pointerId);
+      setFromClientX(event.clientX);
+    };
+
+    const onPointerMove = event => {
+      if (!(event instanceof PointerEvent)) {
+        return;
+      }
+
+      if (!divider.hasPointerCapture(event.pointerId)) {
+        return;
+      }
+
+      setFromClientX(event.clientX);
+    };
+
+    const onPointerEnd = event => {
+      if (!(event instanceof PointerEvent)) {
+        return;
+      }
+
+      if (divider.hasPointerCapture(event.pointerId)) {
+        divider.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    const onHandleKeyDown = event => {
+      let nextValue = Number(input.value);
+
+      if (event.key === 'ArrowLeft') {
+        nextValue -= 2;
+      } else if (event.key === 'ArrowRight') {
+        nextValue += 2;
+      } else if (event.key === 'Home') {
+        nextValue = 0;
+      } else if (event.key === 'End') {
+        nextValue = 100;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      input.value = String(Math.round(clamp(nextValue)));
+      syncSliderPosition();
+    };
+
+    input.addEventListener('input', syncSliderPosition);
+    divider.addEventListener('pointerdown', onPointerDown);
+    divider.addEventListener('pointermove', onPointerMove);
+    divider.addEventListener('pointerup', onPointerEnd);
+    divider.addEventListener('pointercancel', onPointerEnd);
+    handle.addEventListener('keydown', onHandleKeyDown);
+    syncSliderPosition();
+  }
+</script>

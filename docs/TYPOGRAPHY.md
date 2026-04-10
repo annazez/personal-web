@@ -2,34 +2,27 @@
 
 ## Core Principles
 
-| Principle             | Enforcement                       |
-| --------------------- | --------------------------------- |
-| Restrained hierarchy  | Fixed scale; no arbitrary sizes   |
-| System fonts only     | No webfont loading permitted      |
-| Calm defaults         | Light weights, subtle tracking    |
-| Consistent vocabulary | `home-*` classes across all pages |
+| Principle             | Enforcement                                     |
+| --------------------- | ----------------------------------------------- |
+| Restrained hierarchy  | Fixed scale; no arbitrary sizes                 |
+| System fonts only     | No webfont loading permitted                    |
+| Calm defaults         | Light weights, subtle tracking                  |
+| Consistent vocabulary | Semantic h1-h6 headings + shared body utilities |
 
 ---
 
-## Type Scale
+## Semantic Heading Scale
 
-### Display Level
+The site uses a single heading logic everywhere: native `h1`-`h6` tags, styled by element rather than component-specific classes. Markdown content follows the same scale.
 
-| Class                | Element | Mobile  | Desktop | Weight | Leading | Tracking |
-| -------------------- | ------- | ------- | ------- | ------ | ------- | -------- |
-| `home-display-title` | h1      | 2.25rem | 3rem    | 300    | 1.05    | -0.025em |
-
-### Section Level
-
-| Class                | Element | Mobile  | Desktop | Weight | Leading | Tracking |
-| -------------------- | ------- | ------- | ------- | ------ | ------- | -------- |
-| `home-section-title` | h2      | 1.75rem | 2rem    | 300    | 1.15    | -0.02em  |
-
-### Card Level
-
-| Class             | Element | Mobile  | Desktop | Weight | Leading | Tracking |
-| ----------------- | ------- | ------- | ------- | ------ | ------- | -------- |
-| `home-card-title` | h3      | 1.25rem | 1.25rem | 600    | 1.35    | 0        |
+| Element | Mobile   | Desktop  | Weight | Leading | Tracking |
+| ------- | -------- | -------- | ------ | ------- | -------- |
+| `h1`    | 2.25rem  | 3rem     | 500    | 1.05    | -0.025em |
+| `h2`    | 1.75rem  | 2rem     | 500    | 1.15    | -0.02em  |
+| `h3`    | 1.25rem  | 1.25rem  | 600    | 1.35    | 0        |
+| `h4`    | 1.125rem | 1.125rem | 600    | 1.4     | 0        |
+| `h5`    | 1rem     | 1rem     | 600    | 1.4     | 0        |
+| `h6`    | 0.75rem  | 0.75rem  | 600    | 1       | 0.08em   |
 
 ### Body Level
 
@@ -89,14 +82,14 @@
 
 ### Color Application Rules
 
-| Class                | Color Variable           | Rationale                        |
-| -------------------- | ------------------------ | -------------------------------- |
-| `home-display-title` | `--color-brand`          | Maximum prominence               |
-| `home-section-title` | `--color-brand`          | Section prominence               |
-| `home-card-title`    | `--color-brand`          | Card hierarchy                   |
-| `home-body-text`     | `--color-text-secondary` | Reduced contrast for readability |
-| `home-subtle-text`   | `--color-text-muted`     | Secondary metadata               |
-| `home-micro-label`   | `--color-text-muted`     | Non-primary action               |
+| Element/utility    | Color Variable           | Rationale                        |
+| ------------------ | ------------------------ | -------------------------------- |
+| `h1`, `h2`, `h3`   | `--color-brand`          | Maximum prominence               |
+| `h4`, `h5`         | `--color-brand`          | Secondary hierarchy              |
+| `h6`               | `--color-text-muted`     | Micro heading / label treatment  |
+| `home-body-text`   | `--color-text-secondary` | Reduced contrast for readability |
+| `home-subtle-text` | `--color-text-muted`     | Secondary metadata               |
+| `home-micro-label` | `--color-text-muted`     | Non-primary action               |
 
 ---
 
@@ -121,9 +114,25 @@
 
 ### Card Padding
 
-| Default   | Value        |
-| --------- | ------------ |
-| All cards | `p-4` (1rem) |
+| Default surface padding | `px-4 py-5 sm:px-5` |
+| Legacy simple card | `p-4` (1rem) |
+
+### Surface Template
+
+Use this shell for site-wide floating panels, cards, and dashboards:
+
+| Purpose       | Utility set                                                                    |
+| ------------- | ------------------------------------------------------------------------------ |
+| Outer shell   | `rounded-2xl border border-(--color-border) bg-(--color-bg-surface) shadow-sm` |
+| Inner spacing | `px-4 py-5 sm:px-5`                                                            |
+| Content flow  | `flex h-full min-w-0 flex-col gap-5`                                           |
+| Clipping      | `overflow-hidden` when needed                                                  |
+
+**Rules**:
+
+- Use the same shell on homepage panels, project cards, and status blocks.
+- Do not add custom shadows or alternate border radii for new feature surfaces.
+- Keep background and border tokens consistent so light and dark modes match.
 
 ---
 
@@ -141,22 +150,19 @@
 
 ### Valid Combinations
 
-| Class                | Valid Elements | Invalid Elements |
-| -------------------- | -------------- | ---------------- |
-| `home-display-title` | h1             | h2, h3, p, span  |
-| `home-section-title` | h2             | h1, h3, p        |
-| `home-card-title`    | h3             | h1, h2, h4       |
-| `home-body-text`     | p, span        | h1-h6            |
-| `home-micro-label`   | a, span, small | h1-h6, p         |
+| Class              | Valid Elements | Invalid Elements |
+| ------------------ | -------------- | ---------------- |
+| `home-body-text`   | p, span        | h1-h6            |
+| `home-micro-label` | a, span, small | h1-h6, p         |
 
 ### Required Pairings
 
-| Class                | Required/Recommended        | Example                           |
-| -------------------- | --------------------------- | --------------------------------- |
-| `home-display-title` | `font-semibold` (optional)  | Line 38, `[workspace_slug].astro` |
-| `home-section-title` | `font-medium` (optional)    | Line 51, `[workspace_slug].astro` |
-| `home-card-title`    | `font-medium` (optional)    | Line 59, `[workspace_slug].astro` |
-| `home-micro-label`   | `transition-colors` (links) | Line 66, `[workspace_slug].astro` |
+| Class              | Required/Recommended        | Example                                 |
+| ------------------ | --------------------------- | --------------------------------------- |
+| `h1`               | none                        | Site titles, page titles                |
+| `h2`               | none                        | Section titles                          |
+| `h3`               | none                        | Card titles                             |
+| `home-micro-label` | `transition-colors` (links) | `src/components/home/ContentCard.astro` |
 
 ---
 
@@ -167,7 +173,7 @@
 **DO**:
 
 ```astro
-<h1 class="home-display-title">Title</h1>
+<h1>Title</h1>
 <p class="home-body-text">Description</p>
 ```
 
@@ -178,17 +184,17 @@
 <p class="text-gray-600">Description</p>
 ```
 
-**Rationale**: Centralized control, consistent appearance.
+**Rationale**: Centralized control, consistent appearance. Headings should be styled by their semantic level, not by page-specific utility classes.
 
 ---
 
 ### Rule 2: Hierarchy Matching
 
-| Heading Level | Required Class       |
-| ------------- | -------------------- |
-| h1            | `home-display-title` |
-| h2            | `home-section-title` |
-| h3            | `home-card-title`    |
+| Heading Level | Required Class      |
+| ------------- | ------------------- |
+| h1            | display title scale |
+| h2            | section title scale |
+| h3            | card title scale    |
 
 **Rationale**: Visual hierarchy reflects DOM hierarchy.
 
@@ -216,20 +222,20 @@
 
 ### Rule 5: Light Weights for Large Text
 
-| Class                | Weight | Reason                      |
-| -------------------- | ------ | --------------------------- |
-| `home-display-title` | 300    | Elegant appearance          |
-| `home-section-title` | 300    | Consistent with display     |
-| `home-card-title`    | 600    | Card prominence (exception) |
+| Element | Weight | Reason                      |
+| ------- | ------ | --------------------------- |
+| `h1`    | 500    | Elegant appearance          |
+| `h2`    | 500    | Consistent with display     |
+| `h3`    | 600    | Card prominence (exception) |
 
 ---
 
 ### Rule 6: Negative Tracking on Headlines
 
-| Class                | Tracking | Reason           |
-| -------------------- | -------- | ---------------- |
-| `home-display-title` | -0.025em | Tighter headline |
-| `home-section-title` | -0.02em  | Tighter headline |
+| Element | Tracking | Reason           |
+| ------- | -------- | ---------------- |
+| `h1`    | -0.025em | Tighter headline |
+| `h2`    | -0.02em  | Tighter headline |
 
 **DON'T** add positive tracking to headlines.
 
@@ -258,7 +264,7 @@
 
 ### Rule 9: Responsive Automation
 
-`home-display-title` and `home-section-title` auto-scale at 640px breakpoint.
+`h1` and `h2` auto-scale at 640px breakpoint.
 
 **DON'T** add manual `@media` queries for typography — handled in `global.css`.
 
@@ -268,11 +274,18 @@
 
 Any new page **must**:
 
-1. Import and use `home-*` classes
-2. Match spacing conventions (`gap-4`, `py-16`, `px-6`)
-3. Use `max-w-2xl` container
+1. Use semantic heading levels (`h1`-`h3`) for titles
+2. Use `home-body-text` and `home-micro-label` for supporting copy
+3. Match spacing conventions (`gap-4`, `py-16`, `px-6`)
+4. Use `max-w-2xl` container
 
 **Rationale**: Site-wide visual consistency.
+
+### Rule 11: Surface Template Reuse
+
+Any new surface-like component **must** reuse the shared shell attributes from the Surface Template section instead of inventing a new card style.
+
+**Rationale**: Keeps floating panels visually consistent across the entire website.
 
 ---
 
@@ -282,12 +295,14 @@ Any new page **must**:
 
 ```astro
 <section class="flex flex-col gap-8">
-  <h2 class="home-section-title font-medium">Section Title</h2>
+  <h2>Section Title</h2>
   <p class="home-body-text">Section description goes here.</p>
 
   <ul class="flex flex-col gap-4">
-    <li class="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
-      <h3 class="home-card-title font-medium">Card Title</h3>
+    <li
+      class="rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5"
+    >
+      <h3>Card Title</h3>
       <p class="home-body-text mt-2">Card description.</p>
     </li>
   </ul>

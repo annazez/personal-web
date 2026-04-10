@@ -20,6 +20,52 @@
     --color-text-strong: #27272a;
   }
 
+  :where(main, article, section, .case-study-content) :is(h1, h2, h3, h4, h5, h6) {
+    color: var(--color-brand);
+    font-family: var(--font-sans);
+    margin: 0;
+  }
+
+  :where(main, article, section, .case-study-content) h1 {
+    font-size: 2.25rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+
+  :where(main, article, section, .case-study-content) h2 {
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  :where(main, article, section, .case-study-content) h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  :where(main, article, section, .case-study-content) h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  :where(main, article, section, .case-study-content) h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  :where(main, article, section, .case-study-content) h6 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
   html.dark {
     --color-brand: #fafafa;
     --color-bg: #09090b;
@@ -168,23 +214,6 @@
 }
 
 @layer components {
-  /* Homepage typography roles to keep hierarchy calm and consistent. */
-  .home-display-title {
-    color: var(--color-brand);
-    font-size: 2.25rem;
-    font-weight: 300;
-    letter-spacing: -0.025em;
-    line-height: 1.05;
-  }
-
-  .home-section-title {
-    color: var(--color-brand);
-    font-size: 1.75rem;
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-  }
-
   .home-section-more-link {
     color: var(--color-text-muted);
     font-size: 0.875rem;
@@ -200,13 +229,6 @@
   .home-section-more-link:hover {
     color: var(--color-brand);
     text-decoration-color: currentColor;
-  }
-
-  .home-card-title {
-    color: var(--color-brand);
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.35;
   }
 
   .home-body-text {
@@ -271,16 +293,6 @@
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.01em;
-  }
-
-  @media (min-width: 640px) {
-    .home-display-title {
-      font-size: 3rem;
-    }
-
-    .home-section-title {
-      font-size: 2rem;
-    }
   }
 }
 

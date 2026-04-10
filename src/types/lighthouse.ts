@@ -1,6 +1,8 @@
-export interface LighthouseData {
+export interface LighthousePageResult {
   generatedAt: string | null;
   url: string | null;
+  path: string;
+  runs: number;
   performance: number | null;
   accessibility: number | null;
   bestPractices: number | null;
@@ -10,4 +12,9 @@ export interface LighthouseData {
   cls: string | null;
   fcp: string | null;
   ttfb: string | null;
+}
+
+export interface LighthouseData {
+  generatedAt: string | null;
+  pages: LighthousePageResult[];
 }
