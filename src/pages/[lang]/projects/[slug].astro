@@ -9,10 +9,11 @@ import { getValidLanguageCode, supportedLangs, type LanguageCode } from '../../.
 export async function getStaticPaths() {
   const paths: Array<{ params: { lang: LanguageCode; slug: string } }> = [];
 
-  for (const lang of supportedLangs) {
-    const projects = await getCollection('projects', ({ data }) => data.lang === lang);
-    for (const project of projects) {
-      paths.push({ params: { lang, slug: project.data.slug } });
+  const allProjects = await getCollection('projects');
+
+  for (const project of allProjects) {
+    if (supportedLangs.includes(project.data.lang as LanguageCode)) {
+      paths.push({ params: { lang: project.data.lang as LanguageCode, slug: project.data.slug } });
     }
   }
 
