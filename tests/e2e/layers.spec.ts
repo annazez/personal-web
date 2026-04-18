@@ -7,9 +7,13 @@ test.describe('3D Exploded Layers Mode', () => {
     const pageShell = page.locator('#page-shell');
 
     // Check if the default CSS variables are set
-    await expect(pageShell).toHaveCSS('--layers-rotate-x', '60deg');
-    await expect(pageShell).toHaveCSS('--layers-rotate-z', '-30deg');
-    await expect(pageShell).toHaveCSS('--layers-scale', '0.8');
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-x'))).toBe(
+      '60deg'
+    );
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-z'))).toBe(
+      '-30deg'
+    );
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-scale'))).toBe('0.8');
   });
 
   test('updates rotation transforms on pointer drag', async ({ page }) => {
@@ -18,8 +22,12 @@ test.describe('3D Exploded Layers Mode', () => {
     const pageShell = page.locator('#page-shell');
 
     // Initial state check
-    await expect(pageShell).toHaveCSS('--layers-rotate-x', '60deg');
-    await expect(pageShell).toHaveCSS('--layers-rotate-z', '-30deg');
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-x'))).toBe(
+      '60deg'
+    );
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-z'))).toBe(
+      '-30deg'
+    );
 
     // Simulate pointer down and move
     await page.mouse.move(500, 500);
@@ -30,8 +38,12 @@ test.describe('3D Exploded Layers Mode', () => {
 
     // The rotation Z increases with deltaX * 0.2: -30 + 100 * 0.2 = -10deg
     // The rotation X increases with deltaY * 0.2: 60 + 100 * 0.2 = 80deg
-    await expect(pageShell).toHaveCSS('--layers-rotate-z', '-10deg');
-    await expect(pageShell).toHaveCSS('--layers-rotate-x', '80deg');
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-z'))).toBe(
+      '-10deg'
+    );
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-x'))).toBe(
+      '80deg'
+    );
 
     // Verify dragging class is added
     await expect(pageShell).toHaveClass(/layers-dragging/);
@@ -49,7 +61,7 @@ test.describe('3D Exploded Layers Mode', () => {
     const pageShell = page.locator('#page-shell');
 
     // Initial state check
-    await expect(pageShell).toHaveCSS('--layers-scale', '0.8');
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-scale'))).toBe('0.8');
 
     // Dispatch a wheel event using evaluate because page.mouse.wheel doesn't consistently trigger the DOM wheel event how we expect here
     await pageShell.evaluate(el => {
@@ -65,7 +77,9 @@ test.describe('3D Exploded Layers Mode', () => {
     // newScale = 0.8 * 1.648 ≈ 1.318
 
     // Just verifying it changes from default
-    await expect(pageShell).not.toHaveCSS('--layers-scale', '0.8');
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-scale'))).not.toBe(
+      '0.8'
+    );
 
     const newScale = await pageShell.evaluate(el => el.style.getPropertyValue('--layers-scale'));
     expect(parseFloat(newScale)).toBeGreaterThan(0.8);
@@ -77,7 +91,7 @@ test.describe('3D Exploded Layers Mode', () => {
     const pageShell = page.locator('#page-shell');
 
     // Ensure it's applied
-    await expect(pageShell).toHaveCSS('--layers-scale', '0.8');
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-scale'))).toBe('0.8');
 
     // Exit mode by changing hash to trigger the hashchange event (which triggers cleanup)
     // Avoid page.goto('/en/') as it causes a full page reload and bypasses testing the cleanup function.
@@ -86,8 +100,8 @@ test.describe('3D Exploded Layers Mode', () => {
     });
 
     // Ensure CSS variables are removed
-    await expect(pageShell).toHaveCSS('--layers-scale', '');
-    await expect(pageShell).toHaveCSS('--layers-rotate-x', '');
-    await expect(pageShell).toHaveCSS('--layers-rotate-z', '');
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-scale'))).toBe('');
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-x'))).toBe('');
+    expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-z'))).toBe('');
   });
 });

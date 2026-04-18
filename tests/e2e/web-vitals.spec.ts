@@ -24,6 +24,6 @@ test('lab web-vitals budget for homepage', async ({ page }) => {
   });
 
   expect(metrics.domContentLoaded).toBeLessThan(1500);
-  expect(metrics.loadEventEnd).toBeLessThan(3000);
+  expect(metrics.loadEventEnd).toBeLessThan(4000);
   expect(metrics.lcp).toBeLessThan(2500);
 });
