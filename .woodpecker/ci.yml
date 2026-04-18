@@ -3,7 +3,7 @@ when:
 
 steps:
   verify:
-    image: node:22.22-alpine3.23
+    image: node:24.14-alpine3.23
     commands:
       - npm ci
       - npm audit --audit-level=high
@@ -29,7 +29,7 @@ steps:
     commands:
       - node --experimental-strip-types scripts/extract-lighthouse.ts
   deploy:
-    image: node:22.22-alpine3.23
+    image: node:24.14-alpine3.23
     environment:
       CODEBERG_TOKEN:
         from_secret: codeberg_token
