@@ -28,11 +28,7 @@ const safeRepo = toSafeExternalUrl(repo);
 
     {description && <p class="home-body-text">{description}</p>}
 
-    {
-      summary && (
-        <p class="home-micro-copy overflow-hidden text-ellipsis whitespace-nowrap">{summary}</p>
-      )
-    }
+    {summary && <p class="home-subtle-text break-words whitespace-normal">{summary}</p>}
 
     <div
       class="mt-auto flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"

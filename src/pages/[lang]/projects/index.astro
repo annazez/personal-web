@@ -41,6 +41,8 @@ const projectArticles = await getCollection('projects', ({ data }) => data.lang 
             summary={article.data.summary}
             articleSlug={article.data.slug === 'telperion' ? article.data.slug : undefined}
             tags={article.data.tags}
+            website={article.data.website}
+            repo={article.data.repo}
           />
         ))
       }

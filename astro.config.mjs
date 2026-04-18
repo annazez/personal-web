@@ -17,6 +17,28 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      headers: {
+        'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+        'Content-Security-Policy':
+          "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';",
+        'X-Frame-Options': 'SAMEORIGIN',
+        'X-Content-Type-Options': 'nosniff',
+        'Permissions-Policy':
+          'accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), display-capture=(), document-domain=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), layout-animations=(self), legacy-image-formats=(self), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), speaker-selection=(), sync-xhr=(), unoptimized-images=(self), unsized-media=(self), usb=(), screen-wake-lock=(), web-share=(), xr-spatial-tracking=()',
+      },
+    },
+    preview: {
+      headers: {
+        'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+        'Content-Security-Policy':
+          "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';",
+        'X-Frame-Options': 'SAMEORIGIN',
+        'X-Content-Type-Options': 'nosniff',
+        'Permissions-Policy':
+          'accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), display-capture=(), document-domain=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), layout-animations=(self), legacy-image-formats=(self), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), speaker-selection=(), sync-xhr=(), unoptimized-images=(self), unsized-media=(self), usb=(), screen-wake-lock=(), web-share=(), xr-spatial-tracking=()',
+      },
+    },
   },
 
   i18n: {

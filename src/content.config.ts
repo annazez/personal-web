@@ -5,6 +5,18 @@ import { languages } from './i18n/dictionary';
 
 const langKeys = Object.keys(languages) as [string, ...string[]];
 
+const externalUrl = z
+  .string()
+  .min(1)
+  .refine(value => {
+    try {
+      new URL(value);
+      return true;
+    } catch {
+      return false;
+    }
+  }, 'Must be a valid URL');
+
 const projects = defineCollection({
   loader: glob({
     pattern: '**/*.mdx',
@@ -24,6 +36,8 @@ const projects = defineCollection({
       summary: z.string().min(1),
       publishedAt: z.date(),
       tags: z.array(z.string().min(1)).min(1),
+      website: externalUrl.optional(),
+      repo: externalUrl.optional(),
     })
     .strict(),
 });

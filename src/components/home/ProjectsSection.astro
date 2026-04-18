@@ -89,11 +89,11 @@ const projects: Project[] = [
         >
           <Icon name="lucide:arrow-left" class="size-5 sm:size-6" />
         </button>
-        <div class="dots flex flex-1 justify-center gap-3">
+        <div class="dots flex flex-1 justify-center gap-3" aria-hidden="true">
           {
-            projects.map((_, i) => (
+            projects.map(() => (
               <button
-                aria-label={`${t('projects.carousel.slide')} ${i + 1}`}
+                tabindex="-1"
                 class="dot size-2.5 rounded-full bg-(--color-border) transition-colors data-[active=true]:bg-(--color-brand)"
               />
             ))

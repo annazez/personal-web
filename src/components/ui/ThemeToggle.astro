@@ -2,86 +2,249 @@
 import { Icon } from 'astro-icon/components';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
+interface Props {
+  className?: string;
+}
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const { className } = Astro.props as Props;
+const summaryBaseClass =
+  'flex min-h-11 w-full cursor-pointer list-none items-center gap-2 px-3 py-2 [&::-webkit-details-marker]:hidden';
+const summaryClass = `${summaryBaseClass} ${
+  className ??
+  'rounded-lg text-(--color-text-muted) transition-colors duration-200 hover:text-(--color-brand) group-open:bg-(--color-bg-surface) group-open:text-(--color-brand)'
+}`;
 ---
 
-<button
-  id="theme-toggle"
-  aria-label={t('ui.themeToggle')}
-  class="rounded-lg p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
+<details
+  id="theme-toggle-menu"
+  class="rolldown-menu group relative w-full sm:w-auto"
+  data-theme-label-light={t('ui.themeLight')}
+  data-theme-label-dark={t('ui.themeDark')}
+  data-theme-label-system={t('ui.themeSystem')}
 >
-  <Icon name="lucide:sun" class="h-5 w-5" id="sun-icon" />
-  <Icon name="lucide:moon" class="hidden h-5 w-5" id="moon-icon" />
-</button>
+  <summary aria-label={t('ui.themeToggle')} class={summaryClass}>
+    <Icon
+      name="lucide:sun"
+      class="hidden size-3.5 shrink-0"
+      id="theme-icon-light"
+      aria-hidden="true"
+    />
+    <Icon
+      name="lucide:moon"
+      class="hidden size-3.5 shrink-0"
+      id="theme-icon-dark"
+      aria-hidden="true"
+    />
+    <Icon
+      name="lucide:laptop"
+      class="h-[1.15rem] w-[1.15rem] shrink-0"
+      id="theme-icon-system"
+      aria-hidden="true"
+    />
+    <span id="theme-mode-label" class="home-micro-label whitespace-nowrap"
+      >{t('ui.themeSystem')}</span
+    >
+    <Icon
+      name="lucide:chevron-down"
+      class="size-4 shrink-0 transition-transform duration-200 group-open:rotate-180"
+      aria-hidden="true"
+    />
+  </summary>
+
+  <ul
+    class="mt-2 rounded-lg border border-(--color-border) bg-(--color-bg-surface) p-1 shadow-sm sm:absolute sm:top-[calc(100%+0.4rem)] sm:right-0 sm:mt-0 sm:min-w-32"
+  >
+    <li>
+      <button
+        type="button"
+        data-theme-mode="light"
+        class="home-micro-label flex w-full items-center justify-between rounded-md px-3 py-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) data-[active=true]:bg-(--color-bg) data-[active=true]:text-(--color-brand)"
+      >
+        <span>{t('ui.themeLight')}</span>
+        <Icon name="lucide:sun" class="h-4 w-4" aria-hidden="true" />
+      </button>
+    </li>
+    <li>
+      <button
+        type="button"
+        data-theme-mode="dark"
+        class="home-micro-label flex w-full items-center justify-between rounded-md px-3 py-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) data-[active=true]:bg-(--color-bg) data-[active=true]:text-(--color-brand)"
+      >
+        <span>{t('ui.themeDark')}</span>
+        <Icon name="lucide:moon" class="h-4 w-4" aria-hidden="true" />
+      </button>
+    </li>
+    <li>
+      <button
+        type="button"
+        data-theme-mode="system"
+        class="home-micro-label flex w-full items-center justify-between rounded-md px-3 py-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) data-[active=true]:bg-(--color-bg) data-[active=true]:text-(--color-brand)"
+      >
+        <span>{t('ui.themeSystem')}</span>
+        <Icon name="lucide:laptop" class="h-[1.1rem] w-[1.1rem]" aria-hidden="true" />
+      </button>
+    </li>
+  </ul>
+</details>
+
+<style>
+  details.rolldown-menu > ul {
+    display: block;
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-0.3rem);
+    transition:
+      max-height 220ms ease,
+      opacity 160ms ease,
+      transform 220ms ease,
+      margin-top 220ms ease;
+  }
+
+  details.rolldown-menu[open] > ul {
+    max-height: 12rem;
+    margin-top: 0.5rem;
+    opacity: 1;
+    overflow: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  @media (min-width: 40rem) {
+    details.rolldown-menu[open] > ul {
+      margin-top: 0;
+    }
+  }
+</style>
 
 <script>
+  type ThemeMode = 'light' | 'dark' | 'system';
+
+  const THEME_STORAGE_KEY = 'theme';
   const themeWindow = window as Window & {
     __themePageLoadBound?: boolean;
     __themeSyncBound?: boolean;
   };
   const prefersDarkMedia = window.matchMedia('(prefers-color-scheme: dark)');
 
-  function getPreferredTheme(): 'light' | 'dark' {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light' || savedTheme === 'dark') {
+  function getStoredThemeMode(): ThemeMode {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (savedTheme === 'light' || savedTheme === 'dark' || savedTheme === 'system') {
       return savedTheme;
     }
-    return prefersDarkMedia.matches ? 'dark' : 'light';
+    return 'system';
   }
 
-  // Apply theme and sync icon state for the current page DOM.
+  function resolveTheme(mode: ThemeMode): 'light' | 'dark' {
+    if (mode === 'system') {
+      return prefersDarkMedia.matches ? 'dark' : 'light';
+    }
+
+    return mode;
+  }
+
   function applyTheme(theme: 'light' | 'dark') {
     const html = document.documentElement;
-    const sunIcon = document.getElementById('sun-icon');
-    const moonIcon = document.getElementById('moon-icon');
 
     if (theme === 'dark') {
       html.classList.add('dark');
       html.style.colorScheme = 'dark';
-      sunIcon?.classList.add('hidden');
-      moonIcon?.classList.remove('hidden');
     } else {
       html.classList.remove('dark');
       html.style.colorScheme = 'light';
-      sunIcon?.classList.remove('hidden');
-      moonIcon?.classList.add('hidden');
     }
   }
 
-  function toggleTheme() {
-    const newTheme = (document.documentElement.classList.contains('dark') ? 'light' : 'dark') as
-      | 'light'
-      | 'dark';
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (!document.startViewTransition || prefersReducedMotion) {
-      applyTheme(newTheme);
-      localStorage.setItem('theme', newTheme);
+  function syncThemeUI(mode: ThemeMode) {
+    const themeMenu = document.getElementById('theme-toggle-menu') as HTMLDetailsElement | null;
+    if (!themeMenu) {
       return;
     }
 
-    document.startViewTransition(() => {
-      applyTheme(newTheme);
-      localStorage.setItem('theme', newTheme);
+    const lightIcon = themeMenu.querySelector('#theme-icon-light');
+    const darkIcon = themeMenu.querySelector('#theme-icon-dark');
+    const systemIcon = themeMenu.querySelector('#theme-icon-system');
+    const modeLabel = themeMenu.querySelector('#theme-mode-label');
+
+    const labels: Record<ThemeMode, string> = {
+      light: themeMenu.dataset.themeLabelLight ?? 'Light',
+      dark: themeMenu.dataset.themeLabelDark ?? 'Dark',
+      system: themeMenu.dataset.themeLabelSystem ?? 'System',
+    };
+
+    lightIcon?.classList.toggle('hidden', mode !== 'light');
+    darkIcon?.classList.toggle('hidden', mode !== 'dark');
+    systemIcon?.classList.toggle('hidden', mode !== 'system');
+    if (modeLabel) {
+      modeLabel.textContent = labels[mode];
+    }
+
+    const options = themeMenu.querySelectorAll<HTMLButtonElement>('[data-theme-mode]');
+    options.forEach(option => {
+      const isActive = option.dataset.themeMode === mode;
+      option.dataset.active = isActive ? 'true' : 'false';
+      option.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
   }
 
-  function bindThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (!themeToggle || themeToggle.dataset.bound === 'true') {
+  function setThemeMode(
+    mode: ThemeMode,
+    options: {
+      persist: boolean;
+      animate: boolean;
+    }
+  ) {
+    const resolvedTheme = resolveTheme(mode);
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (options.persist) {
+      localStorage.setItem(THEME_STORAGE_KEY, mode);
+    }
+
+    const apply = () => {
+      applyTheme(resolvedTheme);
+      syncThemeUI(mode);
+    };
+
+    if (!options.animate || !document.startViewTransition || prefersReducedMotion) {
+      apply();
       return;
     }
 
-    themeToggle.dataset.bound = 'true';
-    themeToggle.addEventListener('click', () => {
-      toggleTheme();
+    document.startViewTransition(apply);
+  }
+
+  function bindThemeMenu() {
+    const themeMenu = document.getElementById('theme-toggle-menu') as HTMLDetailsElement | null;
+    if (!themeMenu || themeMenu.dataset.bound === 'true') {
+      return;
+    }
+
+    themeMenu.dataset.bound = 'true';
+
+    const modeButtons = themeMenu.querySelectorAll<HTMLButtonElement>('[data-theme-mode]');
+    modeButtons.forEach(button => {
+      button.addEventListener('click', event => {
+        event.preventDefault();
+
+        const mode = button.dataset.themeMode as ThemeMode | undefined;
+        if (!mode) {
+          return;
+        }
+
+        setThemeMode(mode, { persist: true, animate: true });
+        themeMenu.removeAttribute('open');
+      });
     });
   }
 
   function initThemeUI() {
-    applyTheme(getPreferredTheme());
-    bindThemeToggle();
+    setThemeMode(getStoredThemeMode(), { persist: false, animate: false });
+    bindThemeMenu();
   }
 
   initThemeUI();
@@ -92,21 +255,20 @@ const t = useTranslations(lang);
 
   // Listen for system theme changes
   if (!themeWindow.__themeSyncBound) {
-    prefersDarkMedia.addEventListener('change', e => {
-      const newTheme = (e.matches ? 'dark' : 'light') as 'light' | 'dark';
-      localStorage.removeItem('theme'); // Clear saved preference to follow system
-      applyTheme(newTheme);
-    });
-
-    // Keep theme in sync across tabs/windows and animate there too
-    window.addEventListener('storage', e => {
-      if (e.key !== 'theme') {
+    prefersDarkMedia.addEventListener('change', () => {
+      if (getStoredThemeMode() !== 'system') {
         return;
       }
 
-      const prefersDarkNow = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const syncedTheme = (e.newValue || (prefersDarkNow ? 'dark' : 'light')) as 'light' | 'dark';
-      applyTheme(syncedTheme);
+      setThemeMode('system', { persist: false, animate: false });
+    });
+
+    window.addEventListener('storage', e => {
+      if (e.key !== THEME_STORAGE_KEY) {
+        return;
+      }
+
+      setThemeMode(getStoredThemeMode(), { persist: false, animate: false });
     });
 
     themeWindow.__themeSyncBound = true;
