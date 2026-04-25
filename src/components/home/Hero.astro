@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import avatar from '../../assets/avatar.png';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { Icon } from 'astro-icon/components';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const siteName = t('site.name');
@@ -23,6 +24,40 @@ const siteName = t('site.name');
       <p class="home-body-text">
         {t('role.title')}
       </p>
+      <div class="home-social-links flex items-center gap-4">
+        <a
+          href="https://www.linkedin.com/in/anna-zezulka/"
+          target="_blank"
+          rel="me noopener noreferrer"
+          aria-label="LinkedIn"
+        >
+          <Icon name="lucide:linkedin" class="size-5" />
+        </a>
+        <a
+          href="https://orcid.org/0009-0005-7350-5354"
+          target="_blank"
+          rel="me noopener noreferrer"
+          aria-label="ORCID"
+        >
+          <Icon name="simple-icons:orcid" class="size-5" />
+        </a>
+        <a
+          href="https://github.com/annazez"
+          target="_blank"
+          rel="me noopener noreferrer"
+          aria-label="Github"
+        >
+          <Icon name="simple-icons:github" class="size-5" />
+        </a>
+        <a
+          href="https://codeberg.org/annazez"
+          target="_blank"
+          rel="me noopener noreferrer"
+          aria-label="Codeberg"
+        >
+          <Icon name="simple-icons:codeberg" class="size-5" />
+        </a>
+      </div>
     </div>
   </header>
   <section class="home-body-text flex flex-col gap-4">

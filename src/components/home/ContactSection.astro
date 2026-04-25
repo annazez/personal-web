@@ -17,13 +17,14 @@ const t = useTranslations(lang);
     <div class="flex flex-wrap items-center gap-6 pt-1">
       <a
         href="mailto:anna@zezulka.me"
-        class="inline-flex rounded-full border-2 border-(--color-brand) px-6 py-3 font-medium text-(--color-brand) transition-colors hover:bg-(--color-brand) hover:text-(--color-bg)"
+        class="inline-flex items-center gap-2 rounded-full border-2 border-(--color-brand) px-6 py-3 font-medium text-(--color-brand) transition-colors hover:bg-(--color-brand) hover:text-(--color-bg)"
       >
+        <Icon name="lucide:mail" class="size-5" />
         {t('home.contactCta')}
       </a>
       <div class="home-social-links flex items-center gap-4">
         <a
-          href="https://www.linkedin.com/in/anna-zezulka-8956b9384"
+          href="https://www.linkedin.com/in/anna-zezulka"
           target="_blank"
           rel="me noopener noreferrer"
           aria-label={t('home.social.linkedin')}

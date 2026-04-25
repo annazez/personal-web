@@ -1,13 +1,13 @@
 import type { TranslationDictionary } from './en';
 
 const cs: TranslationDictionary = {
-  'role.title': 'Softwarová architektka',
+  'role.title': 'Juniorní full-stack webová vývojářka',
   'hero.manifesto':
     'Navrhuji systémy, které jsou rychlé, přístupné a postavené tak, aby fungovaly nezávisle na mně.',
   'home.contactLabel': 'Kontakt',
   'home.contactTitle': 'Ozvěte se',
   'home.contact': 'Chcete pomoci s projektem?',
-  'home.contactCta': 'Napište mi →',
+  'home.contactCta': 'Napište mi',
   'home.social.linkedin': 'LinkedIn',
   'home.social.signal': 'Signal',
   'site.name': 'Anna Zezulka',
@@ -30,7 +30,7 @@ const cs: TranslationDictionary = {
   'projects.telperion.description':
     'Web neziskovky byl rozbitý a dělal jejich klimatické vzdělávání neviditelným. Navrhla jsem a dodala kompletní Jamstack ekosystém: dvojjazyčný i18n routing, automatizované e-mailové toky, WCAG přístupnost ověřovanou v CI a plně statický výstup bez potřeby serveru. Organizace nyní vlastní nezávislou, výkonnou přítomnost postavenou tak, aby vydržela.',
   'projects.mentalHealth.description':
-    'Návrh architektury multidisciplinární wellbeing platformy pro český trh, vyvíjené ve spolupráci se specialisty na neurorehabilitaci. Zahrnuje sledování nálady (metoda RULER), digitální deník, monitorování spánku a modul krizové intervence - s klinicky podloženou personalizací přes dotazníky WHO-5, GAD-7 a PHQ-9. Aktuálně ve fázi návrhu architektury.',
+    'Návrh architektury multidisciplinární wellbeing platformy pro český trh. Zahrnuje sledování nálady (metoda RULER), digitální deník, monitorování spánku a modul krizové intervence - s klinicky podloženou personalizací přes dotazníky WHO-5, GAD-7 a PHQ-9. Aktuálně ve fázi návrhu architektury.',
   back: 'Zpět',
   feedTitle: 'Anna Zezulka – Projekty',
   feedDescription: 'Případové studie a zápisky o projektech.',

@@ -1,11 +1,11 @@
 const en = {
-  'role.title': 'Software Architect',
+  'role.title': 'Junior Full-stack Web Developer',
   'hero.manifesto':
     'I design systems that are fast, accessible, and built to last - not just today, but for whoever comes after me.',
   'home.contactLabel': 'Contact',
   'home.contactTitle': "Let's talk",
   'home.contact': 'Have a project in mind, or just want to say hello?',
-  'home.contactCta': 'Get in touch →',
+  'home.contactCta': 'Get in touch',
   'home.social.linkedin': 'LinkedIn',
   'home.social.signal': 'Signal',
   'site.name': 'Anna Zezulka',
@@ -29,7 +29,7 @@ const en = {
   'projects.telperion.description':
     "An NGO's broken website was making their climate education work invisible. I designed and delivered a complete Jamstack ecosystem: bilingual i18n routing, automated email workflows, WCAG-compliant accessibility validated in CI, and fully static output that requires no server. The NGO now owns an independent, high-performance presence built to last.",
   'projects.mentalHealth.description':
-    'Architecture design for a multidisciplinary wellbeing platform for the Czech market, built in collaboration with neurorehabilitation specialists. Covers mood tracking (RULER method), digital diary, sleep monitoring, and a crisis intervention module - with clinically-grounded personalisation via WHO-5, GAD-7, and PHQ-9 questionnaires. Currently in architecture design phase.',
+    'Architecture design for a multidisciplinary wellbeing platform for the Czech market. Covers mood tracking (RULER method), digital diary, sleep monitoring, and a crisis intervention module - with clinically-grounded personalisation via WHO-5, GAD-7, and PHQ-9 questionnaires. Currently in architecture design phase.',
   back: 'Back',
   feedTitle: 'Anna Zezulka – Projects',
   feedDescription: 'Case studies and project write-ups.',

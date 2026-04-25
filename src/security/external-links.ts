@@ -4,6 +4,8 @@ const ALLOWED_EXTERNAL_HOSTS = new Set([
   'telperion.cz',
   'www.linkedin.com',
   'signal.me',
+  'wellbeing.zezulka.me',
+  'orcid.org',
 ]);
 
 export function toSafeExternalUrl(value: string | undefined): string | undefined {

@@ -39,7 +39,7 @@ const projectArticles = await getCollection('projects', ({ data }) => data.lang 
           <ProjectCard
             title={article.data.title}
             summary={article.data.summary}
-            articleSlug={article.data.slug === 'telperion' ? article.data.slug : undefined}
+            articleSlug={article.data.slug}
             tags={article.data.tags}
             website={article.data.website}
             repo={article.data.repo}

@@ -36,6 +36,7 @@ const projects: Project[] = [
     title: 'Mental Health App',
     description: t('projects.mentalHealth.description'),
     website: 'https://wellbeing.zezulka.me',
+    repo: 'https://github.com/wellbeing-app',
   },
 ];
 ---
@@ -70,9 +71,7 @@ const projects: Project[] = [
                 <ProjectCard
                   title={article?.title ?? project.title}
                   description={project.description}
-                  articleSlug={
-                    project.slug === 'telperion' ? (article?.slug ?? project.slug) : undefined
-                  }
+                  articleSlug={article?.slug ?? project.slug}
                   tags={article?.tags ?? []}
                   repo={project.repo}
                   website={project.website}
