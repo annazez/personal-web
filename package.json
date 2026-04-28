@@ -20,7 +20,7 @@
     "format:check": "prettier --check .",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:a11y",
     "check:fix": "npm run lint:fix && npm run format",
-    "typecheck": "astro check",
+    "typecheck": "npm run last-modified && astro check",
     "test:a11y": "npm run build && (npx http-server dist -p 4324 -s & npx wait-on http://localhost:4324 && npx pa11y-ci && pkill -f 'http-server dist -p 4324')",
     "test:a11y:ci": "(npx http-server dist -p 4324 -s & npx wait-on http://localhost:4324 && npx pa11y-ci)",
     "test:unit": "node --experimental-strip-types --experimental-test-module-mocks --import ./scripts/test-setup.mjs --test 'tests/unit/**/*.test.ts'",
