@@ -14,10 +14,12 @@ steps:
       - npm run typecheck
       - npm run build
   a11y:
-    image: node:24.14-alpine3.23
+    image: mcr.microsoft.com/playwright:v1.59.1-noble
     environment:
       SITE_URL: https://zezulka.me
     commands:
+      - npm ci
+      - npx puppeteer browsers install chrome
       - npm run test:a11y:ci
   e2e:
     image: mcr.microsoft.com/playwright:v1.59.1-noble
