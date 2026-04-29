@@ -1,0 +1,117 @@
+---
+interface Props {
+  /**
+   * If true, disables the background effect entirely.
+   */
+  disabled?: boolean;
+}
+
+const { disabled = false } = Astro.props;
+
+if (disabled) {
+  return null;
+}
+---
+
+<div class="dotted-background-container" aria-hidden="true">
+  <div class="dotted-base"></div>
+  <div class="dotted-spotlight"></div>
+</div>
+
+<style>
+  .dotted-background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    /* Hide the colored layer by default until mouse moves */
+    --mx: 50%;
+    --my: 50%;
+  }
+
+  .dotted-base,
+  .dotted-spotlight {
+    position: absolute;
+    inset: 0;
+    background-size: 24px 24px;
+    background-position: center;
+  }
+
+  .dotted-base {
+    background-image: radial-gradient(var(--color-dot) 1px, transparent 1px);
+  }
+
+  .dotted-spotlight {
+    /* Tailwind v4 default slate-500, or a fallback */
+    background-image: radial-gradient(var(--color-slate-500, #64748b) 1px, transparent 1px);
+
+    /* 
+      We use a hard mask transition here instead of CSS transitioning --mx/--my 
+      because the user requested an instant trail. Opacity handles the fade-in.
+    */
+    mask-image: radial-gradient(circle 400px at var(--mx) var(--my), black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(
+      circle 400px at var(--mx) var(--my),
+      black 0%,
+      transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  /* Only show spotlight if the device has a pointer and reduced motion is off */
+  @media (hover: hover) and (pointer: fine) {
+    .dotted-background-container.is-active .dotted-spotlight {
+      opacity: 1;
+    }
+  }
+
+  /* Hide colored layer if prefers-reduced-motion is enabled */
+  @media (prefers-reduced-motion: reduce) {
+    .dotted-spotlight {
+      display: none !important;
+    }
+  }
+
+  /* Touch / no-pointer devices - Hide the colored layer entirely */
+  @media (hover: none) {
+    .dotted-spotlight {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  let ticking = false;
+
+  const updateCursor = (e: MouseEvent) => {
+    // Pause updates if document is hidden to save battery
+    if (document.visibilityState !== 'visible') return;
+
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const container = document.querySelector(
+          '.dotted-background-container'
+        ) as HTMLElement | null;
+        if (container) {
+          container.classList.add('is-active');
+          container.style.setProperty('--mx', `${e.clientX}px`);
+          container.style.setProperty('--my', `${e.clientY}px`);
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+
+  // Only bind the event listener if we support hover and haven't requested reduced motion
+  if (
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    window.addEventListener('mousemove', updateCursor);
+  }
+</script>

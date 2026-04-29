@@ -5,6 +5,7 @@ import { langPrefixRegex, supportedLangs, type LanguageCode } from '../i18n/dict
 import { useTranslations, localeForOg } from '../i18n/utils';
 import { SITE_CSP, THEME_BOOTSTRAP_SCRIPT } from '../data/csp';
 import CommandPalette from '../components/ui/CommandPalette.astro';
+import DottedBackground from '../components/DottedBackground.astro';
 
 interface Props {
   title?: string;
@@ -105,6 +106,7 @@ const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
     <link rel="alternate" hreflang="x-default" href={siteUrl} />
   </head>
   <body data-print-banner={t('print.banner')}>
+    <DottedBackground />
     <div id="arch" hidden aria-hidden="true"></div>
     <div id="audit" hidden aria-hidden="true"></div>
     <div id="layers" hidden aria-hidden="true"></div>
