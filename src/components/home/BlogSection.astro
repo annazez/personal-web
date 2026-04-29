@@ -1,0 +1,33 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { Icon } from 'astro-icon/components';
+import Surface from '../ui/Surface.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const blogHref = `/${lang}/blog/`;
+const moreLabel = t('blog.more');
+---
+
+<Surface as="section">
+  <div class="flex flex-col gap-4">
+    <header class="flex flex-col gap-3 border-b border-(--color-border) pb-4">
+      <div class="flex items-center justify-between gap-4">
+        <h2>{t('blog.title')}</h2>
+        <a href={blogHref} class="home-section-more-link">
+          <span>{moreLabel}</span>
+          <Icon name="lucide:arrow-right" class="home-section-more-link-icon" />
+        </a>
+      </div>
+      <p class="home-body-text">
+        {t('blog.subtitle')}
+      </p>
+    </header>
+
+    <div
+      class="flex flex-col items-center justify-center gap-4 py-8 text-center text-(--color-text-muted)"
+    >
+      <p>{t('blog.empty')}</p>
+    </div>
+  </div>
+</Surface>

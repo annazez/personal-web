@@ -9,11 +9,6 @@ import { toSafeExternalUrl } from '../../security/external-links';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const siteName = t('site.name');
-
-const linkedinUrl = toSafeExternalUrl(identity.linkedin);
-const orcidUrl = toSafeExternalUrl(identity.orcid);
-const githubUrl = toSafeExternalUrl(identity.github);
-const codebergUrl = toSafeExternalUrl(identity.codeberg);
 const keyoxideUrl = toSafeExternalUrl(identity.keyoxide);
 ---
 
@@ -29,63 +24,29 @@ const keyoxideUrl = toSafeExternalUrl(identity.keyoxide);
       class="size-24 shrink-0 rounded-full border border-(--color-border) object-cover sm:size-32"
     />
     <div class="flex flex-col gap-2 sm:gap-4">
-      <h1>{siteName}</h1>
-      <p class="home-body-text">
-        {t('role.title')}
-      </p>
-      <div class="home-social-links flex items-center gap-4">
-        {
-          linkedinUrl && (
-            <a
-              href={linkedinUrl}
-              target="_blank"
-              rel="me noopener noreferrer"
-              aria-label="LinkedIn"
-            >
-              <Icon name="lucide:linkedin" class="size-5" />
-            </a>
-          )
-        }
-        {
-          orcidUrl && (
-            <a href={orcidUrl} target="_blank" rel="me noopener noreferrer" aria-label="ORCID">
-              <Icon name="simple-icons:orcid" class="size-5" />
-            </a>
-          )
-        }
-        {
-          githubUrl && (
-            <a href={githubUrl} target="_blank" rel="me noopener noreferrer" aria-label="Github">
-              <Icon name="simple-icons:github" class="size-5" />
-            </a>
-          )
-        }
-        {
-          codebergUrl && (
-            <a
-              href={codebergUrl}
-              target="_blank"
-              rel="me noopener noreferrer"
-              aria-label="Codeberg"
-            >
-              <Icon name="simple-icons:codeberg" class="size-5" />
-            </a>
-          )
-        }
+      <div class="flex items-center gap-1.75">
+        <h1>{siteName}</h1>
         {
           keyoxideUrl && (
             <a
               href={keyoxideUrl}
               target="_blank"
               rel="noopener noreferrer"
+              class="home-social-links translate-y-0.5"
               aria-label={t('home.social.keyoxide')}
               title={t('home.social.keyoxide')}
             >
-              <Icon name="lucide:shield-check" class="size-5" />
+              <Icon
+                name="lucide:shield-check"
+                class="size-6 text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
+              />
             </a>
           )
         }
       </div>
+      <p class="home-body-text">
+        {t('role.title')}
+      </p>
     </div>
   </header>
   <section class="home-body-text flex flex-col gap-4">

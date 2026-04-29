@@ -88,13 +88,13 @@ describe('dictionary', () => {
 
   describe('routes', () => {
     it('should not define localized non-language routes when none exist', () => {
-      assert.strictEqual(routeLookup.size, 4);
+      assert.strictEqual(routeLookup.size, 8);
     });
   });
 
   describe('routeLookup', () => {
     it('should be empty when no localized slug mappings are configured', () => {
-      assert.strictEqual(routeLookup.size, 4);
+      assert.strictEqual(routeLookup.size, 8);
     });
 
     it('should not match segment from different language', () => {

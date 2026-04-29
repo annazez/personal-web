@@ -1,14 +1,14 @@
 import type { TranslationDictionary } from './en';
 
 const cs: TranslationDictionary = {
-  'role.title': 'Full-stack webová vývojářka & Studentka psychologie',
+  'role.title': 'Full-stack vývojářka & Studentka psychologie',
   'hero.manifesto':
     'Navrhuji systémy, které jsou rychlé, přístupné a postavené tak, aby fungovaly nezávisle na mně.',
   'home.contactLabel': 'Kontakt',
   'home.contactTitle': 'Ozvěte se',
   'home.contact': 'Chcete pomoci s projektem?',
-  'home.contactCta': 'Napište mi',
-  'home.social.linkedin': 'LinkedIn',
+  'home.contactCta': 'E-mail',
+
   'home.social.signal': 'Signal',
   'home.social.keyoxide': 'Ověřit identitu',
   'site.name': 'Anna Zezulka',
@@ -100,6 +100,10 @@ const cs: TranslationDictionary = {
   'adrs.filter': 'Filtr',
   'seo.adrs': 'Architektonická rozhodnutí',
   'footer.adrs': 'Architektonická rozhodnutí',
+  'blog.title': 'Blog',
+  'blog.subtitle': 'Myšlenky, poznámky a texty.',
+  'blog.more': 'Všechny příspěvky',
+  'blog.empty': 'Zatím žádné příspěvky.',
 };
 
 export default cs;

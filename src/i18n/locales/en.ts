@@ -1,12 +1,12 @@
 const en = {
-  'role.title': 'Full-stack Web Developer & Psychology student',
+  'role.title': 'Full-stack Developer & Psychology student',
   'hero.manifesto':
     'I design systems that are fast, accessible, and built to last - not just today, but for whoever comes after me.',
   'home.contactLabel': 'Contact',
   'home.contactTitle': "Let's talk",
   'home.contact': 'Have a project in mind, or just want to say hello?',
-  'home.contactCta': 'Get in touch',
-  'home.social.linkedin': 'LinkedIn',
+  'home.contactCta': 'E-mail',
+
   'home.social.signal': 'Signal',
   'home.social.keyoxide': 'Verify identity',
   'site.name': 'Anna Zezulka',
@@ -100,6 +100,10 @@ const en = {
   'adrs.filter': 'Filter',
   'seo.adrs': 'Architecture Decisions',
   'footer.adrs': 'Architecture decisions',
+  'blog.title': 'Blog',
+  'blog.subtitle': 'Thoughts, notes, and writings.',
+  'blog.more': 'View all posts',
+  'blog.empty': 'No posts available yet.',
 } as const;
 
 export type TranslationKey = keyof typeof en;
