@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  SITE_URL: https://zezulka.me
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Format, Lint and Build
+        run: |
+          npm run format:check
+          npm run lint
+          npm run last-modified
+          npm run typecheck
+          npm run build
+
+      - name: Accessibility tests
+        run: |
+          npx puppeteer browsers install chrome
+          npm run test:a11y:ci
+
+      - name: E2E tests
+        run: |
+          npx playwright install --with-deps chromium firefox
+          npm run test:e2e
+
+      - name: Performance tests
+        run: |
+          npm run size:check
+          npm run lighthouse:ci
+
+      - name: Extract Lighthouse report
+        run: node --experimental-strip-types scripts/extract-lighthouse.ts
+
+      - name: Publish to custom domain
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/git-pages@v2
+        with:
+          site: https://zezulka.me/
+          token: ${{ forge.token }}
+          source: dist/

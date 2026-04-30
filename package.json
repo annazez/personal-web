@@ -32,8 +32,7 @@
     "extract-lighthouse": "node --experimental-strip-types scripts/extract-lighthouse.ts",
     "postinstall": "npm run hooks:install",
     "hooks:install": "node ./scripts/install-hooks.mjs",
-    "clean": "rm -rf dist node_modules/.vite .astro",
-    "deploy": "npm run build && sh scripts/deploy.sh"
+    "clean": "rm -rf dist node_modules/.vite .astro"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
