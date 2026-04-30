@@ -7,7 +7,7 @@ on:
 
 jobs:
   renovate:
-    runs-on: codeberg-small
+    runs-on: codeberg-medium
     container:
       image: renovate/renovate:43.104.2-full
     env:
