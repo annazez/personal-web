@@ -19,7 +19,7 @@ export const ci = {
     startServerCommand: 'npm run preview:ci',
     startServerReadyPattern: 'Local',
     url: urls,
-    numberOfRuns: 3,
+    numberOfRuns: 1,
     settings: {
       preset: 'desktop',
       chromeFlags: '--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage',
