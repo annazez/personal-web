@@ -32,10 +32,19 @@ const safeRepo = toSafeExternalUrl(repo);
 
 <article class="flex h-full min-w-0 flex-col gap-5">
   <div class="flex flex-1 flex-col gap-2">
-    <div class="flex items-start justify-between">
+    <div class="flex items-center gap-3">
       <Heading class="text-[1.625rem] leading-[1.15] font-medium tracking-[-0.02em]">
         {title}
       </Heading>
+      {
+        title === 'Telperion' && (
+          <img
+            src="/images/telperion-logo.ico"
+            alt="Telperion Logo"
+            class="h-7 w-7 object-contain"
+          />
+        )
+      }
     </div>
 
     {description && <p class="home-body-text">{description}</p>}

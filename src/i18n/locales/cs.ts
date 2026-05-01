@@ -96,6 +96,7 @@ const cs: TranslationDictionary = {
   'blog.more': 'Všechny příspěvky',
   'blog.empty': 'Zatím žádné příspěvky.',
   'competences.title': 'Kompetence',
+  'seo.competences': 'Kompetence',
   'competences.subtitle': 'Klíčové oblasti odborných znalostí a mezioborových dovedností.',
   'competences.more': 'Všechny kompetence',
   'competences.psychology': 'Psychologie',

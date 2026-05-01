@@ -52,7 +52,18 @@ const publishedLabel = publishedAt.toLocaleDateString(localeFor(currentLang), {
 
     <article class="flex flex-col gap-8">
       <header class="flex flex-col gap-4">
-        <h1>{title}</h1>
+        <div class="flex items-center gap-4">
+          <h1 class="mt-0 mb-0">{title}</h1>
+          {
+            title === 'Telperion' && (
+              <img
+                src="/images/telperion-logo.ico"
+                alt="Telperion Logo"
+                class="h-9 w-9 shrink-0 object-contain"
+              />
+            )
+          }
+        </div>
         <time datetime={publishedAt.toISOString()} class="home-micro-copy">{publishedLabel}</time>
 
         <ul class="flex flex-wrap gap-2">

@@ -96,6 +96,7 @@ const en = {
   'blog.more': 'View all posts',
   'blog.empty': 'No posts available yet.',
   'competences.title': 'Competences',
+  'seo.competences': 'Competences',
   'competences.subtitle': 'Core areas of expertise and interdisciplinary skills.',
   'competences.more': 'View all competences',
   'competences.psychology': 'Psychology',

@@ -1,0 +1,74 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import Footer from '../../components/ui/Footer.astro';
+import LanguagePicker from '../../components/ui/LanguagePicker.astro';
+import Surface from '../../components/ui/Surface.astro';
+import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
+import { useTranslations } from '../../i18n/utils';
+import { Icon } from 'astro-icon/components';
+
+export function getStaticPaths() {
+  return supportedLangs.map(lang => ({ params: { lang } }));
+}
+
+const currentLang = getValidLanguageCode(Astro.params.lang);
+const t = useTranslations(currentLang);
+
+const competences = [
+  {
+    icon: 'lucide:brain',
+    title: t('competences.psychology'),
+    desc: t('competences.psychology.desc'),
+  },
+  {
+    icon: 'lucide:heart-handshake',
+    title: t('competences.socialWork'),
+    desc: t('competences.socialWork.desc'),
+  },
+  {
+    icon: 'lucide:monitor-smartphone',
+    title: t('competences.webDevelopment'),
+    desc: t('competences.webDevelopment.desc'),
+  },
+  {
+    icon: 'lucide:graduation-cap',
+    title: t('competences.academics'),
+    desc: t('competences.academics.desc'),
+  },
+  {
+    icon: 'lucide:briefcase',
+    title: t('competences.business'),
+    desc: t('competences.business.desc'),
+  },
+];
+---
+
+<Layout title={t('seo.competences')} description={t('competences.subtitle')} lang={currentLang}>
+  <LanguagePicker />
+
+  <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
+    <BackLink href={`/${currentLang}/`} />
+
+    <section class="flex flex-col gap-4">
+      <h1>{t('competences.title')}</h1>
+      <p class="home-body-text">{t('competences.subtitle')}</p>
+    </section>
+
+    <div class="flex flex-col gap-6">
+      {
+        competences.map(competence => (
+          <Surface as="section" class="flex flex-col gap-3">
+            <div class="flex items-center gap-3">
+              <Icon name={competence.icon} class="h-6 w-6 text-(--color-brand)" />
+              <h2>{competence.title}</h2>
+            </div>
+            <p class="home-body-text leading-relaxed">{competence.desc}</p>
+          </Surface>
+        ))
+      }
+    </div>
+
+    <Footer lang={currentLang} />
+  </main>
+</Layout>
