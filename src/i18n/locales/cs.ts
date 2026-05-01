@@ -102,18 +102,33 @@ const cs: TranslationDictionary = {
   'competences.psychology': 'Psychologie',
   'competences.psychology.desc':
     'Porozumění lidskému chování, kognici a emocím pro vytváření lepších uživatelských zážitků a empatii s potřebami uživatelů.',
+  'competences.psychology.study': 'Psychologie',
+  'competences.psychology.degree': 'Bakalářské studium',
+  'competences.psychology.university': 'Ostravská univerzita',
+  'competences.psychology.present': 'Současnost',
   'competences.socialWork': 'Sociální práce',
   'competences.socialWork.desc':
     'Uplatňování empatie, aktivního naslouchání a principů sociálních věd pro podporu komunit a jednotlivců.',
+  'competences.socialWork.centrum.subtitle': 'Osobní asistentka, OASA (2026 – současnost)',
+  'competences.socialWork.course.subtitle':
+    'Kvalifikační kurz pro pracovníky v sociálních službách (Centrum pro rodinu, 2026)',
+  'competences.socialWork.course.provider': 'Ministerstvo školství a tělovýchovy',
   'competences.webDevelopment': 'Web development',
   'competences.webDevelopment.desc':
     'Tvorba responzivních, přístupných a výkonných webových aplikací pomocí moderních webových technologií.',
+  'competences.webDevelopment.telperion.subtitle':
+    'Full-stack vývoj a architektura (2025 – současnost)',
+  'competences.webDevelopment.itnetwork.subtitle':
+    'Tvorba webových aplikací React (akreditace MŠMT, 2025)',
   'competences.academics': 'Akademika',
   'competences.academics.desc':
     'Zapojení do neustálého vzdělávání, výzkumu a kritického myšlení pro udržení se na špici poznání.',
+  'competences.academics.runshift.role': 'Koordinátorka kohorty',
+  'competences.academics.runshift.details': 'Univerzita Karlova & OSU (2026 – 2029)',
   'competences.business': 'Podnikání',
   'competences.business.desc':
     'Porozumění tržní dynamice, produktové strategii a tvorbě hodnoty pro dodávání řešení, která mají dopad.',
+  'competences.business.sia.subtitle': 'Lumi: wellbeing aplikace (2026)',
 };
 
 export default cs;

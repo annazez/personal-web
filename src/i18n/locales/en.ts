@@ -102,18 +102,33 @@ const en = {
   'competences.psychology': 'Psychology',
   'competences.psychology.desc':
     'Understanding human behavior, cognition, and emotion to build better user experiences and empathize with user needs.',
+  'competences.psychology.study': 'Psychology',
+  'competences.psychology.degree': "Bachelor's degree",
+  'competences.psychology.university': 'University of Ostrava',
+  'competences.psychology.present': 'Present',
   'competences.socialWork': 'Social Work',
   'competences.socialWork.desc':
     'Applying empathy, active listening, and social science principles to support communities and individuals.',
+  'competences.socialWork.centrum.subtitle': 'Personal Assistant, OASA (2026 – Present)',
+  'competences.socialWork.course.subtitle':
+    'Qualification course for social service workers (Centrum pro rodinu, 2026)',
+  'competences.socialWork.course.provider': 'Ministry of Education',
   'competences.webDevelopment': 'Web Development',
   'competences.webDevelopment.desc':
     'Building responsive, accessible, and performant web applications using modern web technologies.',
+  'competences.webDevelopment.telperion.subtitle':
+    'Full-stack development and architecture (2025 – Present)',
+  'competences.webDevelopment.itnetwork.subtitle':
+    'React Web Application Development (MŠMT accredited, 2025)',
   'competences.academics': 'Academics',
   'competences.academics.desc':
     'Engaging in continuous learning, research, and critical thinking to stay at the forefront of knowledge.',
+  'competences.academics.runshift.role': 'Cohort Coordinator',
+  'competences.academics.runshift.details': 'Charles University & OSU (2026 – 2029)',
   'competences.business': 'Business',
   'competences.business.desc':
     'Understanding market dynamics, product strategy, and value creation to deliver impactful solutions.',
+  'competences.business.sia.subtitle': 'Lumi: wellbeing application (2026)',
 } as const;
 
 export type TranslationKey = keyof typeof en;
