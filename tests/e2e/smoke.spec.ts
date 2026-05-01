@@ -8,10 +8,13 @@ test('renders English homepage', async ({ page }) => {
 
 test('can switch language from EN to CS', async ({ page }) => {
   await page.goto('/en/');
-  // Open the dropdown if it's not already open (aria-expanded is managed by the browser for <details>)
-  // We can just click the 'EN' text or the element with 'Language' label
-  await page.getByText('EN', { exact: true }).first().click();
-  await page.getByRole('link', { name: /CS/ }).click();
+
+  // Open the language picker by clicking the summary.
+  await page.locator('summary[aria-label^="Language:"]').click();
+
+  // Now click the 'CS' link.
+  await page.locator('a[aria-label="Language: CS"]').click();
+
   await expect(page).toHaveURL(/\/cs\/$/);
   await expect(page.getByText(/Junior|vývojářka/i).first()).toBeVisible();
 });

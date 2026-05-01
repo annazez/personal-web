@@ -101,8 +101,13 @@ export function initLayersMode() {
   // Apply initial transform
   applyLayersTransform();
 
+  // Set initialization flag for E2E tests
+  const _window = window as unknown as Window & { __layers_init?: boolean };
+  _window.__layers_init = true;
+
   // Return cleanup function for when mode is exited
   return function cleanup() {
+    _window.__layers_init = false;
     pageShell.removeEventListener('pointerdown', onPointerDown);
     pageShell.removeEventListener('pointermove', onPointerMove);
     pageShell.removeEventListener('pointerup', finishDrag);

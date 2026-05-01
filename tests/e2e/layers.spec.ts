@@ -7,10 +7,10 @@ test.describe('3D Exploded Layers Mode', () => {
     const pageShell = page.locator('#page-shell');
 
     // Wait for the default CSS variables to be set (async initialization)
-    await page.waitForFunction(
-      el => el && (el as HTMLElement).style.getPropertyValue('--layers-rotate-x') === '60deg',
-      await pageShell.elementHandle()
-    );
+    await page.waitForFunction(() => {
+      const w = window as unknown as Window & { __layers_init?: boolean };
+      return w.__layers_init === true;
+    });
 
     expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-x'))).toBe(
       '60deg'
@@ -27,10 +27,10 @@ test.describe('3D Exploded Layers Mode', () => {
     const pageShell = page.locator('#page-shell');
 
     // Initial state check - wait for initialization
-    await page.waitForFunction(
-      el => el && (el as HTMLElement).style.getPropertyValue('--layers-rotate-x') === '60deg',
-      await pageShell.elementHandle()
-    );
+    await page.waitForFunction(() => {
+      const w = window as unknown as Window & { __layers_init?: boolean };
+      return w.__layers_init === true;
+    });
 
     expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-rotate-x'))).toBe(
       '60deg'
@@ -71,10 +71,10 @@ test.describe('3D Exploded Layers Mode', () => {
     const pageShell = page.locator('#page-shell');
 
     // Initial state check - wait for initialization
-    await page.waitForFunction(
-      el => el && (el as HTMLElement).style.getPropertyValue('--layers-scale') === '0.8',
-      await pageShell.elementHandle()
-    );
+    await page.waitForFunction(() => {
+      const w = window as unknown as Window & { __layers_init?: boolean };
+      return w.__layers_init === true;
+    });
 
     expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-scale'))).toBe('0.8');
 
@@ -106,10 +106,10 @@ test.describe('3D Exploded Layers Mode', () => {
     const pageShell = page.locator('#page-shell');
 
     // Ensure it's applied
-    await page.waitForFunction(
-      el => el && (el as HTMLElement).style.getPropertyValue('--layers-scale') === '0.8',
-      await pageShell.elementHandle()
-    );
+    await page.waitForFunction(() => {
+      const w = window as unknown as Window & { __layers_init?: boolean };
+      return w.__layers_init === true;
+    });
     expect(await pageShell.evaluate(el => el.style.getPropertyValue('--layers-scale'))).toBe('0.8');
 
     // Exit mode by changing hash to trigger the hashchange event (which triggers cleanup)

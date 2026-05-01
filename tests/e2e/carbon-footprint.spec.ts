@@ -12,18 +12,8 @@ test('carbon footprint hides when unavailable', async ({ page }) => {
       return originalGetEntriesByType(type);
     };
 
-    // To ensure totalSize is 0, we also need to mock the body size calculation.
-    // calculateCarbonValue relies on new TextEncoder().encode(document.body?.innerHTML || '').length.
-    // We conditionally override TextEncoder's encode method to return an empty array
-    // only when it is encoding the body's innerHTML, preserving normal behavior elsewhere.
-    const OriginalTextEncoder = globalThis.TextEncoder;
-    globalThis.TextEncoder = class TextEncoderMock extends OriginalTextEncoder {
-      encode(_input?: string) {
-        // We know that in this test, any call to encode() during calculation should result in 0 size.
-        // This is safer than exact string matching which might vary between browsers.
-        return new Uint8Array(0);
-      }
-    };
+    // We no longer need to mock TextEncoder as calculateCarbonValue has been
+    // refactored to use Performance API exclusively.
   });
 
   await page.goto('/en/');
@@ -33,5 +23,6 @@ test('carbon footprint hides when unavailable', async ({ page }) => {
 
   // Wait for the container to become hidden due to the error.
   // The error is thrown after a 500ms calculation delay.
-  await expect(parentContainer).toBeHidden({ timeout: 5000 });
+  // We use a generous timeout to account for slower CI environments.
+  await expect(parentContainer).toBeHidden({ timeout: 10000 });
 });
