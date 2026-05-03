@@ -48,8 +48,8 @@ if (disabled) {
     /* Tailwind v4 default slate-500, or a fallback */
     background-image: radial-gradient(var(--color-slate-500, #64748b) 1px, transparent 1px);
 
-    /* 
-      We use a hard mask transition here instead of CSS transitioning --mx/--my 
+    /*
+      We use a hard mask transition here instead of CSS transitioning --mx/--my
       because the user requested an instant trail. Opacity handles the fade-in.
     */
     mask-image: radial-gradient(circle 400px at var(--mx) var(--my), black 0%, transparent 100%);
@@ -64,7 +64,7 @@ if (disabled) {
 
   /* Only show spotlight if the device has a pointer and reduced motion is off */
   @media (hover: hover) and (pointer: fine) {
-    .dotted-background-container.is-active .dotted-spotlight {
+    .dotted-background-container:global(.is-active) .dotted-spotlight {
       opacity: 1;
     }
   }

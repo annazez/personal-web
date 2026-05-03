@@ -3,8 +3,6 @@ import { join } from 'node:path';
 import { buildCsp } from './csp.mjs';
 import { computeHash } from './generate-csp-hash.mjs';
 
-/* eslint-disable no-console */
-
 const ROOT_DIR = process.cwd();
 const DATA_DIR = join(ROOT_DIR, 'src/data');
 const SCRIPT_PATH = join(ROOT_DIR, 'src/scripts/theme-bootstrap.txt');

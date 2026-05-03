@@ -50,7 +50,7 @@ const t = await useTranslations(lang);
       transform 220ms ease;
   }
 
-  [data-header-nav]:has([data-mobile-menu-toggle][open]) .nav-panel {
+  [data-header-nav]:has(:global([data-mobile-menu-toggle][open])) .nav-panel {
     max-height: 40rem;
     opacity: 1;
     overflow: visible;

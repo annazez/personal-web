@@ -2,8 +2,6 @@ import { execSync } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-/* eslint-disable no-console */
-
 /**
  * Option B — Site-wide last-content-modified.
  *

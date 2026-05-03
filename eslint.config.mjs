@@ -16,4 +16,10 @@ export default [
       'astro/no-unused-define-vars-in-style': 'warn',
     },
   },
+  {
+    files: ['scripts/**/*.ts', 'scripts/**/*.mjs'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
 ];

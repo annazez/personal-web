@@ -80,7 +80,7 @@ test('useTranslations', async t => {
   await t.test(
     'should gracefully fallback to default language for unsupported language codes',
     async () => {
-      const translate = await useTranslations('fr' as any);
+      const translate = await useTranslations('fr' as LanguageCode);
       assert.strictEqual(translate('seo.home'), 'Home');
     }
   );
