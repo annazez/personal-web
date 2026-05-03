@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert';
 import { getLangFromUrl, useTranslations } from '../../../src/i18n/utils.ts';
-import { defaultLang } from '../../../src/i18n/dictionary.ts';
+import { defaultLang, type LanguageCode } from '../../../src/i18n/dictionary.ts';
 
 test('getLangFromUrl', async t => {
   await t.test('should return supported language when URL has valid prefix', () => {

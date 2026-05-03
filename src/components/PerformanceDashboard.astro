@@ -82,8 +82,8 @@ const scoreClassName = (score: number | null): string => {
 {
   (
     <Surface as="section" data-lighthouse-dashboard>
-      <script type="application/json" data-results set:html={resultsByPathData} />
-      <script type="application/json" data-i18n set:html={i18nData} />
+      <script is:inline type="application/json" data-results set:html={resultsByPathData} />
+      <script is:inline type="application/json" data-i18n set:html={i18nData} />
       <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h2>Lighthouse CI</h2>
