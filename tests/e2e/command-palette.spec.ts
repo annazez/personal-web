@@ -3,10 +3,14 @@ import { expect, test } from '@playwright/test';
 test.describe('Command Palette', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/en/lab/');
-    // Wait for the command-palette script to bind its keydown listener
+    // Wait for all critical scripts to initialize
     await page.waitForFunction(() => {
       const w = window as unknown as Record<string, boolean>;
-      return w['__bindOnce_command_palette'] === true;
+      return (
+        w['__bindOnce_command_palette'] === true &&
+        w['__bindOnce_global_hotkeys'] === true &&
+        w['__bindOnce_system_modes_manager'] === true
+      );
     });
     // Click the body to ensure the page has focus
     await page.locator('body').click();
@@ -62,7 +66,11 @@ test.describe('Command Palette', () => {
     await page.goto('/en/#arch');
     await page.waitForFunction(() => {
       const w = window as unknown as Record<string, boolean>;
-      return w['__bindOnce_command_palette'] === true;
+      return (
+        w['__bindOnce_command_palette'] === true &&
+        w['__bindOnce_global_hotkeys'] === true &&
+        w['__bindOnce_system_modes_manager'] === true
+      );
     });
     await page.locator('body').click();
 

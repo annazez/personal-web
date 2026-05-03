@@ -40,6 +40,15 @@
     --color-surface-2: #27272a;
   }
 
+  summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
   :where(main, article, section, .case-study-content) :is(h1, h2, h3, h4, h5, h6) {
     color: var(--color-fg);
     font-family: var(--font-sans);

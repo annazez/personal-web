@@ -43,7 +43,7 @@ function getLocalizedHref(targetLang: LanguageCode): string {
 }
 ---
 
-<details class="rolldown-menu group relative w-full sm:w-auto">
+<details data-language-picker class="rolldown-menu group relative w-full sm:w-auto">
   <summary
     aria-label={`${t('ui.languageNavigation')}: ${languages[currentLang]}`}
     class="flex min-h-11 w-full cursor-pointer list-none items-center justify-between gap-2 rounded-xl border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) shadow-sm transition-colors duration-200 group-open:bg-(--color-bg-surface) group-open:text-(--color-brand) hover:text-(--color-brand) sm:w-32 [&::-webkit-details-marker]:hidden"
