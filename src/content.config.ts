@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'zod';
 import { languages } from './i18n/dictionary';
+import { isSafeLinkHref } from './security/external-links';
 
 const langKeys = Object.keys(languages) as [string, ...string[]];
 
@@ -175,7 +176,9 @@ const competences = defineCollection({
         z.object({
           title: z.string(),
           subtitle: z.string(),
-          url: z.string(),
+          url: z.string().refine(isSafeLinkHref, {
+            message: 'Must be a safe internal path or an allowlisted HTTPS URL',
+          }),
           image: z.string().optional(),
           imageAlt: z.string().optional(),
         })

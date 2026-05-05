@@ -7,6 +7,7 @@ import { SITE_CSP, THEME_BOOTSTRAP_SCRIPT } from '../data/csp';
 import DottedBackground from '../components/DottedBackground.astro';
 import HeaderNav from '../components/ui/HeaderNav.astro';
 import CommandPalette from '../components/ui/CommandPalette.astro';
+import SystemScripts from '../components/SystemScripts.astro';
 
 interface Props {
   title?: string;
@@ -14,9 +15,23 @@ interface Props {
   lang?: LanguageCode;
   noIndex?: boolean;
   ogImage?: string;
+  canonicalPath?: string;
+  includeAlternates?: boolean;
+  includeNavigation?: boolean;
+  includeCommandPalette?: boolean;
 }
 
-const { title, description, lang = 'en', noIndex = false, ogImage } = Astro.props;
+const {
+  title,
+  description,
+  lang = 'en',
+  noIndex = false,
+  ogImage,
+  canonicalPath,
+  includeAlternates = true,
+  includeNavigation = true,
+  includeCommandPalette = true,
+} = Astro.props;
 const t = await useTranslations(lang);
 const siteName = t('site.name');
 const pageDescription = description ?? siteName;
@@ -34,7 +49,7 @@ const siteUrl = Astro.site ?? Astro.url;
 const match = langPrefixRegex.exec(pathname);
 const pathWithoutLang = match ? pathname.slice(match[0].length).replace(/^\/?/, '/') : pathname;
 
-const canonicalUrl = new URL(pathname, siteUrl).toString();
+const canonicalUrl = new URL(canonicalPath ?? pathname, siteUrl).toString();
 const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
 ---
 
@@ -86,7 +101,6 @@ const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
     <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={absoluteOgImage} />
     <meta property="og:image:alt" content={t('og.imageAlt')} />
-    {/* TODO: Verify actual dimensions of og-image.jpg once created. Defaulting to 1200x630. */}
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -100,11 +114,12 @@ const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {
-      supportedLangs.map(l => (
-        <link rel="alternate" hreflang={l} href={new URL(`/${l}${pathWithoutLang}`, siteUrl)} />
-      ))
+      includeAlternates &&
+        supportedLangs.map(l => (
+          <link rel="alternate" hreflang={l} href={new URL(`/${l}${pathWithoutLang}`, siteUrl)} />
+        ))
     }
-    <link rel="alternate" hreflang="x-default" href={siteUrl} />
+    {includeAlternates && <link rel="alternate" hreflang="x-default" href={siteUrl} />}
   </head>
   <body data-print-banner={t('print.banner')}>
     <DottedBackground />
@@ -113,14 +128,10 @@ const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
     <div id="layers" hidden aria-hidden="true"></div>
     <div id="page-shell">
       <a href="#main-content" class="skip-link">{t('layout.skipToMain')}</a>
-      <HeaderNav />
+      {includeNavigation && <HeaderNav />}
       <slot />
     </div>
-    <CommandPalette />
-    <script>
-      import '../scripts/command-palette';
-      import '../scripts/hotkeys';
-      import '../scripts/modes/manager';
-    </script>
+    {includeCommandPalette && <CommandPalette />}
+    {includeCommandPalette && <SystemScripts />}
   </body>
 </html>

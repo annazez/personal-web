@@ -53,7 +53,7 @@ All commands are run from the root of the project, from a terminal:
 
 - Public key file path: `public/pgp/public-key.asc`
 - Public URL after deployment: `/pgp/public-key.asc`
-- `security.txt` (located at `/.well-known/security.txt`) references this URL via `Encryption: https://annazez.codeberg.page/pgp/public-key.asc`
+- `security.txt` (located at `/.well-known/security.txt`) references this URL via `Encryption: https://zezulka.me/pgp/public-key.asc`
 
 ## Docs
 

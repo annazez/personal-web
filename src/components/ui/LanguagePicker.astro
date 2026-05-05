@@ -8,13 +8,17 @@ import {
   type LanguageCode,
 } from '../../i18n/dictionary';
 import { getAllProjectSlugSets } from '../../lib/projects';
+import { getAllBlogPostSlugSets } from '../../lib/blog';
 
 const currentLang = getLangFromUrl(Astro.url);
 const t = await useTranslations(currentLang);
 
-// Source dynamic slug pairs from projects collection.
-const projectSlugSets = await getAllProjectSlugSets();
-const routeLookup = buildRouteLookup(projectSlugSets);
+// Source dynamic slug pairs from content collections.
+const [projectSlugSets, blogPostSlugSets] = await Promise.all([
+  getAllProjectSlugSets(),
+  getAllBlogPostSlugSets(),
+]);
+const routeLookup = buildRouteLookup([...projectSlugSets, ...blogPostSlugSets]);
 
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
 const hasLangPrefix =
@@ -39,7 +43,8 @@ function getLocalizedHref(targetLang: LanguageCode): string {
     mapLocalizedSegment(segment, currentLang as LanguageCode, targetLang)
   );
 
-  return `/${targetLang}/${localizedSegments.join('/')}`;
+  const localizedPath = localizedSegments.join('/');
+  return localizedPath ? `/${targetLang}/${localizedPath}/` : `/${targetLang}/`;
 }
 ---
 

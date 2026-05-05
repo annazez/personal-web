@@ -19,7 +19,7 @@ export const staticSlugSets: ReadonlyArray<Record<LanguageCode, string>> = [
   { en: 'quality', cs: 'quality' },
   { en: 'uses', cs: 'uses' },
   { en: 'competences', cs: 'competences' },
-  { en: 'lab', cs: 'laborator' },
+  { en: 'lab', cs: 'lab' },
 ];
 
 export function buildRouteLookup(

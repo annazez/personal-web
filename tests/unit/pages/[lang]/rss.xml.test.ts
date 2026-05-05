@@ -28,6 +28,18 @@ const mockProjects = [
   },
 ];
 
+const mockBlogPosts = [
+  {
+    data: {
+      title: 'Blog Post',
+      summary: 'Blog summary',
+      publishedAt: new Date('2024-03-01'),
+      slug: 'blog-post',
+      lang: 'en',
+    },
+  },
+];
+
 // We intercept the dynamic module loading of `astro:content` and `@astrojs/rss` using test runner mocks.
 // Note: test runner module mocks must happen before importing the code under test.
 let getCollectionArgs: any[] = [];
@@ -35,28 +47,29 @@ mock.module('astro:content', {
   namedExports: {
     getCollection: async (...args: any[]) => {
       getCollectionArgs.push(args);
-      // We expect the second argument to be a filter function, so we evaluate it against our mock projects.
+      const collection = args[0];
       const filter = args[1] as any;
+      const entries = collection === 'blog' ? mockBlogPosts : mockProjects;
       if (filter) {
-        return mockProjects.filter(filter);
+        return entries.filter(filter);
       }
-      return mockProjects;
+      return entries;
     },
     getEntry: async (collection: string, id: string) => {
       if (collection === 'translations') {
         if (id === 'en') {
           return {
             data: {
-              feedTitle: 'Anna Zezulka – Projects',
-              feedDescription: 'Case studies and project write-ups.',
+              feedTitle: 'Anna Zezulka – Updates',
+              feedDescription: 'Blog posts, case studies, and project write-ups.',
             },
           };
         }
         if (id === 'cs') {
           return {
             data: {
-              feedTitle: 'Anna Zezulka – Projekty',
-              feedDescription: 'Případové studie a zápisky o projektech.',
+              feedTitle: 'Anna Zezulka – Aktuality',
+              feedDescription: 'Blogové příspěvky, případové studie a zápisky o projektech.',
             },
           };
         }
@@ -99,29 +112,35 @@ test('rss.xml.ts', async t => {
 
     const response = await GET(mockContext);
 
-    assert.strictEqual(getCollectionArgs.length, 1);
+    assert.strictEqual(getCollectionArgs.length, 2);
     assert.strictEqual(getCollectionArgs[0][0], 'projects');
+    assert.strictEqual(getCollectionArgs[1][0], 'blog');
 
     assert.strictEqual(rssArgs.length, 1);
     const options = rssArgs[0];
 
     // Check main feed metadata
-    assert.strictEqual(options.title, 'Anna Zezulka – Projects');
-    assert.strictEqual(options.description, 'Case studies and project write-ups.');
+    assert.strictEqual(options.title, 'Anna Zezulka – Updates');
+    assert.strictEqual(options.description, 'Blog posts, case studies, and project write-ups.');
     assert.strictEqual(options.site, mockContext.site);
 
-    // Check items sorting and shape (Project A is newer than Project B)
-    assert.strictEqual(options.items.length, 2);
+    // Check items sorting and shape (Blog Post is newer than the projects)
+    assert.strictEqual(options.items.length, 3);
 
-    assert.strictEqual(options.items[0].title, 'Project A');
-    assert.strictEqual(options.items[0].description, 'Summary A');
-    assert.strictEqual(options.items[0].pubDate.toISOString(), '2024-02-01T00:00:00.000Z');
-    assert.strictEqual(options.items[0].link, 'https://custom-site.com/en/projects/project-a/');
+    assert.strictEqual(options.items[0].title, 'Blog Post');
+    assert.strictEqual(options.items[0].description, 'Blog summary');
+    assert.strictEqual(options.items[0].pubDate.toISOString(), '2024-03-01T00:00:00.000Z');
+    assert.strictEqual(options.items[0].link, 'https://custom-site.com/en/blog/blog-post/');
 
-    assert.strictEqual(options.items[1].title, 'Project B');
-    assert.strictEqual(options.items[1].description, 'Summary B');
-    assert.strictEqual(options.items[1].pubDate.toISOString(), '2024-01-01T00:00:00.000Z');
-    assert.strictEqual(options.items[1].link, 'https://custom-site.com/en/projects/project-b/');
+    assert.strictEqual(options.items[1].title, 'Project A');
+    assert.strictEqual(options.items[1].description, 'Summary A');
+    assert.strictEqual(options.items[1].pubDate.toISOString(), '2024-02-01T00:00:00.000Z');
+    assert.strictEqual(options.items[1].link, 'https://custom-site.com/en/projects/project-a/');
+
+    assert.strictEqual(options.items[2].title, 'Project B');
+    assert.strictEqual(options.items[2].description, 'Summary B');
+    assert.strictEqual(options.items[2].pubDate.toISOString(), '2024-01-01T00:00:00.000Z');
+    assert.strictEqual(options.items[2].link, 'https://custom-site.com/en/projects/project-b/');
 
     // Check if the Response returned is the mock one
     assert.ok(response instanceof Response);
@@ -136,7 +155,7 @@ test('rss.xml.ts', async t => {
     await GET(mockContext);
 
     // The query to getCollection should have used the defaultLang (en)
-    assert.strictEqual(getCollectionArgs.length, 1);
+    assert.strictEqual(getCollectionArgs.length, 2);
     const filter = getCollectionArgs[0][1];
 
     // In our filter, we check if the language is correct.
@@ -145,7 +164,7 @@ test('rss.xml.ts', async t => {
     assert.ok(!filter({ data: { lang: 'invalid-lang' } }));
 
     // Verify translations used are the fallback ones
-    assert.strictEqual(rssArgs[0].title, 'Anna Zezulka – Projects');
+    assert.strictEqual(rssArgs[0].title, 'Anna Zezulka – Updates');
   });
 
   await t.test('GET should use SITE_URL fallback when context.site is missing', async () => {
@@ -160,7 +179,7 @@ test('rss.xml.ts', async t => {
     assert.strictEqual(rssArgs[0].site, SITE_URL);
 
     // Verify the links were generated using the fallback SITE_URL
-    const expectedLinkUrl = new URL(`/en/projects/project-a/`, SITE_URL).toString();
+    const expectedLinkUrl = new URL(`/en/blog/blog-post/`, SITE_URL).toString();
     assert.strictEqual(rssArgs[0].items[0].link, expectedLinkUrl);
   });
 });

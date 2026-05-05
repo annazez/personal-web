@@ -3,6 +3,12 @@ import { identity } from '../data/identity';
 const ADDITIONAL_ALLOWED_HOSTS = [
   'telperion.cz',
   'lumi.zezulka.me',
+  // /competences page profile links
+  'runshift.cz',
+  'www.itnetwork.cz',
+  'ff.osu.cz',
+  'prorodiny.cz',
+  'www.prorodiny.cz',
   // /uses page tool links
   'fedoraproject.org',
   'code.visualstudio.com',
@@ -46,4 +52,31 @@ export function toSafeExternalUrl(value: string | undefined): string | undefined
   }
 
   return parsed.toString();
+}
+
+export function toSafeInternalPath(value: string | undefined): string | undefined {
+  if (!value || !value.startsWith('/') || value.startsWith('//')) {
+    return undefined;
+  }
+
+  let parsed: URL;
+  try {
+    parsed = new URL(value, 'https://example.invalid');
+  } catch {
+    return undefined;
+  }
+
+  if (parsed.origin !== 'https://example.invalid') {
+    return undefined;
+  }
+
+  return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+}
+
+export function toSafeLinkHref(value: string | undefined): string | undefined {
+  return toSafeInternalPath(value) ?? toSafeExternalUrl(value);
+}
+
+export function isSafeLinkHref(value: string | undefined): boolean {
+  return toSafeLinkHref(value) !== undefined;
 }

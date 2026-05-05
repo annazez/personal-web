@@ -30,6 +30,7 @@ jobs:
           npm run last-modified
           npm run typecheck
           npm run build
+          npm run test:static
 
       - name: E2E tests
         env:
@@ -50,6 +51,12 @@ jobs:
 
       - name: Extract Lighthouse report
         run: node --experimental-strip-types scripts/extract-lighthouse.ts
+
+      - name: Rebuild with Lighthouse report
+        run: |
+          npm run build
+          npm run test:static
+          npm run size:check
 
       - name: Publish to custom domain
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'

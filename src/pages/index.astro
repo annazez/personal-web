@@ -4,13 +4,11 @@ import { defaultLang, languageEntries } from '../i18n/dictionary';
 import { useTranslations } from '../i18n/utils';
 
 const t = await useTranslations(defaultLang);
-const canonicalEn = new URL(`/${defaultLang}/`, Astro.site ?? Astro.url).toString();
 ---
 
-<Layout title={t('seo.home')} lang={defaultLang} noIndex={true}>
+<Layout title={t('seo.home')} lang={defaultLang} noIndex={true} canonicalPath={`/${defaultLang}/`}>
   <Fragment slot="head">
     <meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
-    <link rel="canonical" href={canonicalEn} />
   </Fragment>
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-4 px-6 py-16">

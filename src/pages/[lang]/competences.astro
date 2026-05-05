@@ -7,6 +7,7 @@ import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
 import { useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
 import { getCollection } from 'astro:content';
+import { toSafeLinkHref } from '../../security/external-links';
 
 export function getStaticPaths() {
   return supportedLangs.map(lang => ({ params: { lang } }));
@@ -38,29 +39,37 @@ const competences = (await getCollection('competences'))
               <h2>{competence.data.title}</h2>
             </div>
             <p class="home-body-text leading-relaxed">{competence.data.desc}</p>
-            {competence.data.links?.map(link => (
-              <Surface
-                as="a"
-                href={link.url}
-                target={link.url.startsWith('http') ? '_blank' : undefined}
-                rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                class="group mt-2 flex items-center gap-4 bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
-              >
-                {link.image && (
-                  <img
-                    src={link.image}
-                    alt={link.imageAlt || ''}
-                    class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
-                  />
-                )}
-                <div class="flex flex-col">
-                  <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-brand)">
-                    {link.title}
-                  </span>
-                  <span class="text-sm text-(--color-text-muted)">{link.subtitle}</span>
-                </div>
-              </Surface>
-            ))}
+            {competence.data.links?.map(link => {
+              const safeHref = toSafeLinkHref(link.url);
+              if (!safeHref) {
+                return null;
+              }
+
+              const isExternal = safeHref.startsWith('https://');
+              return (
+                <Surface
+                  as="a"
+                  href={safeHref}
+                  target={isExternal ? '_blank' : undefined}
+                  rel={isExternal ? 'noopener noreferrer' : undefined}
+                  class="group mt-2 flex items-center gap-4 bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
+                >
+                  {link.image && (
+                    <img
+                      src={link.image}
+                      alt={link.imageAlt || ''}
+                      class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
+                    />
+                  )}
+                  <div class="flex flex-col">
+                    <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-brand)">
+                      {link.title}
+                    </span>
+                    <span class="text-sm text-(--color-text-muted)">{link.subtitle}</span>
+                  </div>
+                </Surface>
+              );
+            })}
           </Surface>
         ))
       }

@@ -66,6 +66,11 @@ describe('dictionary config', () => {
       assert.strictEqual(routeLookup.size, 10);
     });
 
+    it('should map lab to the generated localized route', () => {
+      assert.strictEqual(routeLookup.get('en:lab')?.cs, 'lab');
+      assert.strictEqual(routeLookup.get('cs:lab')?.en, 'lab');
+    });
+
     it('should not match segment from different language', () => {
       assert.strictEqual(routeLookup.get('cs:about'), undefined);
       assert.strictEqual(routeLookup.get('en:o-mne'), undefined);
