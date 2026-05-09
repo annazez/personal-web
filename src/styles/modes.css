@@ -1,16 +1,19 @@
-/* Architectural X-Ray Mode (Zero-JS via URL hash) */
+/* Architectural X-Ray Mode */
+html[data-lab-mode-arch='true'] *,
 html:has(#arch:target) * {
   outline: 1px solid rgba(161, 161, 170, 0.4) !important;
   background: transparent !important;
   color: var(--color-brand) !important;
 }
 
-/* Accessibility Auditor Mode (Zero-JS via URL hash) */
+/* Accessibility Auditor Mode */
+html[data-lab-mode-audit='true'],
 html:has(#audit:target) {
   filter: grayscale(100%) contrast(110%);
 }
 
-/* Exploded Layers 3D Mode (Zero-JS via URL hash) */
+/* Exploded Layers 3D Mode */
+html[data-lab-mode-layers='true'],
 html:has(#layers:target) {
   background: #09090b !important;
   overflow: hidden !important;

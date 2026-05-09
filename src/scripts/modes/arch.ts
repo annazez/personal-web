@@ -1,6 +1,6 @@
 /**
  * Architecture X-Ray Mode.
- * Currently primarily CSS-driven via :has(#arch:target).
+ * Currently primarily CSS-driven by persisted lab mode attributes.
  * This module provides a hook for future JS-driven enhancements.
  */
 export function init() {

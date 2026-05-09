@@ -6,10 +6,10 @@ const lang = getLangFromUrl(Astro.url);
 const t = await useTranslations(lang);
 ---
 
-<details data-mobile-menu-toggle class="group/menu relative w-full sm:hidden">
+<details data-mobile-menu-toggle class="group/menu relative w-full md:hidden">
   <summary
     aria-label={t('ui.mobileNavigationLabel')}
-    class="relative flex min-h-11 w-full cursor-pointer list-none items-center justify-center rounded-xl border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) shadow-sm transition-colors duration-200 group-open/menu:text-(--color-brand) hover:text-(--color-brand) [&::-webkit-details-marker]:hidden"
+    class="relative flex min-h-11 w-full cursor-pointer list-none items-center justify-center rounded-lg border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) transition-colors duration-200 group-open/menu:text-(--color-brand) hover:border-(--color-text-muted) hover:text-(--color-brand) [&::-webkit-details-marker]:hidden"
   >
     <Icon
       name="lucide:menu"

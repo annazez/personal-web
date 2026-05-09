@@ -1,6 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import BackLink from '../../../components/BackLink.astro';
 import ProjectCard from '../../../components/home/ProjectCard.astro';
 import Footer from '../../../components/ui/Footer.astro';
 import Surface from '../../../components/ui/Surface.astro';
@@ -24,8 +23,6 @@ const projectArticles = await getProjects(currentLang);
   </Fragment>
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
-    <BackLink href={`/${currentLang}/`} />
-
     <header class="flex flex-col gap-3">
       <h1>{t('projects.title')}</h1>
       <p class="home-body-text max-w-2xl">{t('projects.subtitle')}</p>
@@ -34,15 +31,17 @@ const projectArticles = await getProjects(currentLang);
     <Surface as="section" class="flex flex-col gap-4">
       {
         projectArticles.map(article => (
-          <ProjectCard
-            title={article.data.title}
-            summary={article.data.summary}
-            articleSlug={article.data.slug}
-            tags={article.data.tags}
-            website={article.data.website}
-            repo={article.data.repo}
-            as="h2"
-          />
+          <Surface class="p-4 transition-colors hover:bg-(--color-surface-hover)">
+            <ProjectCard
+              title={article.data.title}
+              summary={article.data.summary}
+              articleSlug={article.data.slug}
+              tags={article.data.tags}
+              website={article.data.website}
+              repo={article.data.repo}
+              as="h2"
+            />
+          </Surface>
         ))
       }
     </Surface>

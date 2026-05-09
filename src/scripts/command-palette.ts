@@ -3,10 +3,10 @@
  *
  * Wires keydown listeners for the command palette <dialog>.
  * - ? (Shift+/)  → toggle palette
- * - A            → navigate to #arch
- * - U            → navigate to #audit
- * - L            → navigate to #layers
- * - H            → return home (clear hash)
+ * - A            → enable Architecture X-Ray
+ * - U            → enable Accessibility Audit
+ * - L            → enable Exploded Layers
+ * - H            → clear active lab modes
  * - Esc          → close (handled natively by <dialog>)
  *
  * Skips all key handling when the event target is an input, textarea,
@@ -15,6 +15,7 @@
  * Respects prefers-reduced-motion for open/close transitions.
  */
 import { bindOnce } from './bind-once';
+import { clearAllLabModes, setLabMode, type LabModeId } from './lab-modes-state';
 
 function isEditableTarget(target: EventTarget | null): boolean {
   if (!target || !(target instanceof HTMLElement)) return false;
@@ -33,16 +34,14 @@ function closePalette(): void {
   if (dialog?.open) dialog.close();
 }
 
-function setHash(hash: string): void {
+function enableMode(mode: LabModeId): void {
   closePalette();
-  window.location.hash = hash;
+  setLabMode(mode, true);
 }
 
-function clearHash(): void {
+function clearModes(): void {
   closePalette();
-  // Remove hash without triggering a scroll-to-top
-  history.replaceState(null, '', window.location.pathname + window.location.search);
-  window.dispatchEvent(new HashChangeEvent('hashchange'));
+  clearAllLabModes();
 }
 
 function handleKeydown(e: KeyboardEvent): void {
@@ -60,19 +59,19 @@ function handleKeydown(e: KeyboardEvent): void {
   switch (e.key.toUpperCase()) {
     case 'A':
       e.preventDefault();
-      setHash('#arch');
+      enableMode('arch');
       break;
     case 'U':
       e.preventDefault();
-      setHash('#audit');
+      enableMode('audit');
       break;
     case 'L':
       e.preventDefault();
-      setHash('#layers');
+      enableMode('layers');
       break;
     case 'H':
       e.preventDefault();
-      clearHash();
+      clearModes();
       break;
     // Esc is handled natively by <dialog> — no need to intercept
   }

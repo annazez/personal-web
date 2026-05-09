@@ -16,12 +16,15 @@
   --color-text-strong: #27272a;
   --color-surface-1: #ffffff;
   --color-surface-2: #f4f4f5;
+  --color-bg-surface: rgb(255 255 255 / 0.9);
+  --color-bg-surface-elevated: rgb(244 244 245 / 0.88);
 
   /* Surface Template Tokens */
   --radius-card: 1rem;
-  --surface-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --surface-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 18px 48px -36px rgb(24 24 27 / 0.3);
   --surface-border: 1px solid var(--color-border);
   --surface-padding: 1rem 1.25rem;
+  --surface-blur: 18px;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -38,6 +41,8 @@
     --color-text-strong: #e4e4e7;
     --color-surface-1: #18181b;
     --color-surface-2: #27272a;
+    --color-bg-surface: rgb(24 24 27 / 0.86);
+    --color-bg-surface-elevated: rgb(39 39 42 / 0.82);
   }
 
   summary {
@@ -104,8 +109,8 @@
     --color-text-secondary: #a1a1aa;
     --color-text-muted: #a1a1aa; /* zinc-400 for better contrast in dark mode (7.42:1) */
     --color-text-strong: #e4e4e7;
-    --color-bg-surface: #18181b;
-    --color-bg-surface-elevated: #27272a;
+    --color-bg-surface: rgb(24 24 27 / 0.86);
+    --color-bg-surface-elevated: rgb(39 39 42 / 0.82);
   }
 
   html {
@@ -330,11 +335,17 @@
   }
 }
 
+html[data-lab-mode-arch='true'] body,
 html:has(#arch:target) body {
   background-image: none !important;
 }
 
 /* Highlight semantic blocks with the brand color */
+html[data-lab-mode-arch='true'] header,
+html[data-lab-mode-arch='true'] section,
+html[data-lab-mode-arch='true'] article,
+html[data-lab-mode-arch='true'] footer,
+html[data-lab-mode-arch='true'] nav,
 html:has(#arch:target) header,
 html:has(#arch:target) section,
 html:has(#arch:target) article,
@@ -344,11 +355,13 @@ html:has(#arch:target) nav {
 }
 
 /* Remove outlines from the hidden anchor itself */
+html[data-lab-mode-arch='true'] #arch,
 html:has(#arch:target) #arch {
   outline: none !important;
 }
 
 /* Expose hidden screen-reader labels visually */
+html[data-lab-mode-audit='true'] [aria-label]::after,
 html:has(#audit:target) [aria-label]::after {
   content: '[aria: ' attr(aria-label) ']';
   position: absolute;
@@ -366,19 +379,28 @@ html:has(#audit:target) [aria-label]::after {
 }
 
 /* Ensure relative positioning for elements with aria-labels so the tooltip aligns correctly */
+html[data-lab-mode-audit='true'] [aria-label],
 html:has(#audit:target) [aria-label] {
   position: relative;
   overflow: visible !important;
 }
 
 /* Self-enforcing linter: Highlight structural violations */
+html[data-lab-mode-audit='true'] img:not([alt]),
+html[data-lab-mode-audit='true'] a:not([href]),
 html:has(#audit:target) img:not([alt]),
 html:has(#audit:target) a:not([href]) {
   outline: 4px dashed red !important;
   outline-offset: 4px;
 }
 
+/* Always present so the exit animation works (transform removed → animates back to identity) */
+#page-shell {
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 /* Tilt the entire body into an isometric perspective */
+html[data-lab-mode-layers='true'] body,
 html:has(#layers:target) body {
   background: #09090b !important;
   overflow-x: hidden !important;
@@ -389,12 +411,12 @@ html:has(#layers:target) body {
   scrollbar-gutter: stable;
 }
 
+html[data-lab-mode-layers='true'] #page-shell,
 html:has(#layers:target) #page-shell {
   transform: perspective(2500px) rotateX(var(--layers-rotate-x, 60deg))
     rotateZ(var(--layers-rotate-z, -30deg)) scale(var(--layers-scale, 0.8));
   transform-style: preserve-3d;
   transform-origin: center center;
-  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
   cursor: grab;
   touch-action: none;
   user-select: none;
@@ -412,14 +434,19 @@ html:has(#layers:target) #page-shell {
   min-height: 150vh !important;
 }
 
+html[data-lab-mode-layers='true'] #page-shell.layers-dragging,
 html:has(#layers:target) #page-shell.layers-dragging {
   cursor: grabbing;
+  transition: none;
 }
 
 /*
  * PERFORMANCE: Use an explicit element list instead of the universal selector (*)
  * to minimize evaluation cost within the expensive :has() ancestor matching chain.
  */
+html[data-lab-mode-layers='true']
+  #page-shell
+  :is(header, section, footer, article, ul, h1, h2, p, a, button),
 html:has(#layers:target)
   #page-shell
   :is(header, section, footer, article, ul, h1, h2, p, a, button) {
@@ -431,6 +458,11 @@ html:has(#layers:target)
 }
 
 /* Elevate main semantic blocks */
+html[data-lab-mode-layers='true'] #page-shell header,
+html[data-lab-mode-layers='true'] #page-shell section,
+html[data-lab-mode-layers='true'] #page-shell footer,
+html[data-lab-mode-layers='true'] #page-shell article,
+html[data-lab-mode-layers='true'] #page-shell ul,
 html:has(#layers:target) #page-shell header,
 html:has(#layers:target) #page-shell section,
 html:has(#layers:target) #page-shell footer,
@@ -444,6 +476,11 @@ html:has(#layers:target) #page-shell ul {
 }
 
 /* Elevate text and interactive elements even further */
+html[data-lab-mode-layers='true'] #page-shell h1,
+html[data-lab-mode-layers='true'] #page-shell h2,
+html[data-lab-mode-layers='true'] #page-shell p,
+html[data-lab-mode-layers='true'] #page-shell a,
+html[data-lab-mode-layers='true'] #page-shell button,
 html:has(#layers:target) #page-shell h1,
 html:has(#layers:target) #page-shell h2,
 html:has(#layers:target) #page-shell p,
@@ -454,6 +491,7 @@ html:has(#layers:target) #page-shell button {
 }
 
 /* Keep the hidden anchor flat */
+html[data-lab-mode-layers='true'] #layers,
 html:has(#layers:target) #layers {
   transform: none;
 }

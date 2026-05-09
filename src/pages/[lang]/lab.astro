@@ -1,12 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import BackLink from '../../components/BackLink.astro';
 import Footer from '../../components/ui/Footer.astro';
+import PerformanceDashboard from '../../components/PerformanceDashboard.astro';
 import Surface from '../../components/ui/Surface.astro';
 import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
 import { useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
-import '../../styles/modes.css';
+import { identity } from '../../data/identity';
+import { toSafeExternalUrl } from '../../security/external-links';
 
 export function getStaticPaths() {
   return supportedLangs.map(lang => ({ params: { lang } }));
@@ -14,25 +15,23 @@ export function getStaticPaths() {
 
 const currentLang = getValidLanguageCode(Astro.params.lang);
 const t = await useTranslations(currentLang);
+const codebergPagesUrl = toSafeExternalUrl(identity.codebergPages);
 
 const modes = [
   {
     id: 'arch',
-    hash: '#arch',
     title: t('palette.archMode'),
     icon: 'lucide:layout-template',
-    desc: 'Visualize the DOM structure as an architectural blueprint. Zero-JS interaction using CSS :has().',
+    desc: 'Visualize the DOM structure as an architectural blueprint that persists across page navigation.',
   },
   {
     id: 'audit',
-    hash: '#audit',
     title: t('palette.auditMode'),
     icon: 'lucide:accessibility',
     desc: 'Real-time accessibility inspection. Highlights structural violations and exposes aria-labels visually.',
   },
   {
     id: 'layers',
-    hash: '#layers',
     title: t('palette.layersMode'),
     icon: 'lucide:layers',
     desc: 'Isometric exploded view of the page hierarchy. Enhances depth perception and structural understanding.',
@@ -42,8 +41,6 @@ const modes = [
 
 <Layout title={t('seo.lab')} description={t('lab.subtitle')} lang={currentLang}>
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
-    <BackLink href={`/${currentLang}/`} />
-
     <section class="flex flex-col gap-4">
       <div class="flex items-center gap-3">
         <Icon name="lucide:beaker" class="size-8 text-(--color-brand)" />
@@ -52,39 +49,193 @@ const modes = [
       <p class="home-body-text">{t('lab.subtitle')}</p>
     </section>
 
-    <div class="grid gap-4 sm:grid-cols-1">
-      {
-        modes.map(mode => (
-          <Surface class="flex flex-col gap-4">
-            <div class="flex items-center justify-between gap-4">
-              <div class="flex items-center gap-3">
-                <Icon name={mode.icon} class="size-6 text-(--color-brand) opacity-80" />
-                <h2 class="text-lg font-semibold">{mode.title}</h2>
-              </div>
-              <a
-                href={mode.hash}
-                class="home-action-text rounded-md border border-(--color-border) px-4 py-1.5 transition-colors hover:bg-(--color-bg-surface-elevated)"
-              >
-                {t('projects.visit')}
-              </a>
-            </div>
-            <p class="home-subtle-text">{mode.desc}</p>
-          </Surface>
-        ))
-      }
-    </div>
-
-    <Surface class="flex flex-col gap-3">
+    <section class="flex flex-col gap-4">
       <div class="flex items-center gap-3">
-        <Icon name="lucide:keyboard" class="size-6 text-(--color-brand) opacity-80" />
-        <h2 class="text-lg font-semibold">{t('palette.title')}</h2>
+        <Icon name="lucide:sparkles" class="size-6 text-(--color-brand) opacity-80" />
+        <h2>{t('lab.experimental')}</h2>
       </div>
-      <p class="home-subtle-text">
-        {t('palette.openHint')}. The palette acts as a centralized dispatcher for all experimental
-        modes and system shortcuts.
-      </p>
-    </Surface>
+
+      <div class="grid gap-4 sm:grid-cols-1">
+        {
+          modes.map(mode => (
+            <Surface class="flex flex-col gap-4">
+              <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <Icon name={mode.icon} class="size-6 text-(--color-brand) opacity-80" />
+                  <h3 class="text-lg font-semibold">{mode.title}</h3>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked="false"
+                  aria-label={`Toggle ${mode.title}`}
+                  data-lab-mode-switch
+                  data-mode-id={mode.id}
+                  class="lab-mode-switch"
+                >
+                  <span class="lab-mode-switch__thumb" />
+                </button>
+              </div>
+              <p class="home-subtle-text">{mode.desc}</p>
+            </Surface>
+          ))
+        }
+
+        <Surface class="flex flex-col gap-3">
+          <div class="flex items-center gap-3">
+            <Icon name="lucide:keyboard" class="size-6 text-(--color-brand) opacity-80" />
+            <h3 class="text-lg font-semibold">{t('palette.title')}</h3>
+          </div>
+          <p class="home-subtle-text">
+            {t('palette.openHint')}. The palette acts as a centralized dispatcher for all
+            experimental modes and system shortcuts.
+          </p>
+        </Surface>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <div class="flex items-center gap-3">
+        <Icon name="lucide:folder-code" class="size-6 text-(--color-brand) opacity-80" />
+        <h2>{t('lab.resources')}</h2>
+      </div>
+
+      <div class="grid gap-3 sm:grid-cols-2">
+        {
+          codebergPagesUrl && (
+            <a
+              href={codebergPagesUrl}
+              target="_blank"
+              rel="me noopener noreferrer"
+              class="lab-resource-link"
+            >
+              <Icon name="lucide:code-2" class="size-5" />
+              <span>{t('lab.sourceCode')}</span>
+            </a>
+          )
+        }
+        <a href={`/${currentLang}/uses/`} class="lab-resource-link">
+          <Icon name="lucide:laptop" class="size-5" />
+          <span>{t('uses.title')}</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <div class="flex items-center gap-3">
+        <Icon name="lucide:gauge" class="size-6 text-(--color-brand) opacity-80" />
+        <h2>{t('quality.title')}</h2>
+      </div>
+      <p class="home-subtle-text">{t('quality.summary')}</p>
+      <PerformanceDashboard />
+    </section>
 
     <Footer lang={currentLang} />
   </main>
 </Layout>
+
+<style>
+  .lab-resource-link {
+    display: flex;
+    min-height: 3.25rem;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    background: var(--color-bg-surface-elevated);
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.85rem 1rem;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .lab-resource-link:hover {
+    border-color: color-mix(in srgb, var(--color-brand) 42%, var(--color-border));
+    background: var(--color-surface-hover);
+    color: var(--color-brand);
+    transform: translateY(-1px);
+  }
+
+  .lab-mode-switch {
+    display: inline-flex;
+    width: 3rem;
+    height: 1.625rem;
+    flex-shrink: 0;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background-color: var(--color-bg-surface-elevated);
+    padding: 0.1875rem;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .lab-mode-switch:hover {
+    border-color: var(--color-text-muted);
+  }
+
+  .lab-mode-switch__thumb {
+    display: block;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 999px;
+    background-color: var(--color-bg);
+    box-shadow: 0 1px 2px rgb(24 24 27 / 0.16);
+    transform: translateX(0);
+    transition:
+      background-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .lab-mode-switch:global([aria-checked='true']) {
+    border-color: color-mix(in srgb, var(--color-fg) 34%, var(--color-border)) !important;
+    background-color: color-mix(
+      in srgb,
+      var(--color-fg) 18%,
+      var(--color-bg-surface-elevated)
+    ) !important;
+  }
+
+  .lab-mode-switch:global([aria-checked='true']) .lab-mode-switch__thumb {
+    background-color: var(--color-fg) !important;
+    transform: translateX(1.375rem);
+  }
+
+  :global(html[data-lab-mode-arch='true']) .lab-mode-switch[data-mode-id='arch'],
+  :global(html[data-lab-mode-audit='true']) .lab-mode-switch[data-mode-id='audit'],
+  :global(html[data-lab-mode-layers='true']) .lab-mode-switch[data-mode-id='layers'],
+  :global(html:has(#arch:target)) .lab-mode-switch[data-mode-id='arch'],
+  :global(html:has(#audit:target)) .lab-mode-switch[data-mode-id='audit'],
+  :global(html:has(#layers:target)) .lab-mode-switch[data-mode-id='layers'] {
+    border-color: color-mix(in srgb, var(--color-fg) 34%, var(--color-border)) !important;
+    background-color: color-mix(
+      in srgb,
+      var(--color-fg) 18%,
+      var(--color-bg-surface-elevated)
+    ) !important;
+  }
+
+  :global(html[data-lab-mode-arch='true'])
+    .lab-mode-switch[data-mode-id='arch']
+    .lab-mode-switch__thumb,
+  :global(html[data-lab-mode-audit='true'])
+    .lab-mode-switch[data-mode-id='audit']
+    .lab-mode-switch__thumb,
+  :global(html[data-lab-mode-layers='true'])
+    .lab-mode-switch[data-mode-id='layers']
+    .lab-mode-switch__thumb,
+  :global(html:has(#arch:target)) .lab-mode-switch[data-mode-id='arch'] .lab-mode-switch__thumb,
+  :global(html:has(#audit:target)) .lab-mode-switch[data-mode-id='audit'] .lab-mode-switch__thumb,
+  :global(html:has(#layers:target))
+    .lab-mode-switch[data-mode-id='layers']
+    .lab-mode-switch__thumb {
+    background-color: var(--color-fg) !important;
+    transform: translateX(1.375rem);
+  }
+</style>

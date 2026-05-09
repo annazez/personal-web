@@ -1,8 +1,10 @@
 /**
  * Initialize the 3D exploded layers mode.
- * Only called when user explicitly navigates to #layers hash.
+ * Called when the Exploded Layers lab mode is active.
  * All event listeners are registered here and cleanup is returned for disposal.
  */
+import { isLabModeActive } from '../lab-modes-state';
+
 export function init() {
   const pageShell = document.getElementById('page-shell');
   if (!pageShell) return null;
@@ -20,6 +22,7 @@ export function init() {
     dragStartY: 0,
     dragStartRotateX: defaults.rotateX,
     dragStartRotateZ: defaults.rotateZ,
+    hasDragged: false,
     suppressClick: false,
   };
 
@@ -41,14 +44,25 @@ export function init() {
     if (!state.isDragging) return;
     state.isDragging = false;
     pageShell.classList.remove('layers-dragging');
-    state.suppressClick = true;
-    window.setTimeout(() => {
-      state.suppressClick = false;
-    }, 0);
+
+    if (state.hasDragged) {
+      state.suppressClick = true;
+      window.setTimeout(() => {
+        state.suppressClick = false;
+      }, 0);
+    }
+
+    state.hasDragged = false;
   };
 
   const onPointerDown = (event: PointerEvent) => {
-    if (window.location.hash !== '#layers' || event.button !== 0) return;
+    if (!isLabModeActive('layers') || event.button !== 0) return;
+    if (
+      event.target instanceof Element &&
+      event.target.closest('[data-lab-mode-switch], button, a, input, select, textarea, summary')
+    ) {
+      return;
+    }
 
     state.isDragging = true;
     state.dragStartX = event.clientX;
@@ -63,10 +77,11 @@ export function init() {
   };
 
   const onPointerMove = (event: PointerEvent) => {
-    if (!state.isDragging || window.location.hash !== '#layers') return;
+    if (!state.isDragging || !isLabModeActive('layers')) return;
 
     const deltaX = event.clientX - state.dragStartX;
     const deltaY = event.clientY - state.dragStartY;
+    state.hasDragged = state.hasDragged || Math.hypot(deltaX, deltaY) > 3;
 
     state.rotateZ = state.dragStartRotateZ + deltaX * 0.2;
     state.rotateX = clamp(state.dragStartRotateX + deltaY * 0.2, 20, 80);
@@ -74,7 +89,7 @@ export function init() {
   };
 
   const onWheel = (event: WheelEvent) => {
-    if (window.location.hash !== '#layers') return;
+    if (!isLabModeActive('layers')) return;
 
     event.preventDefault();
     const zoomFactor = Math.exp(-event.deltaY * 0.001);
@@ -117,6 +132,7 @@ export function init() {
     pageShell.removeEventListener('click', onClick, true);
 
     state.isDragging = false;
+    state.hasDragged = false;
     state.suppressClick = false;
     pageShell.classList.remove('layers-dragging');
     resetLayersTransform();

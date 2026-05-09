@@ -3,8 +3,6 @@
  *
  * Each category maps to a Surface card on the page.
  * Items with a `url` will render as external links via toSafeExternalUrl.
- *
- * TODO: Replace placeholder values with your actual setup.
  */
 
 export interface UsesItem {
@@ -22,61 +20,32 @@ export interface UsesCategory {
 const uses: UsesCategory[] = [
   {
     categoryKey: 'uses.cat.hardware',
-    items: [
-      { name: 'ThinkPad T14s Gen 4', note: 'AMD Ryzen 7 PRO, 32 GB RAM' },
-      { name: 'LG 27UK850-W', note: '27″ 4K USB-C monitor' },
-      { name: 'Keychron K3', note: 'Low-profile mechanical, brown switches' },
-    ],
+    items: [{ name: 'Framework 13 Pro', url: 'https://frame.work' }, { name: 'Pixel 8a' }],
   },
   {
     categoryKey: 'uses.cat.os',
     items: [
-      {
-        name: 'Fedora Workstation',
-        note: 'Rolling-ish, GNOME desktop',
-        url: 'https://fedoraproject.org',
-      },
-      { name: 'Fedora Server', note: 'Self-hosted services' },
+      { name: 'Fedora Silverblue', url: 'https://fedoraproject.org/silverblue/' },
+      { name: 'GrapheneOS', url: 'https://grapheneos.org' },
     ],
   },
   {
     categoryKey: 'uses.cat.editor',
-    items: [
-      { name: 'VS Code', note: 'Primary editor', url: 'https://code.visualstudio.com' },
-      { name: 'Neovim', note: 'Terminal editing & quick fixes', url: 'https://neovim.io' },
-    ],
-  },
-  {
-    categoryKey: 'uses.cat.terminal',
-    items: [
-      { name: 'Ghostty', note: 'GPU-accelerated terminal', url: 'https://ghostty.org' },
-      { name: 'fish', note: 'Interactive shell', url: 'https://fishshell.com' },
-      { name: 'starship', note: 'Cross-shell prompt', url: 'https://starship.rs' },
-    ],
-  },
-  {
-    categoryKey: 'uses.cat.browser',
-    items: [
-      { name: 'Firefox', note: 'Primary browser', url: 'https://www.mozilla.org/firefox/' },
-      { name: 'Chromium', note: 'Testing & DevTools' },
-    ],
+    items: [{ name: 'Zed', url: 'https://zed.dev' }],
   },
   {
     categoryKey: 'uses.cat.languages',
     items: [
-      { name: 'TypeScript', note: 'Primary language' },
-      { name: 'Node.js', note: 'Runtime', url: 'https://nodejs.org' },
-      { name: 'Astro', note: 'This site', url: 'https://astro.build' },
-      { name: 'Python', note: 'Scripting & automation' },
+      { name: 'TypeScript', url: 'https://www.typescriptlang.org' },
+      { name: 'Svelte', url: 'https://svelte.dev' },
+      { name: 'Astro', url: 'https://astro.build' },
+      { name: 'Node.js', url: 'https://nodejs.org' },
+      { name: 'Rust', url: 'https://www.rust-lang.org' },
     ],
   },
   {
-    categoryKey: 'uses.cat.infra',
-    items: [
-      { name: 'Podman', note: 'Rootless containers', url: 'https://podman.io' },
-      { name: 'Caddy', note: 'Reverse proxy & auto-TLS', url: 'https://caddyserver.com' },
-      { name: 'Woodpecker CI', note: 'Self-hosted CI/CD', url: 'https://woodpecker-ci.org' },
-    ],
+    categoryKey: 'uses.cat.git',
+    items: [{ name: 'Codeberg', url: 'https://codeberg.org' }],
   },
 ];
 

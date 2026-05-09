@@ -48,10 +48,10 @@ function getLocalizedHref(targetLang: LanguageCode): string {
 }
 ---
 
-<details data-language-picker class="rolldown-menu group relative w-full sm:w-auto">
+<details data-language-picker class="rolldown-menu group relative w-full md:w-auto">
   <summary
     aria-label={`${t('ui.languageNavigation')}: ${languages[currentLang]}`}
-    class="flex min-h-11 w-full cursor-pointer list-none items-center justify-between gap-2 rounded-xl border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) shadow-sm transition-colors duration-200 group-open:bg-(--color-bg-surface) group-open:text-(--color-brand) hover:text-(--color-brand) sm:w-32 [&::-webkit-details-marker]:hidden"
+    class="flex min-h-11 w-full cursor-pointer list-none items-center justify-between gap-2 rounded-lg border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) transition-colors duration-200 group-open:text-(--color-brand) hover:border-(--color-text-muted) hover:text-(--color-brand) md:min-h-9 md:w-auto md:min-w-[5.5rem] md:px-2.5 [&::-webkit-details-marker]:hidden"
   >
     <Icon name="lucide:globe" class="size-3.5 shrink-0" aria-hidden="true" />
     <span class="home-micro-label whitespace-nowrap">{languages[currentLang]}</span>
@@ -63,7 +63,7 @@ function getLocalizedHref(targetLang: LanguageCode): string {
   </summary>
 
   <ul
-    class="mt-2 rounded-lg border border-(--color-border) bg-(--color-bg-surface) p-1 shadow-sm sm:absolute sm:top-[calc(100%+0.4rem)] sm:right-0 sm:mt-0 sm:min-w-32"
+    class="mt-2 rounded-lg border border-(--color-border) bg-(--color-bg) p-1 shadow-sm md:absolute md:top-[calc(100%+0.4rem)] md:right-0 md:mt-0 md:min-w-32"
   >
     {
       languageEntries.map(([code, label]) => (
@@ -111,7 +111,7 @@ function getLocalizedHref(targetLang: LanguageCode): string {
     transform: translateY(0);
   }
 
-  @media (min-width: 40rem) {
+  @media (min-width: 48rem) {
     details.rolldown-menu:global([open]) > ul {
       margin-top: 0;
     }

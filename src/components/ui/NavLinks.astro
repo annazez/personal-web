@@ -3,6 +3,9 @@ import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = await useTranslations(lang);
+const currentPath = Astro.url.pathname.endsWith('/')
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
 
 const links = [
   { href: `/${lang}/`, label: t('seo.home') },
@@ -11,19 +14,56 @@ const links = [
   { href: `/${lang}/competences/`, label: t('competences.title') },
   { href: `/${lang}/lab/`, label: t('lab.title') },
 ];
+
+function isCurrentLink(href: string): boolean {
+  return href === `/${lang}/` ? currentPath === href : currentPath.startsWith(href);
+}
 ---
 
-<ul class="flex flex-col gap-2 sm:flex-row sm:gap-6">
+<ul class="flex flex-col gap-1 md:flex-row md:items-center">
   {
-    links.map(link => (
-      <li>
-        <a
-          href={link.href}
-          class="home-micro-label block py-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) sm:py-0"
-        >
-          {link.label}
-        </a>
-      </li>
-    ))
+    links.map(link => {
+      const isActive = isCurrentLink(link.href);
+
+      return (
+        <li>
+          <a
+            href={link.href}
+            aria-current={isActive ? 'page' : undefined}
+            class={isActive ? 'nav-link nav-link--active' : 'nav-link'}
+          >
+            {link.label}
+          </a>
+        </li>
+      );
+    })
   }
 </ul>
+
+<style>
+  .nav-link {
+    display: block;
+    border-radius: 0.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: 0.625rem 0.75rem;
+    text-decoration: none;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .nav-link:hover,
+  .nav-link--active {
+    background-color: color-mix(in srgb, var(--color-border) 38%, transparent);
+    color: var(--color-fg);
+  }
+
+  @media (min-width: 48rem) {
+    .nav-link {
+      padding: 0.5rem 0.625rem;
+    }
+  }
+</style>

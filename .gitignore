@@ -35,7 +35,8 @@ playwright-report/
 test-results/
 
 # editor
-.vscode/extensions.json
+.vscode
+.claude
 
 # OS
 .DS_Store

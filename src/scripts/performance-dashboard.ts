@@ -1,4 +1,5 @@
 import type { LighthousePageResult, ScoreKey, MetricKey } from '../types/lighthouse';
+import { bindOnce } from './bind-once';
 
 interface I18nConfig {
   na: string;
@@ -10,6 +11,7 @@ const SCORE_KEYS: ScoreKey[] = ['performance', 'accessibility', 'bestPractices',
 const METRIC_KEYS: MetricKey[] = ['lcp', 'tbt', 'cls', 'fcp', 'ttfb'];
 const BADGE_BASE_CLASS =
   'mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1 ring-inset';
+const SHOULD_FETCH_SITEMAP = !import.meta.env.DEV;
 
 const scoreClassName = (value: number | null | undefined): string => {
   if (typeof value !== 'number') {
@@ -203,6 +205,12 @@ export function initPerformanceDashboard(): void {
       continue;
     }
 
+    if (dashboard.dataset.lighthouseDashboardReady === 'true') {
+      continue;
+    }
+
+    dashboard.dataset.lighthouseDashboardReady = 'true';
+
     const i18nElement = dashboard.querySelector('script[type="application/json"][data-i18n]');
     const i18nConfig: I18nConfig = i18nElement
       ? JSON.parse(i18nElement.textContent || '{}')
@@ -300,20 +308,28 @@ export function initPerformanceDashboard(): void {
       setPageDetails(select.value || null);
     });
 
-    fetchSitemapPaths()
-      .then(sitemapPaths => {
-        if (sitemapPaths.length === 0) {
-          return;
-        }
+    if (SHOULD_FETCH_SITEMAP) {
+      fetchSitemapPaths()
+        .then(sitemapPaths => {
+          if (sitemapPaths.length === 0) {
+            return;
+          }
 
-        const mergedPaths = [...new Set([...initialPaths, ...sitemapPaths])].sort((a, b) =>
-          a.localeCompare(b)
-        );
-        setOptions(mergedPaths);
-        setPageDetails(select.value || null);
-      })
-      .catch(() => {
-        // Keep initial page list if sitemap fetch fails.
-      });
+          const mergedPaths = [...new Set([...initialPaths, ...sitemapPaths])].sort((a, b) =>
+            a.localeCompare(b)
+          );
+          setOptions(mergedPaths);
+          setPageDetails(select.value || null);
+        })
+        .catch(() => {
+          // Keep initial page list if sitemap fetch fails.
+        });
+    }
   }
 }
+
+initPerformanceDashboard();
+
+bindOnce('performance-dashboard', () => {
+  document.addEventListener('astro:page-load', initPerformanceDashboard);
+});

@@ -2,8 +2,6 @@
 import { Icon } from 'astro-icon/components';
 import { useTranslations, localeFor } from '../../i18n/utils';
 import { defaultLang, type LanguageCode } from '../../i18n/dictionary';
-import { identity } from '../../data/identity';
-import { toSafeExternalUrl } from '../../security/external-links';
 import siteModified from '../../data/site-modified.json';
 
 interface Props {
@@ -12,41 +10,17 @@ interface Props {
 
 const { lang = defaultLang } = Astro.props;
 const t = await useTranslations(lang);
-const qualityHref = `/${lang}/quality/`;
 const lastUpdatedDateTime = siteModified.lastModified;
 const lastUpdated = new Date(lastUpdatedDateTime).toLocaleDateString(localeFor(lang), {
   year: 'numeric',
   month: 'long',
 });
-
-const codebergPagesUrl = toSafeExternalUrl(identity.codebergPages);
 ---
 
 <footer
   class="flex w-full flex-wrap items-center gap-x-6 gap-y-3 border-t border-(--color-border) pt-8"
 >
   <nav aria-label={t('footer.navigation')} class="flex items-center gap-6">
-    <a
-      href={qualityHref}
-      aria-label={t('footer.siteQuality')}
-      title={t('footer.siteQuality')}
-      class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
-      ><Icon name="lucide:gauge" class="h-5 w-5" /></a
-    >
-    {
-      codebergPagesUrl && (
-        <a
-          href={codebergPagesUrl}
-          target="_blank"
-          rel="me noopener noreferrer"
-          aria-label={t('footer.sourceCode')}
-          title={t('footer.sourceCode')}
-          class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
-        >
-          <Icon name="lucide:code-2" class="h-5 w-5" />
-        </a>
-      )
-    }
     <a
       href="/humans.txt"
       aria-label={t('footer.humansTxt')}
@@ -60,20 +34,6 @@ const codebergPagesUrl = toSafeExternalUrl(identity.codebergPages);
       title={t('footer.pgpPublicKey')}
       class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
       ><Icon name="lucide:key-round" class="h-5 w-5" /></a
-    >
-    <a
-      href={`/${lang}/uses/`}
-      aria-label={t('footer.uses')}
-      title={t('footer.uses')}
-      class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
-      ><Icon name="lucide:laptop" class="h-5 w-5" /></a
-    >
-    <a
-      href={`/${lang}/lab/`}
-      aria-label={t('lab.title')}
-      title={t('lab.title')}
-      class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
-      ><Icon name="lucide:beaker" class="h-5 w-5" /></a
     >
   </nav>
 
@@ -90,13 +50,36 @@ const codebergPagesUrl = toSafeExternalUrl(identity.codebergPages);
     </p>
   </div>
 
-  <div class="symbol-of-tolerance" role="img" aria-label="Progress Pride Flag"></div>
+  <div class="symbol-of-tolerance-lockup" role="img" aria-label="Progress Pride Flag">
+    <img
+      src="/images/Trapezoid_Badge.svg"
+      alt=""
+      aria-hidden="true"
+      class="symbol-of-tolerance-badge"
+    />
+    <div class="symbol-of-tolerance"></div>
+  </div>
 </footer>
 
 <style>
-  .symbol-of-tolerance {
+  .symbol-of-tolerance-lockup {
+    position: relative;
+    flex: 0 0 100%;
     width: 100%;
     margin-top: 1em;
+    padding-top: 1.5rem;
+  }
+
+  .symbol-of-tolerance-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4.3125rem;
+    height: 1.5rem;
+  }
+
+  .symbol-of-tolerance {
+    width: 100%;
     height: 0.25em;
     background: linear-gradient(
       90deg,

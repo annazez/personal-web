@@ -16,7 +16,7 @@ test.describe('Command Palette', () => {
     await page.locator('body').click();
   });
 
-  test('opens with ? key, navigates to #arch with A, closes with Esc', async ({ page }) => {
+  test('opens with ? key, enables Architecture X-Ray with A, closes with Esc', async ({ page }) => {
     const dialog = page.locator('#command-palette');
 
     // Palette should be closed initially
@@ -26,9 +26,9 @@ test.describe('Command Palette', () => {
     await page.keyboard.press('?');
     await expect(dialog).toHaveAttribute('open', '');
 
-    // Press A to navigate to #arch
+    // Press A to enable Architecture X-Ray
     await page.keyboard.press('a');
-    await expect(page).toHaveURL(/#arch$/);
+    await expect(page.locator('html')).toHaveAttribute('data-lab-mode-arch', 'true');
 
     // Dialog should close after selecting a mode
     await expect(dialog).not.toHaveAttribute('open');
@@ -42,28 +42,28 @@ test.describe('Command Palette', () => {
     await expect(dialog).not.toHaveAttribute('open');
   });
 
-  test('navigates to #audit with U key', async ({ page }) => {
+  test('enables Accessibility Audit with U key', async ({ page }) => {
     await page.keyboard.press('?');
     const dialog = page.locator('#command-palette');
     await expect(dialog).toHaveAttribute('open', '');
 
     await page.keyboard.press('u');
-    await expect(page).toHaveURL(/#audit$/);
+    await expect(page.locator('html')).toHaveAttribute('data-lab-mode-audit', 'true');
     await expect(dialog).not.toHaveAttribute('open');
   });
 
-  test('navigates to #layers with L key', async ({ page }) => {
+  test('enables Exploded Layers with L key', async ({ page }) => {
     await page.keyboard.press('?');
     const dialog = page.locator('#command-palette');
     await expect(dialog).toHaveAttribute('open', '');
 
     await page.keyboard.press('l');
-    await expect(page).toHaveURL(/#layers$/);
+    await expect(page.locator('html')).toHaveAttribute('data-lab-mode-layers', 'true');
     await expect(dialog).not.toHaveAttribute('open');
   });
 
-  test('clears hash with H key (return home)', async ({ page }) => {
-    await page.goto('/en/#arch');
+  test('clears active lab modes with H key', async ({ page }) => {
+    await page.goto('/en/lab/');
     await page.waitForFunction(() => {
       const w = window as unknown as Record<string, boolean>;
       return (
@@ -75,15 +75,19 @@ test.describe('Command Palette', () => {
     await page.locator('body').click();
 
     await page.keyboard.press('?');
-    const dialog = page.locator('#command-palette');
+    let dialog = page.locator('#command-palette');
+    await expect(dialog).toHaveAttribute('open', '');
+
+    await page.keyboard.press('a');
+    await expect(page.locator('html')).toHaveAttribute('data-lab-mode-arch', 'true');
+
+    await page.keyboard.press('?');
+    dialog = page.locator('#command-palette');
     await expect(dialog).toHaveAttribute('open', '');
 
     await page.keyboard.press('h');
     await expect(dialog).not.toHaveAttribute('open');
-
-    // Hash should be cleared
-    const url = page.url();
-    expect(url).not.toContain('#');
+    await expect(page.locator('html')).not.toHaveAttribute('data-lab-mode-arch', 'true');
   });
 
   test('does not open when typing in an input field', async ({ page }) => {

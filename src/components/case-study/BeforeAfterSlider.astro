@@ -31,13 +31,19 @@ const {
 const clampedInitial = Math.max(0, Math.min(100, initialPosition));
 const isBeforeExternal = typeof beforeSrc === 'string';
 const isAfterExternal = typeof afterSrc === 'string';
+const getImageAspectRatio = (source: ImageMetadata | string) =>
+  typeof source === 'string' ? undefined : source.width / source.height;
+const knownAspectRatios = [getImageAspectRatio(beforeSrc), getImageAspectRatio(afterSrc)].filter(
+  (ratio): ratio is number => typeof ratio === 'number' && Number.isFinite(ratio) && ratio > 0
+);
+const frameAspectRatio = knownAspectRatios.length > 0 ? Math.max(...knownAspectRatios) : 16 / 10;
 ---
 
 <figure class="before-after" data-before-after>
   <div
     class="before-after__viewport"
     data-before-after-viewport
-    style={`--before-after-position: ${clampedInitial}%`}
+    style={`--before-after-position: ${clampedInitial}%; --before-after-aspect-ratio: ${frameAspectRatio.toFixed(6)} / 1`}
   >
     {
       isBeforeExternal ? (
@@ -79,7 +85,11 @@ const isAfterExternal = typeof afterSrc === 'string';
       }
     </div>
 
-    <div class="before-after__divider" data-before-after-divider></div>
+    <div class="before-after__divider" data-before-after-divider>
+      <span class="before-after__handle" aria-hidden="true">
+        <span class="before-after__handle-grip"></span>
+      </span>
+    </div>
 
     <span class="before-after__badge before-after__badge--before">{beforeLabel}</span>
     <span class="before-after__badge before-after__badge--after">{afterLabel}</span>
@@ -110,6 +120,7 @@ const isAfterExternal = typeof afterSrc === 'string';
   .before-after__viewport {
     position: relative;
     overflow: hidden;
+    aspect-ratio: var(--before-after-aspect-ratio);
     border: var(--surface-border);
     border-radius: var(--radius-card);
     background: var(--color-bg-surface);
@@ -117,13 +128,18 @@ const isAfterExternal = typeof afterSrc === 'string';
 
   .before-after__image {
     display: block;
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
   }
 
   .before-after__after-layer {
     position: absolute;
     inset: 0;
+    overflow: hidden;
     clip-path: inset(0 0 0 var(--before-after-position));
   }
 
@@ -132,22 +148,73 @@ const isAfterExternal = typeof afterSrc === 'string';
     top: 0;
     bottom: 0;
     left: var(--before-after-position);
-    width: 2px;
-    background: var(--color-bg-surface);
-    border-left: 1px solid color-mix(in srgb, var(--color-brand) 70%, transparent);
-    border-right: 1px solid color-mix(in srgb, var(--color-brand) 70%, transparent);
-    transform: translateX(-1px);
+    width: 1px;
+    background: color-mix(in srgb, var(--color-bg-surface) 86%, var(--color-brand));
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-brand) 22%, transparent),
+      0 0 18px color-mix(in srgb, var(--color-bg) 36%, transparent);
+    transform: translateX(-0.5px);
     z-index: 2;
     cursor: ew-resize;
     touch-action: none;
   }
 
+  .before-after__handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-border) 78%, var(--color-bg-surface));
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-bg-surface) 92%, transparent);
+    color: var(--color-text-secondary);
+    box-shadow:
+      0 0.75rem 1.75rem color-mix(in srgb, var(--color-text) 18%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 60%, transparent);
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
+  }
+
+  .before-after__handle::before,
+  .before-after__handle::after {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    border-top: 2px solid currentColor;
+    border-left: 2px solid currentColor;
+  }
+
+  .before-after__handle::before {
+    transform: rotate(-45deg);
+  }
+
+  .before-after__handle::after {
+    transform: rotate(135deg);
+  }
+
+  .before-after__handle-grip {
+    width: 1px;
+    height: 1rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, currentColor 42%, transparent);
+  }
+
   .before-after__range {
     position: absolute;
     inset: 0;
-    width: calc(100% + 2.25rem);
+    width: calc(100% + 2.75rem);
     height: 100%;
-    left: -1.125rem;
+    left: -1.375rem;
     margin: 0;
     appearance: none;
     background: transparent;
@@ -162,55 +229,49 @@ const isAfterExternal = typeof afterSrc === 'string';
   /* Webkit thumb */
   .before-after__range::-webkit-slider-thumb {
     appearance: none;
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 1px solid var(--color-border);
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
     border-radius: 9999px;
-    background-color: color-mix(in srgb, var(--color-bg-surface) 95%, transparent);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 15-3-3 3-3'/%3E%3Cpath d='m15 9 3 3-3 3'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 1.1rem;
-    color: var(--color-text-strong);
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-brand) 14%, transparent);
+    background: transparent;
+    box-shadow: none;
     cursor: ew-resize;
     transition: transform 0.1s ease;
   }
 
   .before-after__range:active::-webkit-slider-thumb {
-    transform: scale(1.05);
+    transform: scale(1.06);
   }
 
   /* Firefox thumb */
   .before-after__range::-moz-range-thumb {
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 1px solid var(--color-border);
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
     border-radius: 9999px;
-    background-color: color-mix(in srgb, var(--color-bg-surface) 95%, transparent);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 15-3-3 3-3'/%3E%3Cpath d='m15 9 3 3-3 3'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 1.1rem;
-    color: var(--color-text-strong);
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-brand) 14%, transparent);
+    background: transparent;
+    box-shadow: none;
     cursor: ew-resize;
     transition: transform 0.1s ease;
   }
 
   .before-after__range:active::-moz-range-thumb {
-    transform: scale(1.05);
+    transform: scale(1.06);
   }
 
   /* Focus styles */
-  .before-after__range:focus-visible::-webkit-slider-thumb {
+  .before-after__viewport:has(.before-after__range:focus-visible) .before-after__handle {
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;
   }
 
-  .before-after__range:focus-visible::-moz-range-thumb {
-    outline: 2px solid var(--color-brand);
-    outline-offset: 2px;
+  .before-after__viewport:has(.before-after__range:active) .before-after__handle {
+    border-color: color-mix(in srgb, var(--color-brand) 50%, var(--color-border));
+    box-shadow:
+      0 0.85rem 2rem color-mix(in srgb, var(--color-text) 22%, transparent),
+      0 0 0 0.25rem color-mix(in srgb, var(--color-brand) 12%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 60%, transparent);
+    transform: translate(-50%, -50%) scale(1.04);
   }
 
   /* Hide track */
